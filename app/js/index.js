@@ -1,4 +1,4 @@
-import {BatukeitorApp} from "./app.js"
+import {BatukeitorApp} from "./BatukeitorApp.js"
 
 window.addEventListener("DOMContentLoaded", () => {
   $("#loading").hide();

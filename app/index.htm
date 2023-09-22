@@ -13,13 +13,25 @@
     Batukeitor is waking up...
   </div>
   <div id="app" style="display: none;">
-    <div id="sequencer" class="container sequencer">
+
+    <div id="app-header">
+      <div id="app-logo">
+        Logo Batukeitor
+      </div>
+      <div id="crew-info">
+        <span id="crew-info-name"></span>
+        <select id="crew-selector"></select>
+        <select id="score-selector"></select>
+      </div>
     </div>
+
+    <div class="controls-container">
+      <button id="play-button" class="controls-button">Play</button>
+    </div>
+
+    <div id="score"></div>
+    <div id="current-section"></div>
 
     <canvas id="song-canvas" height="500"></canvas>
-
-    <div class="toggle-play">
-      <button id="play-button" class="play-button">Play</button>
-    </div>
   </div>
 </body>

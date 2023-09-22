@@ -2,7 +2,7 @@
 export class Score extends EventTarget {
   constructor() {
     super();
-    this.version = 2.0;
+    this.scoreFileVersion = 1.0;
     this._reset();
   }
 
@@ -19,13 +19,14 @@ export class Score extends EventTarget {
   }
 
   load(url) {
+    console.log(`loading ${url}`);
     this._reset();
     this.url = url;
     const noCacheURL = `${url}?ts=${Date.now()}`;
 
     const self = this;
     $.get(noCacheURL).done(function(data) {
-      self._parseYAML(data);
+      self._parseScore(data);
     }).fail(function() {
       self._error(`[Score] ERROR loading ${url}`);
     });
@@ -36,13 +37,13 @@ export class Score extends EventTarget {
       {detail: { error: msg }}));
   }
 
-  _parseYAML(ymlData) {
+  _parseScore(ymlData) {
     this._ymlScore = jsyaml.load(ymlData);
     this.loaded = true;
 
-    if (this._ymlScore.scoreVersion != this.version) {
+    if (this._ymlScore.scoreFileVersion != this.scoreFileVersion) {
       this._error(`[Score] Wrong score version in ${this.url}\n` +
-            `Found ${this._ymlScore.scoreVersion}, expecting ${this.version}`);
+            `Found ${this._ymlScore.scoreFileVersion}, expecting ${this.scoreFileVersion}`);
       return;
     }
 
