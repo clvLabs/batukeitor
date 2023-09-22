@@ -1,0 +1,25 @@
+<head>
+  <meta charset="utf-8">
+  <title>Batukeitor</title>
+  <link rel="icon" type="image/x-icon" href="./img/favicon.png">
+  <script src="./js/3rdparty/jquery/jquery-3.7.1.min.js"></script>
+  <script src="./js/3rdparty/js-yaml/js-yaml.min.js"></script>
+  <script type="module" src="./js/index.js"></script>
+  <link href="./css/index.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <div id="loading">
+    Batukeitor is waking up...
+  </div>
+  <div id="app" style="display: none;">
+    <div id="sequencer" class="container sequencer">
+    </div>
+
+    <canvas id="song-canvas" height="500"></canvas>
+
+    <div class="toggle-play">
+      <button id="play-button" class="play-button">Play</button>
+    </div>
+  </div>
+</body>
