@@ -1,5 +1,6 @@
 import {UIManager} from "./ui/UIManager.js"
 import {CrewManager} from "./crew/CrewManager.js"
+import {InstrumentManager} from "./audio/instruments/InstrumentManager.js"
 import {Score} from "./audio/score/Score.js"
 
 const DEFAULT_CREWID = "btu-k";
@@ -7,21 +8,26 @@ const DEFAULT_CREWID = "btu-k";
 export class BatukeitorApp {
   constructor() {
     this.crews = new CrewManager();
-    this.crews.addEventListener("error", this.onCrewsError.bind(this));
     this.crews.addEventListener("loaded", this.onCrewsLoaded.bind(this));
+    this.crews.addEventListener("error", this.onCrewsError.bind(this));
     this.crew = undefined;
+
+    this.instruments = new InstrumentManager();
+    this.instruments.addEventListener("loaded", this.onInstrumentsLoaded.bind(this));
+    this.instruments.addEventListener("error", this.onInstrumentsError.bind(this));
 
     this.ui = new UIManager(this.crews);
     this.ui.addEventListener("load", this.onUILoad.bind(this));
     this.ui.addEventListener("play", this.onUIPlay.bind(this));
 
     this.score = new Score();
-    this.score.addEventListener("error", this.onScoreError.bind(this));
     this.score.addEventListener("loaded", this.onScoreLoaded.bind(this));
+    this.score.addEventListener("error", this.onScoreError.bind(this));
   }
 
   run() {
     this.crews.init();
+    this.instruments.init();
   }
 
   onCrewsLoaded() {
@@ -43,11 +49,12 @@ export class BatukeitorApp {
     alert(`[Crews] ERROR: ${e.detail.error}`);
   }
 
-  onUILoad(e) {
-    this.score.load(this._getSongURL(e.detail.score));
+  onInstrumentsLoaded() {
+    this.ui.setInstruments(this.instruments);
   }
 
-  onUIPlay() {
+  onInstrumentsError(e) {
+    this.ui.setInstruments(undefined, e.detail.error);
   }
 
   onScoreLoaded(e) {
@@ -55,12 +62,17 @@ export class BatukeitorApp {
   }
 
   onScoreError(e) {
-    // alert(`[Score] ERROR: ${e.detail.error}`);
-    console.log(`[Score] ERROR: ${e.detail.error}`);
-    this.ui.setScore(undefined);
+    this.ui.setScore(undefined, e.detail.error);
   }
 
-  _getSongURL(songName) {
-    return `/data/crews/${this.crew.id}/scores/${songName}.yml`;
+  _getScoreURL(scoreId) {
+    return `/data/crews/${this.crew.id}/scores/${scoreId}.yml`;
+  }
+
+  onUILoad(e) {
+    this.score.load(this._getScoreURL(e.detail.scoreId));
+  }
+
+  onUIPlay() {
   }
 }

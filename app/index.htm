@@ -7,6 +7,7 @@
   <script src="./js/3rdparty/js-yaml/js-yaml.min.js"></script>
   <script type="module" src="./js/index.js"></script>
   <link href="./css/index.css" rel="stylesheet"/>
+  <meta http-equiv="Cache-control" content="no-cache, no-store">
 </head>
 
 <body>
@@ -15,24 +16,53 @@
   </div>
   <div id="app" style="display: none;">
 
+    <!-- ------------------------------------------------------- APP HEADER -->
     <div id="app-header">
-      <div id="app-logo">
-        Logo Batukeitor
-      </div>
-      <div id="crew-info">
-        <span id="crew-info-name"></span>
-        <select id="crew-selector"></select>
-        <select id="score-selector"></select>
-      </div>
+      <span id="crew-info-name"></span>
+      <select id="crew-selector"></select>
+      <select id="score-selector"></select>
+
+      <img id="app-logo"></img>
     </div>
 
-    <div class="controls-container">
-      <button id="play-button" class="controls-button">Play</button>
+    <!-- ------------------------------------------------------- TAB BUTTONS -->
+    <div id="main-tab-buttons">
+      <button id="tab-button-score" class="tab-button">Score</button>
+      <button id="tab-button-sections" class="tab-button">Sections</button>
+      <button id="tab-button-instruments" class="tab-button">Instruments</button>
     </div>
 
-    <div id="score"></div>
-    <div id="current-section"></div>
+    <div id="main-tab-container">
 
-    <canvas id="song-canvas" height="500"></canvas>
+      <!-- ------------------------------------------------------- TAB: Score -->
+      <div id="score-tab" class="tab-content">
+        <div id="score-info"></div>
+        <div id="score-current-section" class="score-section"></div>
+
+        <div id="controls-container">
+          <button id="play-button" class="controls-button">Play</button>
+        </div>
+      </div>
+
+      <!-- ------------------------------------------------------- TAB: Sections -->
+      <div id="sections-tab" class="tab-content">
+      </div>
+
+      <!-- ------------------------------------------------------- TAB: Instruments -->
+      <div id="instruments-tab" class="tab-content">
+        <div id="instrument-template" class="instrument-info">
+          <span id="instrument-id">XX</span>
+          <img id="instrument-icon"></img>
+          <span id="instrument-name">Sample</span>
+          <div id="instrument-samples-container">
+            <div id="instrument-sample-template">
+              <button id="template-instrument-sample-play" class="instrument-sample-play"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </body>

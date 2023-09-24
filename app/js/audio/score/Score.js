@@ -19,7 +19,6 @@ export class Score extends EventTarget {
   }
 
   load(url) {
-    console.log(`loading ${url}`);
     this._reset();
     this.url = url;
     const noCacheURL = `${url}?ts=${Date.now()}`;
@@ -27,8 +26,8 @@ export class Score extends EventTarget {
     const self = this;
     $.get(noCacheURL).done(function(data) {
       self._parseScore(data);
-    }).fail(function() {
-      self._error(`[Score] ERROR loading ${url}`);
+    }).fail(function(e) {
+      self._error(`[Score] ERROR loading ${url} (${e.statusText})`);
     });
   }
 
@@ -53,6 +52,17 @@ export class Score extends EventTarget {
     this.song = this._ymlScore.song;
     this.end = this._ymlScore.end;
     this.sections = this._ymlScore.sections;
+
+    if ( this.name == undefined
+      || this.bpm == undefined
+      // || this.intro == undefined
+      // || this.song == undefined
+      // || this.end == undefined
+      || this.sections == undefined
+      ){
+        this._error(`[Score] ERROR: Invalid data in ${this.url}`);
+        return;
+      }
 
     this.dispatchEvent(new Event('loaded'));
   }
