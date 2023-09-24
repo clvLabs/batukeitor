@@ -62,14 +62,14 @@ select {
 }
 
 .tab-button:hover {
-  background-color: #778eba;
+  background-color: #7aba77;
   color: black;
 }
 
 .tab-button.active {
-  background-color: #566786;
+  background-color: #5f8f5c;
   color: black;
-  border: 1px solid white;
+  border: 1px solid #80bf7b;
 }
 
 .main-tab-container {
