@@ -9,7 +9,6 @@ export class UIManager extends EventTarget {
 
   init(crewId) {
     $("#app").show();
-    $(`#app-logo`).attr("src", "img/batukeitor-logo.svg");
     $("#play-button").prop("disabled", true)
     $("#play-button").on("click", this.onPlayButton.bind(this));
     $("#crew-selector").on("input", this.onCrewSelectorInput.bind(this));

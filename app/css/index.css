@@ -12,10 +12,14 @@ pre {
 
 #loading {
   position: absolute;
-  top: 50%;
-  left: 25%;
+  top: 30%;
+  left: 30%;
   text-align: center;
   font-size: 48px;
+}
+
+#app {
+  display: none;
 }
 
 #app-logo {
