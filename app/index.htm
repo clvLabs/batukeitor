@@ -60,8 +60,8 @@
         <div id="score-info"></div>
 
         <div id="score-player">
-          <div id="score-current-section" class="score-section"></div>
-          <div id="score-next-section" class="score-section"></div>
+          <div id="score-current-section"></div>
+          <div id="score-next-section"></div>
         </div>
 
         <div id="controls-container">
@@ -75,14 +75,28 @@
 
       <!-- ------------------------------------------------------- TAB: Instruments -->
       <div id="instruments-tab" class="tab-content">
-        <div id="instrument-template" class="instrument-info">
-          <span id="instrument-id">XX</span>
-          <img id="instrument-icon"></img>
-          <span id="instrument-name">Sample</span>
-          <div id="instrument-samples-container">
-            <div id="instrument-sample-template">
-              <button id="template-instrument-sample-play" class="instrument-sample-play"></button>
-            </div>
+      </div>
+
+    </div>
+
+    <!-- ------------------------------------------------------- Element templates -->
+    <div id="template-container">
+
+      <div id="section-template" class="section-block">
+          <div id="section-header"></div>
+          <div id="section-content">
+            <div id="section-instrument-list"></div>
+            <div id="section-score"></div>
+        </div>
+      </div>
+
+      <div id="instrument-template" class="instrument-info">
+        <span id="instrument-id"></span>
+        <img id="instrument-icon"></img>
+        <span id="instrument-name"></span>
+        <div id="instrument-samples-container">
+          <div id="instrument-sample-template">
+            <button id="template-instrument-sample-play" class="instrument-sample-play"></button>
           </div>
         </div>
       </div>

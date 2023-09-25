@@ -112,7 +112,7 @@ select {
   display: flex;
 }
 
-.score-section {
+.section-block {
   background-color: #27312a;
   border: 1px solid #5d7564;
   margin-top: 1em;
@@ -127,11 +127,30 @@ select {
   width: 50%;
 }
 
-#instrument-template {
+#section-template {
   display: none;
 }
 
-#instrument-sample-template {
+#section-header {
+  width: 100%;
+}
+
+#section-content {
+  width: 100%;
+  display: flex;
+}
+
+#section-instrument-list {
+  width: 10%;
+  display: inline-block;
+}
+
+#section-score {
+  width: 90%;
+  display: inline-block;
+}
+
+#instrument-template {
   display: none;
 }
 
@@ -145,6 +164,10 @@ select {
 
 #instrument-samples-container {
   display: flex;
+}
+
+#instrument-sample-template {
+  display: none;
 }
 
 #instrument-id {

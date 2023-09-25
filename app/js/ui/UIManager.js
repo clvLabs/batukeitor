@@ -56,7 +56,7 @@ export class UIManager extends EventTarget {
   setScore(score, errorMsg) {
     this.score = score;
 
-    if (score == undefined) {
+    if (this.score == undefined) {
       $("#score-info").html(`Cannot load score<br/>${errorMsg}`);
       $("#score-current-section").text("");
       $("#score-next-section").text("");
@@ -68,15 +68,15 @@ export class UIManager extends EventTarget {
     // Score -------------------------------------------------------
     var scoreInfoTxt = "<pre>";
 
-    for (const sectionId in score.sections) {
-      const section = score.sections[sectionId];
+    for (const sectionId in this.score.sections) {
+      const section = this.score.sections[sectionId];
       scoreInfoTxt += `[${section.shortName}: ${section.name}]`;
     }
 
     var song = "";
-    for (const i in score.song) {
-      const sectionId = score.song[i];
-      const section = score.sections[sectionId];
+    for (const i in this.score.song) {
+      const sectionId = this.score.song[i];
+      const section = this.score.sections[sectionId];
       if (section == null) {
         song += sectionId;
       } else {
@@ -85,7 +85,7 @@ export class UIManager extends EventTarget {
     }
 
     scoreInfoTxt += `\n\n${song}`;
-    scoreInfoTxt += `\n\nBPM: ${score.bpm}`;
+    scoreInfoTxt += `\n\nBPM: ${this.score.bpm}`;
     scoreInfoTxt += "</pre>";
 
     $("#score-info").html(scoreInfoTxt);
@@ -93,46 +93,60 @@ export class UIManager extends EventTarget {
     // Sections -------------------------------------------------------
     $("#sections-tab").html("");
 
-    if (score.sections == null) {
+    if (this.score.sections == null) {
       $("#sections-tab").text(`[ERROR] Score has no sections`);
       $("#play-button").prop("disabled", true)
       return;
     }
 
-    for (const sectionId in score.sections) {
-      const section = score.sections[sectionId];
-      const sectionElm = $("<div>", {
-            id: `section-${sectionId}`,
-            class: "score-section",
-        });
-        sectionElm.css("background-color", `#${section.color}`);
-        sectionElm.appendTo("#sections-tab");
-        sectionElm.html(this.getSectionText(section));
+    for (const sectionId in this.score.sections) {
+      this.buildSectionUI(sectionId).appendTo("#sections-tab");
     }
 
-    const firstSection = this.score.sections[Object.keys(this.score.sections)[0]];
-    const secondSection = this.score.sections[Object.keys(this.score.sections)[1]];
-    $("#score-current-section").html(this.getSectionText(firstSection));
-    $("#score-current-section").css("background-color", firstSection.color);
-    $("#score-next-section").html(this.getSectionText(secondSection));
-    $("#score-next-section").css("background-color", secondSection.color);
+    const firstSectionId = Object.keys(this.score.sections)[0];
+    const secondSectionId = Object.keys(this.score.sections)[1];
+
+    $("#score-current-section").html("");
+    this.buildSectionUI(firstSectionId).appendTo("#score-current-section");
+
+    $("#score-next-section").html("");
+    this.buildSectionUI(secondSectionId).appendTo("#score-next-section");
+
 
     $("#play-button").prop("disabled", false)
   }
 
-  getSectionText(section) {
-    var sectionTxt = "<pre>";
-    sectionTxt += `---------------- ${section.name} `
-    sectionTxt += `(${section.timeSignature}) \n\n`
+  buildSectionUI(sectionId) {
+    const section = this.score.sections[sectionId];
 
+    const sectionElm = $("#section-template").clone();
+    const sectionElmId = `section-${sectionId}`;
+    sectionElm.attr("id", sectionElmId);
+    sectionElm.css("background-color", `#${section.color}`);
+
+    var txt = "";
+    txt = `${section.name} (${section.timeSignature})`;
+    sectionElm.find(`#section-header`).text(txt);
+
+    txt = "<pre>";
     for (const trackName in section.tracks) {
       const track = section.tracks[trackName];
-      sectionTxt += `[${trackName}] ${track}\n`;
+      txt += `[${trackName}]\n`;
     }
+    txt += "</pre>";
 
-    sectionTxt += "</pre>";
+    sectionElm.find(`#section-instrument-list`).html(txt);
 
-    return sectionTxt;
+    txt = "<pre>";
+    for (const trackName in section.tracks) {
+      const track = section.tracks[trackName];
+      txt += `${track}\n`;
+    }
+    txt += "</pre>";
+
+    sectionElm.find(`#section-score`).html(txt);
+
+    return sectionElm;
   }
 
   setInstrumentManager(instrumentMgr, errorMsg) {
