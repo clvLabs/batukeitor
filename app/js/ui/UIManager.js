@@ -68,11 +68,6 @@ export class UIManager extends EventTarget {
     // Score -------------------------------------------------------
     var scoreInfoTxt = "<pre>";
 
-    for (const sectionId in this.score.sections) {
-      const section = this.score.sections[sectionId];
-      scoreInfoTxt += `[${section.shortName}: ${section.name}]`;
-    }
-
     var song = "";
     for (const i in this.score.song) {
       const sectionId = this.score.song[i];
@@ -84,7 +79,7 @@ export class UIManager extends EventTarget {
       }
     }
 
-    scoreInfoTxt += `\n\n${song}`;
+    scoreInfoTxt += `${song}`;
     scoreInfoTxt += `\n\nBPM: ${this.score.bpm}`;
     scoreInfoTxt += "</pre>";
 
@@ -124,27 +119,32 @@ export class UIManager extends EventTarget {
     sectionElm.attr("id", sectionElmId);
     sectionElm.css("background-color", `#${section.color}`);
 
-    var txt = "";
-    txt = `${section.name} (${section.timeSignature})`;
+    var txt = `${section.name} (${section.timeSignature})`;
     sectionElm.find(`#section-header`).text(txt);
 
-    txt = "<pre>";
-    for (const trackName in section.tracks) {
-      const track = section.tracks[trackName];
-      txt += `[${trackName}]\n`;
+    for (const trackId in section.tracks) {
+      const track = this.instrumentMgr.list[trackId];
+
+      const rowDiv = $("<div>", {
+        class: "section-instrument-row",
+      });
+
+      rowDiv.appendTo(sectionElm.find(`#section-instrument-list`));
+
+      $("<img>",{
+        src: track.iconURL,
+        id: "instrument-icon",
+        title: `[${track.id}] ${track.name}`,
+      }).appendTo(rowDiv);
     }
-    txt += "</pre>";
 
-    sectionElm.find(`#section-instrument-list`).html(txt);
+    for (const trackId in section.tracks) {
+      const trackNotes = section.tracks[trackId];
 
-    txt = "<pre>";
-    for (const trackName in section.tracks) {
-      const track = section.tracks[trackName];
-      txt += `${track}\n`;
+      $("<div>", {
+        class: "section-score-row",
+      }).html(`<pre>${trackNotes}</pre>`).appendTo(sectionElm.find(`#section-score`));
     }
-    txt += "</pre>";
-
-    sectionElm.find(`#section-score`).html(txt);
 
     return sectionElm;
   }

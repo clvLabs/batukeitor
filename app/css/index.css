@@ -133,6 +133,9 @@ select {
 
 #section-header {
   width: 100%;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 #section-content {
@@ -141,13 +144,22 @@ select {
 }
 
 #section-instrument-list {
-  width: 10%;
+  width: 50px;
   display: inline-block;
 }
 
+.section-instrument-row {
+  height: 32px;
+  margin-bottom: 0.5em;
+}
+
 #section-score {
-  width: 90%;
   display: inline-block;
+}
+
+.section-score-row {
+  height: 32px;
+  margin-bottom: 0.5em;
 }
 
 #instrument-template {
