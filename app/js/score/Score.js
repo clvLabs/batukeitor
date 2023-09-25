@@ -18,7 +18,8 @@ export class Score extends EventTarget {
     this.sections = undefined;
   }
 
-  load(url) {
+  load(crewId, scoreId) {
+    const url = this._getScoreURL(crewId, scoreId);
     this._reset();
     this.url = url;
     const noCacheURL = `${url}?ts=${Date.now()}`;
@@ -64,6 +65,10 @@ export class Score extends EventTarget {
         return;
       }
 
-    this.dispatchEvent(new Event('loaded'));
+    this.dispatchEvent(new Event('ready'));
+  }
+
+  _getScoreURL(crewId, scoreId) {
+    return `/data/crews/${crewId}/scores/${scoreId}.yml`;
   }
 }

@@ -1,3 +1,4 @@
+import {Instrument} from "./Instrument.js"
 
 export class InstrumentManager extends EventTarget {
   constructor() {
@@ -33,27 +34,15 @@ export class InstrumentManager extends EventTarget {
 
     for (const instrumentId in _ymlInstrumentList.instruments)
     {
-      const instrument = _ymlInstrumentList.instruments[instrumentId];
-      const newInstrument = {
-        id: instrumentId,
-        name: instrument.name,
-        samples: instrument.samples,
-        iconURL: "",
-      };
-      newInstrument.iconURL = this._getInstrumentIconURL(newInstrument);
-
-      this.list[instrumentId] = newInstrument;
+      const instrumentData = _ymlInstrumentList.instruments[instrumentId];
+      this.list[instrumentId] = new Instrument(instrumentId, instrumentData);
     }
 
-    this.dispatchEvent(new Event('loaded'));
+    this.dispatchEvent(new Event('ready'));
   }
 
   _getInstrumentListURL() {
     return `${this.BASE_URL}/instruments.yml`;
-  }
-
-  _getInstrumentIconURL(instrument) {
-    return `${this.BASE_URL}/img/${instrument.id}.png`;
   }
 
 }

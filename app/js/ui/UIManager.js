@@ -4,7 +4,7 @@ export class UIManager extends EventTarget {
     super();
     this.crews = crews;
     this.score = undefined;
-    this.instruments = undefined;
+    this.instrumentMgr = undefined;
   }
 
   init(crewId) {
@@ -135,17 +135,17 @@ export class UIManager extends EventTarget {
     return sectionTxt;
   }
 
-  setInstruments(instruments, errorMsg) {
-    this.instruments = instruments;
+  setInstrumentManager(instrumentMgr, errorMsg) {
+    this.instrumentMgr = instrumentMgr;
     var errorsFound = false;
 
-    if (instruments == undefined) {
+    if (instrumentMgr == undefined) {
       errorsFound = true;
       $("#instruments-tab").html(`Cannot load instruments<br/>${errorMsg}`);
     } else {
 
-      for (const instrumentId in instruments.list) {
-        const instrument = instruments.list[instrumentId];
+      for (const instrumentId in instrumentMgr.list) {
+        const instrument = instrumentMgr.list[instrumentId];
 
         const instrumentElm = $("#instrument-template").clone();
         const instrumentElmId = `instrument-${instrumentId}`;
@@ -210,7 +210,11 @@ export class UIManager extends EventTarget {
   }
 
   onInstrumentSamplePlay(e) {
-    console.log(`[DBG] onInstrumentSamplePlay - ${e.data.instrumentId} ${e.data.sampleId}`);
+    this.dispatchEvent(new CustomEvent("playSample",
+      {detail: {
+        instrumentId: e.data.instrumentId,
+        sampleId: e.data.sampleId,
+      }}));
   }
 
 

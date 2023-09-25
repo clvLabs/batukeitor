@@ -46,7 +46,7 @@ export class CrewManager extends EventTarget {
       };
     }
 
-    this.dispatchEvent(new Event('loaded'));
+    this.dispatchEvent(new Event('ready'));
   }
 
   _getCrewListURL() {

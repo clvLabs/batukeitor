@@ -1,78 +1,92 @@
-import {UIManager} from "./ui/UIManager.js"
+import {AudioManager} from "./audio/AudioManager.js"
 import {CrewManager} from "./crew/CrewManager.js"
-import {InstrumentManager} from "./audio/instruments/InstrumentManager.js"
-import {Score} from "./audio/score/Score.js"
+import {InstrumentManager} from "./instruments/InstrumentManager.js"
+import {UIManager} from "./ui/UIManager.js"
+import {Score} from "./score/Score.js"
 
 const DEFAULT_CREWID = "btu-k";
 
 export class BatukeitorApp {
   constructor() {
-    this.crews = new CrewManager();
-    this.crews.addEventListener("loaded", this.onCrewsLoaded.bind(this));
-    this.crews.addEventListener("error", this.onCrewsError.bind(this));
+    this.audioMgr = new AudioManager();
+    this.audioMgr.addEventListener("ready", this.onAudioManagerReady.bind(this));
+    this.audioMgr.addEventListener("error", this.onAudioManagerError.bind(this));
+
+    this.crewMgr = new CrewManager();
+    this.crewMgr.addEventListener("ready", this.onCrewManagerReady.bind(this));
+    this.crewMgr.addEventListener("error", this.onCrewManagerError.bind(this));
     this.crew = undefined;
 
-    this.instruments = new InstrumentManager();
-    this.instruments.addEventListener("loaded", this.onInstrumentsLoaded.bind(this));
-    this.instruments.addEventListener("error", this.onInstrumentsError.bind(this));
+    this.instrumentMgr = new InstrumentManager();
+    this.instrumentMgr.addEventListener("ready", this.onInstrumentManagerReady.bind(this));
+    this.instrumentMgr.addEventListener("error", this.onInstrumentManagerError.bind(this));
 
-    this.ui = new UIManager(this.crews);
-    this.ui.addEventListener("load", this.onUILoad.bind(this));
-    this.ui.addEventListener("play", this.onUIPlay.bind(this));
+    this.uiMgr = new UIManager(this.crewMgr);
+    this.uiMgr.addEventListener("load", this.onUIManagerLoad.bind(this));
+    this.uiMgr.addEventListener("play", this.onUIManagerPlay.bind(this));
+    this.uiMgr.addEventListener("playSample", this.onUIManagerPlaySample.bind(this));
 
     this.score = new Score();
-    this.score.addEventListener("loaded", this.onScoreLoaded.bind(this));
+    this.score.addEventListener("ready", this.onScoreReady.bind(this));
     this.score.addEventListener("error", this.onScoreError.bind(this));
   }
 
   run() {
-    this.crews.init();
-    this.instruments.init();
+    this.crewMgr.init();
+    this.instrumentMgr.init();
   }
 
-  onCrewsLoaded() {
+  onAudioManagerReady() {
+  }
+
+  onAudioManagerError(e) {
+    alert(`[Audio] ERROR: ${e.detail.error}`);
+  }
+
+  onCrewManagerReady() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     var crewId = urlParams.get('crew');
     if (crewId == null)
       crewId = DEFAULT_CREWID;
 
-    this.crew = this.crews.list[crewId];
+    this.crew = this.crewMgr.list[crewId];
     if (this.crew == null) {
       alert(`[Crews] Crew not found: ${crewId}`);
     } else {
-      this.ui.init(crewId);
+      this.uiMgr.init(crewId);
     }
   }
 
-  onCrewsError(e) {
+  onCrewManagerError(e) {
     alert(`[Crews] ERROR: ${e.detail.error}`);
   }
 
-  onInstrumentsLoaded() {
-    this.ui.setInstruments(this.instruments);
+  onInstrumentManagerReady() {
+    this.uiMgr.setInstrumentManager(this.instrumentMgr);
+    this.audioMgr.init(this.instrumentMgr);
   }
 
-  onInstrumentsError(e) {
-    this.ui.setInstruments(undefined, e.detail.error);
+  onInstrumentManagerError(e) {
+    this.uiMgr.setInstrumentManager(undefined, e.detail.error);
   }
 
-  onScoreLoaded(e) {
-    this.ui.setScore(this.score);
+  onUIManagerLoad(e) {
+    this.score.load(this.crew.id, e.detail.scoreId);
+  }
+
+  onUIManagerPlay() {
+  }
+
+  onUIManagerPlaySample(e) {
+    this.instrumentMgr.list[e.detail.instrumentId].play(e.detail.sampleId);
+  }
+
+  onScoreReady(e) {
+    this.uiMgr.setScore(this.score);
   }
 
   onScoreError(e) {
-    this.ui.setScore(undefined, e.detail.error);
-  }
-
-  _getScoreURL(scoreId) {
-    return `/data/crews/${this.crew.id}/scores/${scoreId}.yml`;
-  }
-
-  onUILoad(e) {
-    this.score.load(this._getScoreURL(e.detail.scoreId));
-  }
-
-  onUIPlay() {
+    this.uiMgr.setScore(undefined, e.detail.error);
   }
 }
