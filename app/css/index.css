@@ -6,6 +6,7 @@ body {
 }
 
 pre {
+  white-space: pre-wrap;
   margin: 0px;
 }
 
@@ -30,7 +31,7 @@ pre {
 }
 
 select {
-  font-size: 36px;
+  font-size: 24px;
   background-color: #323232;
   color: white;
 }
@@ -72,6 +73,10 @@ select {
   border: 1px solid #80bf7b;
 }
 
+.tab-button-content {
+  pointer-events: none;
+}
+
 .main-tab-container {
   display: flex;
   border: 1px solid #ccc;
@@ -99,11 +104,23 @@ select {
   padding: 0.5em;
 }
 
+#score-player {
+  display: flex;
+}
+
 .score-section {
   background-color: #27312a;
   border: 1px solid #5d7564;
   margin-top: 1em;
   padding: 0.5em;
+}
+
+#score-current-section {
+  width: 50%;
+}
+
+#score-next-section {
+  width: 50%;
 }
 
 #instrument-template {
@@ -127,14 +144,13 @@ select {
 }
 
 #instrument-id {
+  color: #8f8f8f;
   cursor: default;
-  font-size: 16px;
   font-weight: bold;
   margin: 1em;
 }
 
 #instrument-icon {
-  background-color: #8f8f8f;
   height: 32px;
   width: 32px;
   margin-right: 1em;

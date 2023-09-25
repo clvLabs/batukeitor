@@ -27,9 +27,26 @@
 
     <!-- ------------------------------------------------------- TAB BUTTONS -->
     <div id="main-tab-buttons">
-      <button id="tab-button-score" class="tab-button">Score</button>
-      <button id="tab-button-sections" class="tab-button">Sections</button>
-      <button id="tab-button-instruments" class="tab-button">Instruments</button>
+      <button id="tab-button-score" class="tab-button">
+        <span class="tab-button-content">
+          <img src="/app/img/score-icon.svg">
+        </span>
+      </button>
+      <button id="tab-button-sections" class="tab-button">
+        <span class="tab-button-content">
+          <img src="/app/img/section-icon.svg">
+          <img src="/app/img/section-icon.svg">
+          <img src="/app/img/section-icon.svg">
+        </span>
+      </button>
+      <button id="tab-button-instruments" class="tab-button">
+        <span class="tab-button-content">
+          <img src="/data/instruments/img/CC.png" width="24px">
+          <img src="/data/instruments/img/TB.png" width="24px">
+          <img src="/data/instruments/img/CX.png" width="24px">
+          <img src="/data/instruments/img/S1.png" width="24px">
+        </span>
+      </button>
     </div>
 
     <div id="main-tab-container">
@@ -37,7 +54,11 @@
       <!-- ------------------------------------------------------- TAB: Score -->
       <div id="score-tab" class="tab-content">
         <div id="score-info"></div>
-        <div id="score-current-section" class="score-section"></div>
+
+        <div id="score-player">
+          <div id="score-current-section" class="score-section"></div>
+          <div id="score-next-section" class="score-section"></div>
+        </div>
 
         <div id="controls-container">
           <button id="play-button" class="controls-button">Play</button>

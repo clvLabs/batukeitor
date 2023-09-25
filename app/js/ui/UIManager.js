@@ -60,17 +60,18 @@ export class UIManager extends EventTarget {
     if (score == undefined) {
       $("#score-info").html(`Cannot load score<br/>${errorMsg}`);
       $("#score-current-section").text("");
+      $("#score-next-section").text("");
       $("#sections-tab").html(`Cannot load score<br/>${errorMsg}`);
       $("#play-button").prop("disabled", true)
       return;
     }
 
     // Score -------------------------------------------------------
-    var scoreInfoTxt = `Sections: `;
+    var scoreInfoTxt = "<pre>";
 
     for (const sectionId in score.sections) {
       const section = score.sections[sectionId];
-      scoreInfoTxt += ` [${section.shortName}: ${section.name}]`;
+      scoreInfoTxt += `[${section.shortName}: ${section.name}]`;
     }
 
     var song = "";
@@ -84,10 +85,9 @@ export class UIManager extends EventTarget {
       }
     }
 
-    scoreInfoTxt += `<br/>
-      BPM: ${score.bpm}<br/>
-      Score: ${song}<br/>
-    `;
+    scoreInfoTxt += `\n\n${song}`;
+    scoreInfoTxt += `\n\nBPM: ${score.bpm}`;
+    scoreInfoTxt += "</pre>";
 
     $("#score-info").html(scoreInfoTxt);
 
@@ -101,30 +101,34 @@ export class UIManager extends EventTarget {
     }
 
     for (const sectionId in score.sections) {
+      const section = score.sections[sectionId];
       const sectionElm = $("<div>", {
             id: `section-${sectionId}`,
             class: "score-section",
         });
+        sectionElm.css("background-color", `#${section.color}`);
         sectionElm.appendTo("#sections-tab");
-        sectionElm.html(this.getSectionText(sectionId));
+        sectionElm.html(this.getSectionText(section));
     }
 
-    const firstSectionId = Object.keys(this.score.sections)[0];
-    $("#score-current-section").html(this.getSectionText(firstSectionId));
+    const firstSection = this.score.sections[Object.keys(this.score.sections)[0]];
+    const secondSection = this.score.sections[Object.keys(this.score.sections)[1]];
+    $("#score-current-section").html(this.getSectionText(firstSection));
+    $("#score-current-section").css("background-color", firstSection.color);
+    $("#score-next-section").html(this.getSectionText(secondSection));
+    $("#score-next-section").css("background-color", secondSection.color);
 
     $("#play-button").prop("disabled", false)
   }
 
-  getSectionText(sectionId) {
-    const section = this.score.sections[sectionId] ?? null;
+  getSectionText(section) {
     var sectionTxt = "<pre>";
-    sectionTxt += `Section: [${section.shortName}: ${section.name}] \n`
-    sectionTxt += `Signature: ${section.timeSignature} \n`
-    sectionTxt += `Tracks: \n`;
+    sectionTxt += `---------------- ${section.name} `
+    sectionTxt += `(${section.timeSignature}) \n\n`
 
     for (const trackName in section.tracks) {
       const track = section.tracks[trackName];
-      sectionTxt += `* [${trackName}] ${track}\n`;
+      sectionTxt += `[${trackName}] ${track}\n`;
     }
 
     sectionTxt += "</pre>";
