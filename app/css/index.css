@@ -153,6 +153,21 @@ select {
   margin-bottom: 0.5em;
 }
 
+#section-instrument-icon {
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  margin-right: 1em;
+}
+
+#section-instrument-icon:hover {
+  border: 1px solid white;
+}
+
+#section-instrument-icon:active {
+  border: 2px solid #52aa74;
+}
+
 #section-score {
   display: inline-block;
 }

@@ -133,7 +133,7 @@ export class UIManager extends EventTarget {
 
       $("<img>",{
         src: track.iconURL,
-        id: "instrument-icon",
+        id: "section-instrument-icon",
         title: `[${track.id}] ${track.name}`,
       }).appendTo(rowDiv);
     }
