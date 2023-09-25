@@ -2,6 +2,7 @@
 export class Score extends EventTarget {
   constructor() {
     super();
+    this.DEFAULT_BPM = 90;
     this.scoreFileVersion = 1.0;
     this._reset();
   }
@@ -12,9 +13,7 @@ export class Score extends EventTarget {
     this.loaded = false;
     this.name = undefined;
     this.bpm = undefined;
-    this.intro = undefined;
     this.song = undefined;
-    this.end = undefined;
     this.sections = undefined;
   }
 
@@ -49,16 +48,13 @@ export class Score extends EventTarget {
 
     this.name = this._ymlScore.name;
     this.bpm = this._ymlScore.bpm;
-    this.intro = this._ymlScore.intro;
     this.song = this._ymlScore.song;
-    this.end = this._ymlScore.end;
     this.sections = this._ymlScore.sections;
 
+    if ( this.bmp == undefined )
+      this.bpm = this.DEFAULT_BPM;
+
     if ( this.name == undefined
-      || this.bpm == undefined
-      // || this.intro == undefined
-      // || this.song == undefined
-      // || this.end == undefined
       || this.sections == undefined
       ){
         this._error(`[Score] ERROR: Invalid data in ${this.url}`);
