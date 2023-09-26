@@ -51,7 +51,12 @@ export class TimeSignature {
   }
 
   isBeatStart(pos) {
-    return (pos % (this.sixteenthsPerBar / this.numBeats)) == 0;
+    if (this.beatNote == 4) {
+      return (pos % 4) == 0;
+    }
+    else if (this.beatNote == 8) {
+      return (pos % 6) == 0;
+    }
   }
 
   isEighthNoteStart(pos) {
