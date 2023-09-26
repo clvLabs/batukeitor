@@ -149,6 +149,7 @@ select {
 }
 
 .section-instrument-row {
+  background-color: #22222255;
   height: 32px;
   margin-bottom: 0.5em;
 }
@@ -170,9 +171,11 @@ select {
 
 #section-score {
   display: inline-block;
+  width: 100%;
 }
 
 .section-score-row {
+  background-color: #22222255;
   height: 32px;
   margin-bottom: 0.5em;
 }

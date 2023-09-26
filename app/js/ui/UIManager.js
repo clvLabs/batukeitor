@@ -122,6 +122,29 @@ export class UIManager extends EventTarget {
     var txt = `${section.name} (${section.timeSignature})`;
     sectionElm.find(`#section-header`).text(txt);
 
+    // Metronome track
+    {
+      const instrument = this.instrumentMgr.list["MT"];
+
+      const rowDiv = $("<div>", {
+        class: "section-instrument-row",
+      });
+
+      rowDiv.appendTo(sectionElm.find(`#section-instrument-list`));
+
+      $("<img>",{
+        src: instrument.iconURL,
+        id: "section-instrument-icon",
+        title: `[${instrument.id}] ${instrument.name}`,
+      }).appendTo(rowDiv);
+
+      $("<div>", {
+        class: "section-score-row",
+      }).html(`<pre>1---2---3---4---</pre>`).appendTo(sectionElm.find(`#section-score`));
+
+    }
+
+    // Score tracks
     for (const trackId in section.tracks) {
       const track = this.instrumentMgr.list[trackId];
 
