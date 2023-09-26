@@ -119,7 +119,7 @@ export class UIManager extends EventTarget {
     sectionElm.attr("id", sectionElmId);
     sectionElm.css("background-color", `#${section.color}`);
 
-    var txt = `${section.name} (${section.timeSignature})`;
+    var txt = `${section.name} (${section.timeSignature.name})`;
     sectionElm.find(`#section-header`).text(txt);
 
     // Metronome track
@@ -138,15 +138,17 @@ export class UIManager extends EventTarget {
         title: `[${instrument.id}] ${instrument.name}`,
       }).appendTo(rowDiv);
 
+      const metronomeStr = section.getMetronomeDisplayStr();
       $("<div>", {
         class: "section-score-row",
-      }).html(`<pre>1---2---3---4---</pre>`).appendTo(sectionElm.find(`#section-score`));
+      }).html(`<pre>${metronomeStr}</pre>`).appendTo(sectionElm.find(`#section-score`));
 
     }
 
     // Score tracks
     for (const trackId in section.tracks) {
-      const track = this.instrumentMgr.list[trackId];
+      const instrument = this.instrumentMgr.list[trackId];
+      const track = section.tracks[trackId];
 
       const rowDiv = $("<div>", {
         class: "section-instrument-row",
@@ -155,18 +157,15 @@ export class UIManager extends EventTarget {
       rowDiv.appendTo(sectionElm.find(`#section-instrument-list`));
 
       $("<img>",{
-        src: track.iconURL,
+        src: instrument.iconURL,
         id: "section-instrument-icon",
-        title: `[${track.id}] ${track.name}`,
+        title: `[${instrument.id}] ${instrument.name}`,
       }).appendTo(rowDiv);
-    }
 
-    for (const trackId in section.tracks) {
-      const trackNotes = section.tracks[trackId];
 
       $("<div>", {
         class: "section-score-row",
-      }).html(`<pre>${trackNotes}</pre>`).appendTo(sectionElm.find(`#section-score`));
+      }).html(`<pre>${track.notesStr}</pre>`).appendTo(sectionElm.find(`#section-score`));
     }
 
     return sectionElm;

@@ -1,8 +1,10 @@
+import {Section} from "./Section.js"
 
 export class Score extends EventTarget {
-  constructor() {
+  constructor(instrumentMgr) {
     super();
     this.DEFAULT_BPM = 90;
+    this.instrumentMgr = instrumentMgr;
     this.scoreFileVersion = 1.0;
     this._reset();
   }
@@ -49,7 +51,12 @@ export class Score extends EventTarget {
     this.name = this._ymlScore.name;
     this.bpm = this._ymlScore.bpm;
     this.song = this._ymlScore.song;
-    this.sections = this._ymlScore.sections;
+
+    this.sections = {};
+    for (const sectionId in this._ymlScore.sections) {
+      const _ymlSectionData = this._ymlScore.sections[sectionId];
+      this.sections[sectionId] = new Section(sectionId, _ymlSectionData, this.instrumentMgr);
+    }
 
     if ( this.bmp == undefined )
       this.bpm = this.DEFAULT_BPM;

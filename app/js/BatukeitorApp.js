@@ -26,7 +26,7 @@ export class BatukeitorApp {
     this.uiMgr.addEventListener("play", this.onUIManagerPlay.bind(this));
     this.uiMgr.addEventListener("playSample", this.onUIManagerPlaySample.bind(this));
 
-    this.score = new Score();
+    this.score = new Score(this.instrumentMgr);
     this.score.addEventListener("ready", this.onScoreReady.bind(this));
     this.score.addEventListener("error", this.onScoreError.bind(this));
   }
