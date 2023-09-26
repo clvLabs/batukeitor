@@ -117,30 +117,32 @@ export class UIManager extends EventTarget {
     const sectionElm = $("#section-template").clone();
     const sectionElmId = `section-${sectionId}`;
     sectionElm.attr("id", sectionElmId);
-    sectionElm.css("background-color", `#${section.color}`);
 
-    var txt = `${section.name} (${section.timeSignature.name})`;
-    sectionElm.find(`#section-header`).text(txt);
+    const sectionHeaderElm = sectionElm.find(`#section-header`);
+    var txt = `${section.name} (${section.timeSignature.name}) * ${section.numBars}`;
+    sectionHeaderElm.text(txt);
+    sectionHeaderElm.css("background-color", `#${section.color}`);
 
     // Metronome track
     {
       const instrument = this.instrumentMgr.list["MT"];
 
       const rowDiv = $("<div>", {
+        id: `section-${section.id}-metronome`,
         class: "section-instrument-row",
       });
 
       rowDiv.appendTo(sectionElm.find(`#section-instrument-list`));
 
       $("<img>",{
-        src: instrument.iconURL,
         id: "section-instrument-icon",
+        src: instrument.iconURL,
         title: `[${instrument.id}] ${instrument.name}`,
       }).appendTo(rowDiv);
 
       const metronomeStr = section.getMetronomeDisplayStr();
       $("<div>", {
-        class: "section-score-row",
+        class: "section-track-row",
       }).html(`<pre>${metronomeStr}</pre>`).appendTo(sectionElm.find(`#section-score`));
 
     }
@@ -157,18 +159,48 @@ export class UIManager extends EventTarget {
       rowDiv.appendTo(sectionElm.find(`#section-instrument-list`));
 
       $("<img>",{
-        src: instrument.iconURL,
         id: "section-instrument-icon",
+        src: instrument.iconURL,
         title: `[${instrument.id}] ${instrument.name}`,
       }).appendTo(rowDiv);
 
 
-      $("<div>", {
-        class: "section-score-row",
-      }).html(`<pre>${track.notesStr}</pre>`).appendTo(sectionElm.find(`#section-score`));
+      this.buildTrackUI(section, track).appendTo(sectionElm.find(`#section-score`));
     }
 
     return sectionElm;
+  }
+
+  buildTrackUI(section, track) {
+    const trackElm = $("<div>", {
+      id: `section-${section.id}-track-${track.id}`,
+      class: `section-track-row`,
+    });
+
+    for (var index=0; index < track.samples.length; index++) {
+      const sample = track.samples[index];
+      var className = "section-track-sixteenth";
+
+      if (section.timeSignature.isBarStart(index)) {
+        className += " bar-start";
+      } else if (section.timeSignature.isBeatStart(index)) {
+        className += " beat-start";
+      } else if (section.timeSignature.isEighthNoteStart(index)) {
+        className += " eighth-note-start";
+      }
+
+      const sixteenthElm = $("<div>", {
+        id: `section-${section.id}-track-${track.id}-sixteenth-${index}`,
+        class: className,
+      });
+
+      if (sample)
+        sixteenthElm.text(sample.id);
+
+      sixteenthElm.appendTo(trackElm);
+    }
+
+    return trackElm;
   }
 
   setInstrumentManager(instrumentMgr, errorMsg) {

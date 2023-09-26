@@ -1,5 +1,5 @@
-import classNames from "https://cdn.skypack.dev/classnames/bind";
 import * as Tone from "https://cdn.skypack.dev/tone";
+import {Sample} from "./Sample.js"
 
 export class Instrument extends EventTarget {
   constructor(instrumentId, ymlInstrumentData) {
@@ -10,28 +10,23 @@ export class Instrument extends EventTarget {
     this.iconURL = `${this.BASE_URL}/img/${this.id}.png`;
     this.samples = {};
 
-    for (const sampleKey in ymlInstrumentData.samples) {
-      const fileName = ymlInstrumentData.samples[sampleKey];
+    for (const sampleId in ymlInstrumentData.samples) {
+      const fileName = ymlInstrumentData.samples[sampleId];
 
-      this.samples[sampleKey] = {
-        id: sampleKey,
-        fileName: fileName,
-        URL: `${this.BASE_URL}/samples/${fileName}`,
-        player: undefined,
-      }
+      this.samples[sampleId] = new Sample(sampleId, fileName);
     }
   }
 
   init() {
     for (const sampleId in this.samples) {
       const sample = this.samples[sampleId];
-      sample.player = new Tone.Player(sample.URL).toDestination();
+      sample.init();
     }
   }
 
   play(sampleId) {
     Tone.loaded().then(() => {
-      this.samples[sampleId].player.start();
+      this.samples[sampleId].play();
     });
   }
 

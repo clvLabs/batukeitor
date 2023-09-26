@@ -113,7 +113,7 @@ select {
 }
 
 .section-block {
-  background-color: #27312a;
+  background-color: #171717;
   border: 1px solid #5d7564;
   margin-top: 1em;
   padding: 0.5em;
@@ -174,10 +174,35 @@ select {
   width: 100%;
 }
 
-.section-score-row {
+.section-track-row {
   background-color: #22222255;
   height: 32px;
   margin-bottom: 0.5em;
+}
+
+.section-track-sixteenth {
+  display: inline-block;
+  background-color: #333;
+  cursor: default;
+  height: 32px;
+  width: 3%;
+  margin: 0px;
+  padding: 0px;
+  margin-right: 1px;
+  text-align: center;
+}
+
+.bar-start {
+  background-color: #900;
+  border: 1px solid #D00;
+}
+
+.beat-start {
+  background-color: #440000;
+}
+
+.eighth-note-start {
+  background-color: #444;
 }
 
 #instrument-template {

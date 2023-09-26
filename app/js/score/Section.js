@@ -2,8 +2,8 @@ import {TimeSignature} from "./TimeSignature.js"
 import {Track} from "./Track.js"
 
 export class Section {
-  constructor(sectionId, ymlData, instrumentMgr) {
-    this.id = sectionId;
+  constructor(id, ymlData, instrumentMgr) {
+    this.id = id;
     this.name = ymlData.name;
     this.shortName = ymlData.shortName;
     this.color = ymlData.color;
@@ -14,7 +14,11 @@ export class Section {
     for (const trackId in ymlData.tracks) {
       const ymlTrackNotes = ymlData.tracks[trackId];
       const instrument = this.instrumentMgr.list[trackId];
-      this.tracks[trackId] = new Track(trackId, ymlTrackNotes, this.timeSignature, instrument);
+      this.tracks[trackId] = new Track(
+        trackId,
+        ymlTrackNotes,
+        this.timeSignature,
+        instrument);
     }
 
     const firstTrack = this.tracks[Object. keys(this.tracks)[0]];
