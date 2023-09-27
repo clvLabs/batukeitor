@@ -134,23 +134,11 @@ select {
   padding: 0.5em;
 }
 
-#score-player {
-  display: flex;
-}
-
 .section-block {
   background-color: #171717;
   border: 1px solid #777;
   margin-top: 1em;
   padding: 0.5em;
-}
-
-#score-current-section {
-  width: 66%;
-}
-
-#score-next-section {
-  width: 33%;
 }
 
 #section-template {

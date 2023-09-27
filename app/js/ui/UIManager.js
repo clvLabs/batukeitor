@@ -74,9 +74,8 @@ export class UIManager extends EventTarget {
 
     if (this.score == undefined) {
       $("#score-info").text("");
-      $("#full-score-view").html(`Cannot load score<br/>${errorMsg}`);
-      $("#score-current-section").text("");
-      $("#score-next-section").text("");
+      $("#full-score-view").html("");
+      $("#score-tab").html(`Cannot load score<br/>${errorMsg}`);
       $("#sections-tab").html(`Cannot load score<br/>${errorMsg}`);
       return;
     }
@@ -104,14 +103,10 @@ export class UIManager extends EventTarget {
       this.buildSectionUI(sectionId).appendTo("#sections-tab");
     }
 
-    const firstSectionId = Object.keys(this.score.sections)[0];
-    const secondSectionId = Object.keys(this.score.sections)[1];
-
-    $("#score-current-section").html("");
-    this.buildSectionUI(firstSectionId).appendTo("#score-current-section");
-
-    $("#score-next-section").html("");
-    this.buildSectionUI(secondSectionId).appendTo("#score-next-section");
+    $("#score-tab").html("");
+    this.score.scoreSections.forEach((section, index) => {
+      this.buildSectionUI(section.id).appendTo("#score-tab");
+    });
   }
 
   buildScoreUI() {
