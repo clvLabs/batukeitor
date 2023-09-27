@@ -141,7 +141,7 @@ export class UIManager extends EventTarget {
     sectionElm.attr("id", sectionElmId);
 
     const sectionHeaderElm = sectionElm.find(`#section-header`);
-    var txt = `${section.name} (${section.timeSignature.name}) * ${section.numBars}`;
+    var txt = `${section.name} (${section.timeSignature.name})`;
     sectionHeaderElm.text(txt);
     sectionHeaderElm.css("background-color", `#${section.color}`);
 
