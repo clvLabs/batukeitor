@@ -8,6 +8,27 @@ export class UIManager extends EventTarget {
   }
 
   init(crewId) {
+
+    window.onscroll = () => {
+      const header = $("#app-sticky-header");
+      var winOfs = window.scrollY;
+      var hdrOfs = header.offset().top;
+
+      if (winOfs == hdrOfs) {
+        if (winOfs <= 80) {
+          if (header.hasClass("sticky"))
+            header.removeClass("sticky");
+        }
+      } else if (winOfs > hdrOfs) {
+        if (!header.hasClass("sticky"))
+          header.addClass("sticky");
+      } else {
+        if (header.hasClass("sticky"))
+          header.removeClass("sticky");
+      }
+    };
+
+
     $("#app").show();
     $("#play-button").prop("disabled", true)
     $("#play-button").on("click", this.onPlayButton.bind(this));
@@ -255,7 +276,7 @@ export class UIManager extends EventTarget {
   }
 
   onCrewSelectorInput(e) {
-    const newLocation = "/app/"
+    const newLocation = "/"
         + "?crew="
         + $("#crew-selector option:selected").val();
 

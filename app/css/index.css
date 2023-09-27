@@ -23,6 +23,16 @@ select {
   color: white;
 }
 
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .scrolling-content {
+  padding-top: 80px;
+}
+
 #loading {
   position: absolute;
   top: 30%;
@@ -40,24 +50,20 @@ select {
   display: none;
 }
 
-#app-header {
-  display: block;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 200px;
+#app-sticky-header {
+  /* display: block; */
   background-color: #222;
 }
 
 #app-content {
   display: block;
-  padding-top: 200px;
+  /* padding-top: 200px; */
 }
 
 #app-logo {
   position: relative;
-  width: 500px;
-  height: 80px;
+  width: 300px;
+  height: 50px;
   float: right;
   margin-right: 1em;
 }
@@ -86,7 +92,7 @@ select {
   background-color: #323232;
   font-size: 24px;
   float: left;
-  border: 1px solid #444;
+  border: 1px solid #777;
   outline: none;
   cursor: pointer;
   padding: 4px 16px;
@@ -126,17 +132,8 @@ select {
 
 .tab-content {
   display: none;
-  border: 1px solid #ccc;
+  border: 1px solid #777;
   padding: 0.5em;
-}
-
-#controls-container {
-  margin-top: 1em;
-}
-
-.controls-button {
-  margin: auto;
-  font-size: 24px;
 }
 
 #score-player {
@@ -145,7 +142,7 @@ select {
 
 .section-block {
   background-color: #171717;
-  border: 1px solid #5d7564;
+  border: 1px solid #777;
   margin-top: 1em;
   padding: 0.5em;
 }
@@ -168,6 +165,7 @@ select {
   font-weight: bold;
   text-decoration: underline;
   margin-bottom: 0.5em;
+  border: 1px solid #777;
 }
 
 #section-content {

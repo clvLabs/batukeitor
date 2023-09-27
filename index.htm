@@ -11,23 +11,31 @@
 </head>
 
 <body>
+  <!-- ------------------------------------------------------- LOADING -->
   <div id="loading">
-      <img id="loading-app-logo" src="/app/img/batukeitor-logo.svg">
-      <br/><br/>
-      <img src="/app/img/loading.gif">
-      <br/><br/>
-      Loading...
-    </div>
+    <img id="loading-app-logo" src="/app/img/batukeitor-logo.svg">
+    <br/><br/>
+    <img src="/app/img/loading.gif">
+    <br/><br/>
+    Loading...
+  </div>
+
+  <!-- ------------------------------------------------------- APP -->
   <div id="app">
 
     <!-- ------------------------------------------------------- APP HEADER -->
-    <div id="app-header" class="sticky">
+    <div id="app-header">
       <select id="crew-selector"></select>
       <select id="score-selector"></select>
 
       <img id="app-logo" src="/app/img/batukeitor-logo.svg">
 
       <div id="score-info"></div>
+
+    </div>
+
+    <!-- ------------------------------------------------------- APP STICKY HEADER -->
+    <div id="app-sticky-header">
 
       <!-- ------------------------------------------------------- TAB BUTTONS -->
       <div id="main-tab-buttons">
@@ -48,21 +56,19 @@
         </button>
       </div>
 
+      <!-- ------------------------------------------------------- FULL SCORE VIEW -->
       <div id="full-score-view"></div>
 
     </div>
 
-    <div id="app-content">
+    <!-- ------------------------------------------------------- APP CONTENT -->
+    <div id="app-content" class="scrolling-content">
 
       <!-- ------------------------------------------------------- TAB: Score -->
       <div id="score-tab" class="tab-content">
         <div id="score-player">
           <div id="score-current-section"></div>
           <div id="score-next-section"></div>
-        </div>
-
-        <div id="controls-container">
-          <button id="play-button" class="controls-button">Play</button>
         </div>
       </div>
 
@@ -76,7 +82,7 @@
 
     </div>
 
-    <!-- ------------------------------------------------------- Element templates -->
+    <!-- ------------------------------------------------------- ELEMENT TEMPLATES -->
     <div id="template-container">
 
       <div id="section-template" class="section-block">
