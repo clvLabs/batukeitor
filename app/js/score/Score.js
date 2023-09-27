@@ -15,8 +15,11 @@ export class Score extends EventTarget {
     this.loaded = false;
     this.name = undefined;
     this.bpm = undefined;
-    this.song = undefined;
+    this.scoreStr = undefined;
     this.sections = undefined;
+    this.scoreSections = undefined;
+    this.numSixteenths = undefined;
+    this.numBars = undefined;
   }
 
   load(crewId, scoreId) {
@@ -50,7 +53,7 @@ export class Score extends EventTarget {
 
     this.name = this._ymlScore.name;
     this.bpm = this._ymlScore.bpm;
-    this.song = this._ymlScore.song;
+    this.scoreStr = this._ymlScore.score;
 
     this.sections = {};
     for (const sectionId in this._ymlScore.sections) {
@@ -58,7 +61,23 @@ export class Score extends EventTarget {
       this.sections[sectionId] = new Section(sectionId, _ymlSectionData, this.instrumentMgr);
     }
 
-    if ( this.bmp == undefined )
+    this.numSixteenths = 0;
+    this.numBars = 0;
+    this.numBeats = 0;
+    this.scoreSections = [];
+    for (const i in this.scoreStr) {
+      const sectionId = this.scoreStr[i];
+      const section = this.sections[sectionId];
+      if (section) {
+        this.scoreSections.push(section);
+        this.numSixteenths += section.numSixteenths;
+        this.numBars += section.numBars;
+        this.numBeats += section.numBeats;
+      }
+    }
+
+
+    if ( this.bpm == undefined )
       this.bpm = this.DEFAULT_BPM;
 
     if ( this.name == undefined

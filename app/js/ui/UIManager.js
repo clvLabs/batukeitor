@@ -25,9 +25,6 @@ export class UIManager extends EventTarget {
     for (const _crewId in this.crews.list) {
       crew = this.crews.list[_crewId];
 
-      if (_crewId == crewId)
-        $("#crew-info-name").text(crew.name);
-
       $("#crew-selector").append(
         $("<option>",{
           value: _crewId,
@@ -57,7 +54,8 @@ export class UIManager extends EventTarget {
     this.score = score;
 
     if (this.score == undefined) {
-      $("#score-info").html(`Cannot load score<br/>${errorMsg}`);
+      $("#score-info").text("");
+      $("#full-score-view").html(`Cannot load score<br/>${errorMsg}`);
       $("#score-current-section").text("");
       $("#score-next-section").text("");
       $("#sections-tab").html(`Cannot load score<br/>${errorMsg}`);
@@ -66,24 +64,15 @@ export class UIManager extends EventTarget {
     }
 
     // Score -------------------------------------------------------
-    var scoreInfoTxt = "<pre>";
+    var scoreInfo = "";
+    scoreInfo += `${score.name}:`;
+    scoreInfo += ` ${score.numBeats} beats`;
+    scoreInfo += ` @${score.bpm}BPM`;
+    scoreInfo += ` = --:--`;
+    $("#score-info").text(scoreInfo);
 
-    var song = "";
-    for (const i in this.score.song) {
-      const sectionId = this.score.song[i];
-      const section = this.score.sections[sectionId];
-      if (section == null) {
-        song += sectionId;
-      } else {
-        song += `[${section.shortName}]`;
-      }
-    }
-
-    scoreInfoTxt += `${song}`;
-    scoreInfoTxt += `\n\nBPM: ${this.score.bpm}`;
-    scoreInfoTxt += "</pre>";
-
-    $("#score-info").html(scoreInfoTxt);
+    $("#full-score-view").html("");
+    this.buildScoreUI().appendTo("#full-score-view");
 
     // Sections -------------------------------------------------------
     $("#sections-tab").html("");
@@ -109,6 +98,25 @@ export class UIManager extends EventTarget {
 
 
     $("#play-button").prop("disabled", false)
+  }
+
+  buildScoreUI() {
+    const containerElm = $("<div>");
+
+    this.score.scoreSections.forEach((section, index) => {
+      const sectionWidth = (section.numSixteenths / this.score.numSixteenths) * 100;
+
+      const sectionElm = $("<div>", {
+        id: `full-score-view-section-${index}`,
+        class: "full-score-view-section",
+      });
+      sectionElm.css("background-color", `#${section.color}`);
+      sectionElm.css("width", `${sectionWidth}%`);
+
+      sectionElm.appendTo(containerElm);
+    });
+
+    return containerElm;
   }
 
   buildSectionUI(sectionId) {
@@ -274,7 +282,7 @@ export class UIManager extends EventTarget {
       }
     });
 
-    $("#main-tab-container").children().each( (i,obj) => {
+    $("#app-content").children().each( (i,obj) => {
       if (obj.id == e.data.tab) {
         $(`#${obj.id}`).show();
       } else {

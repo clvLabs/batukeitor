@@ -21,10 +21,17 @@ export class Section {
         instrument);
     }
 
-    const firstTrack = this.tracks[Object. keys(this.tracks)[0]];
+    this.numSixteenths = 0;
+    this.numBars = 0;
+    this.numBeats = 0;
 
-    this.numSixteenths = firstTrack.numSixteenths;
-    this.numBars = firstTrack.numBars;
+    Object.values(this.tracks).forEach(track => {
+      if (track.numSixteenths > this.numSixteenths) {
+        this.numSixteenths = track.numSixteenths;
+        this.numBars = track.numBars;
+        this.numBeats = track.numBeats;
+      }
+    });
   }
 
   getMetronomeDisplayStr() {

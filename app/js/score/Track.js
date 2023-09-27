@@ -18,5 +18,6 @@ export class Track {
     }
 
     this.numBars = timeSignature.getNumBars(this.numSixteenths);
+    this.numBeats = this.numBars * timeSignature.numBeats;
   }
 }
