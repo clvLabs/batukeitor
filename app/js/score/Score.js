@@ -20,6 +20,7 @@ export class Score extends EventTarget {
     this.scoreSections = undefined;
     this.numSixteenths = undefined;
     this.numBars = undefined;
+    this.numBeats = undefined;
   }
 
   load(crewId, scoreId) {
@@ -34,6 +35,18 @@ export class Score extends EventTarget {
     }).fail(function(e) {
       self._error(`[Score] ERROR loading ${url} (${e.statusText})`);
     });
+  }
+
+  getDuration() {
+    var minutes = this.numBeats / this.bpm;
+    var seconds = (minutes % 1) * 60;
+    minutes = Math.floor(minutes);
+    seconds = Math.floor(seconds);
+
+    if (seconds < 10)
+      return `${minutes}:0${seconds}`;
+    else
+      return `${minutes}:${seconds}`;
   }
 
   _error(msg) {

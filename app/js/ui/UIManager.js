@@ -30,11 +30,11 @@ export class UIManager extends EventTarget {
 
 
     $("#app").show();
-    $("#crew-selector").on("input", this.onCrewSelectorInput.bind(this));
-    $("#score-selector").on("input", this.onScoreSelectorInput.bind(this));
-    $("#tab-button-score").on("click", { tab: "score-tab"}, this.onTabSelected.bind(this));
-    $("#tab-button-sections").on("click", { tab: "sections-tab"}, this.onTabSelected.bind(this));
-    $("#tab-button-instruments").on("click", { tab: "instruments-tab"}, this.onTabSelected.bind(this));
+    $("#crew-selector").on("input", this._onCrewSelectorInput.bind(this));
+    $("#score-selector").on("input", this._onScoreSelectorInput.bind(this));
+    $("#tab-button-score").on("click", { tab: "score-tab"}, this._onTabSelected.bind(this));
+    $("#tab-button-sections").on("click", { tab: "sections-tab"}, this._onTabSelected.bind(this));
+    $("#tab-button-instruments").on("click", { tab: "instruments-tab"}, this._onTabSelected.bind(this));
 
     $("#tab-button-score").addClass("active");
     $(`#score-tab`).show();
@@ -66,14 +66,48 @@ export class UIManager extends EventTarget {
 
     }
 
-    this.onScoreSelectorInput();
+    this._onScoreSelectorInput();
+  }
+
+  setInstrumentManager(instrumentMgr, errorMsg) {
+    this.instrumentMgr = instrumentMgr;
+    var errorsFound = false;
+
+    if (instrumentMgr == undefined) {
+      errorsFound = true;
+      $("#instruments-tab").html(`Cannot load instruments<br/>${errorMsg}`);
+    } else {
+
+      for (const instrumentId in instrumentMgr.list) {
+        const instrument = instrumentMgr.list[instrumentId];
+
+        const instrumentElm = $("#instrument-template").clone();
+        const instrumentElmId = `instrument-${instrumentId}`;
+        instrumentElm.attr("id", instrumentElmId);
+        instrumentElm.appendTo("#instruments-tab");
+        $(`#${instrumentElmId} #instrument-id`).text(instrument.id);
+        $(`#${instrumentElmId} #instrument-name`).text(instrument.name);
+        $(`#${instrumentElmId} #instrument-icon`).attr("src", instrument.iconURL);
+
+        for (const sampleId in instrument.samples) {
+          const sampleFileName = instrument.samples[sampleId];
+          const sampleElm = $(`#${instrumentElmId} #template-instrument-sample-play`).clone();
+          const sampleElmId = `${instrumentElmId}-sample-${sampleId}`;
+          sampleElm.text(sampleId);
+          sampleElm.attr("id", sampleElmId);
+          sampleElm.appendTo(`#${instrumentElmId}`);
+          sampleElm.on("click", { instrumentId: instrumentId, sampleId: sampleId}, this._onInstrumentSamplePlay.bind(this));
+        }
+      }
+    }
   }
 
   setScore(score, errorMsg) {
     this.score = score;
 
+    this._updateScoreInfo();
+
     if (this.score == undefined) {
-      $("#score-info").text("");
       $("#full-score-view").html("");
       $("#score-tab").html(`Cannot load score<br/>${errorMsg}`);
       $("#sections-tab").html(`Cannot load score<br/>${errorMsg}`);
@@ -81,15 +115,8 @@ export class UIManager extends EventTarget {
     }
 
     // Score -------------------------------------------------------
-    var scoreInfo = "";
-    scoreInfo += `${score.name}:`;
-    scoreInfo += ` ${score.numBeats} beats`;
-    scoreInfo += ` @${score.bpm}BPM`;
-    scoreInfo += ` = --:--`;
-    $("#score-info").text(scoreInfo);
-
     $("#full-score-view").html("");
-    this.buildScoreUI().appendTo("#full-score-view");
+    this._buildScoreUI().appendTo("#full-score-view");
 
     // Sections -------------------------------------------------------
     $("#sections-tab").html("");
@@ -100,16 +127,30 @@ export class UIManager extends EventTarget {
     }
 
     for (const sectionId in this.score.sections) {
-      this.buildSectionUI(sectionId).appendTo("#sections-tab");
+      this._buildSectionUI(sectionId).appendTo("#sections-tab");
     }
 
     $("#score-tab").html("");
     this.score.scoreSections.forEach((section, index) => {
-      this.buildSectionUI(section.id).appendTo("#score-tab");
+      this._buildSectionUI(section.id).appendTo("#score-tab");
     });
   }
 
-  buildScoreUI() {
+  _updateScoreInfo() {
+    if (this.score == undefined) {
+      $("#score-info").text("");
+      return;
+    }
+
+    var scoreInfo = "";
+    scoreInfo += `${this.score.name}:`;
+    scoreInfo += ` ${this.score.numBeats} beats`;
+    scoreInfo += ` @${this.score.bpm}BPM`;
+    scoreInfo += ` = ${this.score.getDuration()}`;
+    $("#score-info").text(scoreInfo);
+  }
+
+  _buildScoreUI() {
     const containerElm = $("<div>");
 
     this.score.scoreSections.forEach((section, index) => {
@@ -128,7 +169,7 @@ export class UIManager extends EventTarget {
     return containerElm;
   }
 
-  buildSectionUI(sectionId) {
+  _buildSectionUI(sectionId) {
     const section = this.score.sections[sectionId];
 
     const sectionElm = $("#section-template").clone();
@@ -182,13 +223,13 @@ export class UIManager extends EventTarget {
       }).appendTo(rowDiv);
 
 
-      this.buildTrackUI(section, track).appendTo(sectionElm.find(`#section-track-list`));
+      this._buildTrackUI(section, track).appendTo(sectionElm.find(`#section-track-list`));
     }
 
     return sectionElm;
   }
 
-  buildTrackUI(section, track) {
+  _buildTrackUI(section, track) {
     const trackElm = $("<div>", {
       id: `section-${section.id}-track-${track.id}`,
       class: `section-track-row`,
@@ -226,44 +267,7 @@ export class UIManager extends EventTarget {
     return trackElm;
   }
 
-  setInstrumentManager(instrumentMgr, errorMsg) {
-    this.instrumentMgr = instrumentMgr;
-    var errorsFound = false;
-
-    if (instrumentMgr == undefined) {
-      errorsFound = true;
-      $("#instruments-tab").html(`Cannot load instruments<br/>${errorMsg}`);
-    } else {
-
-      for (const instrumentId in instrumentMgr.list) {
-        const instrument = instrumentMgr.list[instrumentId];
-
-        const instrumentElm = $("#instrument-template").clone();
-        const instrumentElmId = `instrument-${instrumentId}`;
-        instrumentElm.attr("id", instrumentElmId);
-        instrumentElm.appendTo("#instruments-tab");
-        $(`#${instrumentElmId} #instrument-id`).text(instrument.id);
-        $(`#${instrumentElmId} #instrument-name`).text(instrument.name);
-        $(`#${instrumentElmId} #instrument-icon`).attr("src", instrument.iconURL);
-
-        for (const sampleId in instrument.samples) {
-          const sampleFileName = instrument.samples[sampleId];
-          const sampleElm = $(`#${instrumentElmId} #template-instrument-sample-play`).clone();
-          const sampleElmId = `${instrumentElmId}-sample-${sampleId}`;
-          sampleElm.text(sampleId);
-          sampleElm.attr("id", sampleElmId);
-          sampleElm.appendTo(`#${instrumentElmId}`);
-          sampleElm.on("click", { instrumentId: instrumentId, sampleId: sampleId}, this.onInstrumentSamplePlay.bind(this));
-        }
-      }
-    }
-  }
-
-  // onPlayButton(e) {
-  //   this.dispatchEvent(new Event("play"));
-  // }
-
-  onCrewSelectorInput(e) {
+  _onCrewSelectorInput(e) {
     const newLocation = "/"
         + "?crew="
         + $("#crew-selector option:selected").val();
@@ -271,18 +275,14 @@ export class UIManager extends EventTarget {
     window.location = newLocation;
   }
 
-  onScoreSelectorInput(e) {
+  _onScoreSelectorInput(e) {
     this.dispatchEvent(new CustomEvent("load",
       {detail: {
         scoreId: $("#score-selector option:selected").val()
       }}));
   }
 
-  _getScoreURL(crewId, scoreId) {
-    return `/data/crews/${crewId}/scores/${scoreId}.yml`;
-  }
-
-  onTabSelected(e) {
+  _onTabSelected(e) {
     $("#main-tab-buttons").children().each( (i,obj) => {
       if (obj == e.target) {
         $(obj).addClass("active");
@@ -300,13 +300,12 @@ export class UIManager extends EventTarget {
     });
   }
 
-  onInstrumentSamplePlay(e) {
+  _onInstrumentSamplePlay(e) {
     this.dispatchEvent(new CustomEvent("playSample",
       {detail: {
         instrumentId: e.data.instrumentId,
         sampleId: e.data.sampleId,
       }}));
+
   }
-
-
 }
