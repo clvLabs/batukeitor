@@ -22,10 +22,16 @@ pre {
   display: none;
 }
 
+#loading-app-logo {
+  width: 800px;
+  height: 100px;
+}
+
 #app-logo {
   width: 500px;
   height: 80px;
   float: right;
+  margin-right: 1em;
 }
 
 #crew-info-name {
