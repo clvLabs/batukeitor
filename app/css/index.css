@@ -35,14 +35,15 @@ select {
 
 #loading {
   position: absolute;
-  top: 30%;
-  left: 30%;
+  top: 10%;
+  left: 0%;
+  width: 100%;
   text-align: center;
   font-size: 48px;
 }
 
 #loading-app-logo {
-  width: 800px;
+  width: 500px;
   height: 100px;
 }
 
