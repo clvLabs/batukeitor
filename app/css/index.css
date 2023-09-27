@@ -126,11 +126,11 @@ select {
 }
 
 #score-current-section {
-  width: 50%;
+  width: 66%;
 }
 
 #score-next-section {
-  width: 50%;
+  width: 33%;
 }
 
 #section-template {
@@ -142,28 +142,32 @@ select {
   text-align: center;
   font-weight: bold;
   text-decoration: underline;
+  margin-bottom: 0.5em;
 }
 
 #section-content {
-  width: 100%;
   display: flex;
+  width: 100%;
+  margin-bottom: 0.5em;
 }
 
 #section-instrument-list {
-  width: 50px;
   display: inline-block;
+  width: 50px;
 }
 
 .section-instrument-row {
   background-color: #22222255;
-  height: 32px;
-  margin-bottom: 0.5em;
+  height: 48px;
+  margin: 0px;
+  overflow: hidden;
 }
 
 #section-instrument-icon {
   cursor: pointer;
-  height: 32px;
-  width: 32px;
+  height: 43px;
+  width: 43px;
+  padding: 5px;
   margin-right: 1em;
 }
 
@@ -175,40 +179,44 @@ select {
   border: 2px solid #52aa74;
 }
 
-#section-score {
+#section-track-list {
   display: inline-block;
   width: 100%;
 }
 
 .section-track-row {
   background-color: #22222255;
-  height: 32px;
-  margin-bottom: 0.5em;
+  height: 48px;
+  width: 100%;
 }
 
 .section-track-sixteenth {
   display: inline-block;
-  background-color: #333;
+  background-color: #222;
   cursor: default;
-  height: 32px;
-  width: 3%;
+  height: 48px;
+  /* width: 3.1%; */
   margin: 0px;
-  padding: 0px;
-  margin-right: 1px;
+  font-size: 32px;
+  font-weight: bolder;
   text-align: center;
+  overflow: hidden;
 }
 
+/* .compound-signature-sixteenth {
+  width: 2.06%;
+} */
+
 .bar-start {
-  background-color: #900;
-  border: 1px solid #D00;
+  background-color: #7a2828;
 }
 
 .beat-start {
-  background-color: #440000;
+  background-color: #3c2222;
 }
 
 .eighth-note-start {
-  background-color: #444;
+  background-color: #2a2a2a;
 }
 
 #instrument-template {
@@ -216,10 +224,10 @@ select {
 }
 
 .instrument-info {
+  display: flex;
   background-color: #323232;
   margin-bottom: 1em;
   height: 32px;
-  display: flex;
   align-items: center;
 }
 

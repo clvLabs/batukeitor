@@ -143,7 +143,7 @@ export class UIManager extends EventTarget {
       const metronomeStr = section.getMetronomeDisplayStr();
       $("<div>", {
         class: "section-track-row",
-      }).html(`<pre>${metronomeStr}</pre>`).appendTo(sectionElm.find(`#section-score`));
+      }).html(`<pre>${metronomeStr}</pre>`).appendTo(sectionElm.find(`#section-track-list`));
 
     }
 
@@ -165,7 +165,7 @@ export class UIManager extends EventTarget {
       }).appendTo(rowDiv);
 
 
-      this.buildTrackUI(section, track).appendTo(sectionElm.find(`#section-score`));
+      this.buildTrackUI(section, track).appendTo(sectionElm.find(`#section-track-list`));
     }
 
     return sectionElm;
@@ -177,7 +177,7 @@ export class UIManager extends EventTarget {
       class: `section-track-row`,
     });
 
-    for (var index=0; index < track.samples.length; index++) {
+    for (var index=0; index < track.length; index++) {
       const sample = track.samples[index];
       var className = "section-track-sixteenth";
 
@@ -189,9 +189,15 @@ export class UIManager extends EventTarget {
         className += " eighth-note-start";
       }
 
+      var sixteenWidth = 100 / track.length;
+
+      // if (section.timeSignature.isCompound())
+      //   sixteenWidth *= (1/1.5);
+
       const sixteenthElm = $("<div>", {
         id: `section-${section.id}-track-${track.id}-sixteenth-${index}`,
         class: className,
+        style: `width: ${sixteenWidth}%`,
       });
 
       if (sample)

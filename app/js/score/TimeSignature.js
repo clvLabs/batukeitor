@@ -63,6 +63,10 @@ export class TimeSignature {
     return (pos % 2) == 0;
   }
 
+  isCompound() {
+    return (this.numBeats % 3) == 0;
+  }
+
   getMetronomeBarDisplayStr() {
     switch (this.name) {
       case "2/4":  return "1---2---";
