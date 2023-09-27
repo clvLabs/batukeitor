@@ -30,8 +30,6 @@ export class UIManager extends EventTarget {
 
 
     $("#app").show();
-    $("#play-button").prop("disabled", true)
-    $("#play-button").on("click", this.onPlayButton.bind(this));
     $("#crew-selector").on("input", this.onCrewSelectorInput.bind(this));
     $("#score-selector").on("input", this.onScoreSelectorInput.bind(this));
     $("#tab-button-score").on("click", { tab: "score-tab"}, this.onTabSelected.bind(this));
@@ -80,7 +78,6 @@ export class UIManager extends EventTarget {
       $("#score-current-section").text("");
       $("#score-next-section").text("");
       $("#sections-tab").html(`Cannot load score<br/>${errorMsg}`);
-      $("#play-button").prop("disabled", true)
       return;
     }
 
@@ -100,7 +97,6 @@ export class UIManager extends EventTarget {
 
     if (this.score.sections == null) {
       $("#sections-tab").text(`[ERROR] Score has no sections`);
-      $("#play-button").prop("disabled", true)
       return;
     }
 
@@ -116,9 +112,6 @@ export class UIManager extends EventTarget {
 
     $("#score-next-section").html("");
     this.buildSectionUI(secondSectionId).appendTo("#score-next-section");
-
-
-    $("#play-button").prop("disabled", false)
   }
 
   buildScoreUI() {
@@ -271,9 +264,9 @@ export class UIManager extends EventTarget {
     }
   }
 
-  onPlayButton(e) {
-    this.dispatchEvent(new Event("play"));
-  }
+  // onPlayButton(e) {
+  //   this.dispatchEvent(new Event("play"));
+  // }
 
   onCrewSelectorInput(e) {
     const newLocation = "/"
