@@ -154,7 +154,7 @@ export class UIManager extends EventTarget {
     const containerElm = $("<div>");
 
     this.score.scoreSections.forEach((section, index) => {
-      const sectionWidth = (section.numSixteenths / this.score.numSixteenths) * 100;
+      const sectionWidth = (section.numBeats / this.score.numBeats) * 100;
 
       const sectionElm = $("<div>", {
         id: `full-score-view-section-${index}`,

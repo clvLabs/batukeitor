@@ -11,14 +11,20 @@ export class TimeSignature {
     this.name = signature;
 
     const sigParts = signature.split("/");
-    this.numBeats = parseInt(sigParts[0]);
-    this.beatNote = parseInt(sigParts[1]);
+    this.upperNum = parseInt(sigParts[0]);
+    this.lowerNum = parseInt(sigParts[1]);
+
+    this.numBeats = this.upperNum;
+    this.beatNote = this.lowerNum;
+
+    if (this.isCompound())
+      this.numBeats /= 3;
 
     if (this.beatNote == 4) {
-      this.sixteenthsPerBar = this.numBeats * 4;
+      this.sixteenthsPerBar = this.upperNum * 4;
     }
     else if (this.beatNote == 8) {
-      this.sixteenthsPerBar = this.numBeats * 2;
+      this.sixteenthsPerBar = this.upperNum * 2;
     }
   }
 
@@ -64,7 +70,7 @@ export class TimeSignature {
   }
 
   isCompound() {
-    return (this.numBeats % 3) == 0;
+    return (this.upperNum % 3) == 0;
   }
 
   getMetronomeBarDisplayStr() {
