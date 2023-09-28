@@ -75,31 +75,68 @@ export class UIManager extends EventTarget {
 
     if (instrumentMgr == undefined) {
       errorsFound = true;
-      $("#instruments-tab").html(`Cannot load instruments<br/>${errorMsg}`);
-    } else {
-
-      for (const instrumentId in instrumentMgr.list) {
-        const instrument = instrumentMgr.list[instrumentId];
-
-        const instrumentElm = $("#instrument-template").clone();
-        const instrumentElmId = `instrument-${instrumentId}`;
-        instrumentElm.attr("id", instrumentElmId);
-        instrumentElm.appendTo("#instruments-tab");
-        $(`#${instrumentElmId} #instrument-id`).text(instrument.id);
-        $(`#${instrumentElmId} #instrument-name`).text(instrument.name);
-        $(`#${instrumentElmId} #instrument-icon`).attr("src", instrument.iconURL);
-
-        for (const sampleId in instrument.samples) {
-          const sampleFileName = instrument.samples[sampleId];
-          const sampleElm = $(`#${instrumentElmId} #template-instrument-sample-play`).clone();
-          const sampleElmId = `${instrumentElmId}-sample-${sampleId}`;
-          sampleElm.text(sampleId);
-          sampleElm.attr("id", sampleElmId);
-          sampleElm.appendTo(`#${instrumentElmId}`);
-          sampleElm.on("click", { instrumentId: instrumentId, sampleId: sampleId}, this._onInstrumentSamplePlay.bind(this));
-        }
-      }
+      $("#instruments-content").html(`Cannot load instruments<br/>${errorMsg}`);
+      return;
     }
+
+    $("#instruments-content").html("");
+    for (const instrumentId in instrumentMgr.list) {
+      this._buildInstrumentUI(instrumentId).appendTo("#instruments-content");
+    }
+  }
+
+  _buildInstrumentUI(instrumentId) {
+    const instrument = this.instrumentMgr.list[instrumentId];
+
+    const instrumentElm = $("<div>", {
+      id: `instrument-${instrument.id}-info`,
+      class: "instrument-info",
+    });
+
+    // Id
+    const instrumentIdElm = $("<span>", {
+      id: `instrument-${instrument.id}-id`,
+      class: "instrument-id",
+    });
+    instrumentIdElm.text(instrument.id);
+    instrumentIdElm.appendTo(instrumentElm);
+
+    // Icon
+    const instrumentIconElm = $("<img>", {
+      id: `instrument-${instrument.id}-icon`,
+      class: "instrument-icon",
+    });
+    instrumentIconElm.attr("src", instrument.iconURL);
+    instrumentIconElm.appendTo(instrumentElm);
+
+    // Name
+    const instrumentNameElm = $("<span>", {
+      id: `instrument-${instrument.id}-name`,
+      class: "instrument-name",
+    });
+    instrumentNameElm.text(instrument.name);
+    instrumentNameElm.appendTo(instrumentElm);
+
+    // Samples
+    const instrumentSamplesElm = $("<div>", {
+      id: `instrument-${instrument.id}-samples-container`,
+      class: "instrument-samples-container",
+    });
+    instrumentSamplesElm.appendTo(instrumentElm);
+
+    for (const sampleId in instrument.samples) {
+      const sampleFileName = instrument.samples[sampleId];
+
+      const sampleElm = $("<button>", {
+        id: `instrument-${instrument.id}-sample-${sampleId}`,
+        class: "instrument-sample",
+      });
+      sampleElm.text(sampleId);
+      sampleElm.on("click", { instrumentId: instrumentId, sampleId: sampleId}, this._onInstrumentSamplePlay.bind(this));
+      sampleElm.appendTo(instrumentSamplesElm);
+    }
+
+    return instrumentElm;
   }
 
   setScore(score, errorMsg) {
@@ -109,8 +146,8 @@ export class UIManager extends EventTarget {
 
     if (this.score == undefined) {
       $("#full-score-view").html("");
-      $("#score-tab").html(`Cannot load score<br/>${errorMsg}`);
-      $("#sections-tab").html(`Cannot load score<br/>${errorMsg}`);
+      $("#score-content").html(`Cannot load score<br/>${errorMsg}`);
+      $("#sections-content").html(`Cannot load score<br/>${errorMsg}`);
       return;
     }
 
@@ -119,20 +156,20 @@ export class UIManager extends EventTarget {
     this._buildScoreUI().appendTo("#full-score-view");
 
     // Sections -------------------------------------------------------
-    $("#sections-tab").html("");
+    $("#sections-content").html("");
 
     if (this.score.sections == null) {
-      $("#sections-tab").text(`[ERROR] Score has no sections`);
+      $("#sections-content").text(`[ERROR] Score has no sections`);
       return;
     }
 
     for (const sectionId in this.score.sections) {
-      this._buildSectionUI(sectionId).appendTo("#sections-tab");
+      this._buildSectionUI(sectionId).appendTo("#sections-content");
     }
 
-    $("#score-tab").html("");
+    $("#score-content").html("");
     this.score.scoreSections.forEach((section, index) => {
-      this._buildSectionUI(section.id).appendTo("#score-tab");
+      this._buildSectionUI(section.id).appendTo("#score-content");
     });
   }
 
@@ -169,38 +206,68 @@ export class UIManager extends EventTarget {
     return containerElm;
   }
 
-  _buildSectionUI(sectionId) {
+  _buildSectionUI(sectionId, withInstruments=true) {
     const section = this.score.sections[sectionId];
 
-    const sectionElm = $("#section-template").clone();
-    const sectionElmId = `section-${sectionId}`;
-    sectionElm.attr("id", sectionElmId);
+    const sectionElm = $("<div>", {
+      id: `section-${sectionId}`,
+      class: "section-block",
+    });
 
-    const sectionHeaderElm = sectionElm.find(`#section-header`);
-    var txt = `${section.name} (${section.timeSignature.name})`;
-    sectionHeaderElm.text(txt);
+    // Header
+    const sectionHeaderElm = $("<div>", {
+      id: `section-${sectionId}-header`,
+      class: "section-header",
+    });
+
+    sectionHeaderElm.text(`${section.name} (${section.timeSignature.name})`);
     sectionHeaderElm.css("background-color", `#${section.color}`);
+    sectionHeaderElm.appendTo(sectionElm);
 
-    // Score tracks
-    for (const trackId in section.tracks) {
-      const instrument = this.instrumentMgr.list[trackId];
-      const track = section.tracks[trackId];
+    // Contents
+    const sectionContentElm = $("<div>", {
+      id: `section-${sectionId}-content`,
+      class: "section-content",
+    });
+    sectionContentElm.appendTo(sectionElm);
 
-      const rowDiv = $("<div>", {
-        class: "section-instrument-row",
+    // Instrument list
+    if (withInstruments) {
+      const sectionInstrumentsElm = $("<div>", {
+        id: `section-${sectionId}-instrument-list`,
+        class: "section-instrument-list",
       });
+      sectionInstrumentsElm.appendTo(sectionContentElm);
 
-      rowDiv.appendTo(sectionElm.find(`#section-instrument-list`));
+      for (const trackId in section.tracks) {
+        const instrument = this.instrumentMgr.list[trackId];
 
-      $("<img>",{
-        id: "section-instrument-icon",
-        src: instrument.iconURL,
-        title: `[${instrument.id}] ${instrument.name}`,
-      }).appendTo(rowDiv);
+        const instrumentRowElm = $("<div>", {
+          class: "section-instrument-row",
+        });
 
+        instrumentRowElm.appendTo(sectionInstrumentsElm);
 
-      this._buildTrackUI(section, track).appendTo(sectionElm.find(`#section-track-list`));
+        $("<img>",{
+          id: `section-${sectionId}-instrument-${instrument.id}-icon`,
+          class: "section-instrument-icon",
+          src: instrument.iconURL,
+          title: `[${instrument.id}] ${instrument.name}`,
+        }).appendTo(instrumentRowElm);
+
+      }
     }
+
+    // Track list
+    const sectionTracksElm = $("<div>", {
+      id: `section-${sectionId}-track-list`,
+      class: "section-track-list",
+    });
+    sectionTracksElm.appendTo(sectionContentElm);
+
+    Object.values(section.tracks).forEach(track => {
+      this._buildTrackUI(section, track).appendTo(sectionTracksElm);
+    });
 
     return sectionElm;
   }

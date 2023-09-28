@@ -135,6 +135,13 @@ select {
   padding: 0.5em;
 }
 
+#score-content {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .section-block {
   background-color: #171717;
   border: 1px solid #777;
@@ -142,11 +149,7 @@ select {
   padding: 0.5em;
 }
 
-#section-template {
-  display: none;
-}
-
-#section-header {
+.section-header {
   width: 100%;
   text-align: center;
   font-weight: bold;
@@ -154,13 +157,13 @@ select {
   border: 1px solid #777;
 }
 
-#section-content {
+.section-content {
   display: flex;
   width: 100%;
   margin-bottom: 0.5em;
 }
 
-#section-instrument-list {
+.section-instrument-list {
   display: inline-block;
   width: 50px;
 }
@@ -172,7 +175,7 @@ select {
   overflow: hidden;
 }
 
-#section-instrument-icon {
+.section-instrument-icon {
   cursor: pointer;
   height: 43px;
   width: 43px;
@@ -180,15 +183,15 @@ select {
   margin-right: 1em;
 }
 
-#section-instrument-icon:hover {
+.section-instrument-icon:hover {
   border: 1px solid white;
 }
 
-#section-instrument-icon:active {
+.section-instrument-icon:active {
   border: 2px solid #52aa74;
 }
 
-#section-track-list {
+.section-track-list {
   display: inline-block;
   width: 100%;
 }
@@ -223,10 +226,6 @@ select {
   background-color: #2a2a2a;
 }
 
-#instrument-template {
-  display: none;
-}
-
 .instrument-info {
   display: flex;
   background-color: #323232;
@@ -235,34 +234,30 @@ select {
   align-items: center;
 }
 
-#instrument-samples-container {
+.instrument-samples-container {
   display: flex;
 }
 
-#instrument-sample-template {
-  display: none;
-}
-
-#instrument-id {
+.instrument-id {
   color: #8f8f8f;
   cursor: default;
   font-weight: bold;
   margin: 1em;
 }
 
-#instrument-icon {
+.instrument-icon {
   height: 32px;
   width: 32px;
   margin-right: 1em;
 }
 
-#instrument-name {
+.instrument-name {
   cursor: default;
   width: 6em;
   margin-right: 1em;
 }
 
-.instrument-sample-play {
+.instrument-sample {
   cursor: pointer;
   font-size: 24px;
   background-color: #494949;
@@ -272,13 +267,13 @@ select {
   width: 32px;
 }
 
-.instrument-sample-play:hover {
+.instrument-sample:hover {
   background-color: #387650;
   color: white;
   border: 1px solid #52aa74;
 }
 
-.instrument-sample-play:active {
+.instrument-sample:active {
   background-color: #57b77c;
   color: white;
   border: 1px solid #65d38f;
