@@ -75,12 +75,12 @@ export class TimeSignature {
 
   getMetronomeBarDisplayStr() {
     switch (this.name) {
-      case "2/4":  return "1---2---";
-      case "3/4":  return "1---2---3---";
-      case "4/4":  return "1---2---3---4---";
-      case "6/8":  return "1-----2-----";
-      case "9/8":  return "1-----2-----3-----";
-      case "12/8": return "1-----2-----3-----4-----";
+      case "2/4":  return "1   2   ";
+      case "3/4":  return "1   2   3   ";
+      case "4/4":  return "1   2   3   4   ";
+      case "6/8":  return "1     2     ";
+      case "9/8":  return "1     2     3     ";
+      case "12/8": return "1     2     3     4     ";
       default: return `ERROR: Unknown time signature (${this.name})`;
     }
   }

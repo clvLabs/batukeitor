@@ -10,28 +10,44 @@ export class Section {
     this.timeSignature = new TimeSignature(ymlData.timeSignature);
     this.instrumentMgr = instrumentMgr;
     this.tracks = {};
+    var _tmpTracks = {};
 
+    // Add score tracks to temporary list
     for (const trackId in ymlData.tracks) {
       const ymlTrackNotes = ymlData.tracks[trackId];
       const instrument = this.instrumentMgr.list[trackId];
-      this.tracks[trackId] = new Track(
+      _tmpTracks[trackId] = new Track(
         trackId,
         ymlTrackNotes,
         this.timeSignature,
         instrument);
     }
 
+    // Calculate number of Sixteenths/Bars/Beats
     this.numSixteenths = 0;
     this.numBars = 0;
     this.numBeats = 0;
 
-    Object.values(this.tracks).forEach(track => {
+    Object.values(_tmpTracks).forEach(track => {
       if (track.numSixteenths > this.numSixteenths) {
         this.numSixteenths = track.numSixteenths;
         this.numBars = track.numBars;
         this.numBeats = track.numBeats;
       }
     });
+
+    // Add metronome track to "definitive" list
+    this.tracks["MT"] = new Track(
+      "MT",
+      this.timeSignature.getMetronomeBarDisplayStr().repeat(this.numBars),
+      this.timeSignature,
+      this.instrumentMgr.list["MT"]);
+
+    // Add rest of tracks to "definitive" list
+    Object.values(_tmpTracks).forEach(track => {
+      this.tracks[track.id] = track;
+    });
+
   }
 
   getMetronomeDisplayStr() {

@@ -181,30 +181,6 @@ export class UIManager extends EventTarget {
     sectionHeaderElm.text(txt);
     sectionHeaderElm.css("background-color", `#${section.color}`);
 
-    // Metronome track
-    {
-      const instrument = this.instrumentMgr.list["MT"];
-
-      const rowDiv = $("<div>", {
-        id: `section-${section.id}-metronome`,
-        class: "section-instrument-row",
-      });
-
-      rowDiv.appendTo(sectionElm.find(`#section-instrument-list`));
-
-      $("<img>",{
-        id: "section-instrument-icon",
-        src: instrument.iconURL,
-        title: `[${instrument.id}] ${instrument.name}`,
-      }).appendTo(rowDiv);
-
-      const metronomeStr = section.getMetronomeDisplayStr();
-      $("<div>", {
-        class: "section-track-row",
-      }).html(`<pre>${metronomeStr}</pre>`).appendTo(sectionElm.find(`#section-track-list`));
-
-    }
-
     // Score tracks
     for (const trackId in section.tracks) {
       const instrument = this.instrumentMgr.list[trackId];
