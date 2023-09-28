@@ -85,6 +85,54 @@ export class UIManager extends EventTarget {
     }
   }
 
+  setScore(score, errorMsg) {
+    this.score = score;
+
+    this._updateScoreInfo();
+
+    if (this.score == undefined) {
+      $("#full-score-view").html("");
+      $("#score-content").html(`Cannot load score<br/>${errorMsg}`);
+      $("#sections-content").html(`Cannot load score<br/>${errorMsg}`);
+      return;
+    }
+
+    // Score -------------------------------------------------------
+    $("#full-score-view").html("");
+    this._buildScoreUI().appendTo("#full-score-view");
+
+    // Sections -------------------------------------------------------
+    $("#sections-content").html("");
+
+    if (this.score.sections == null) {
+      $("#sections-content").text(`[ERROR] Score has no sections`);
+      return;
+    }
+
+    for (const sectionId in this.score.sections) {
+      this._buildSectionUI(sectionId).appendTo("#sections-content");
+    }
+
+    $("#score-content").html("");
+    this.score.scoreSections.forEach((section, index) => {
+      this._buildSectionUI(section.id).appendTo("#score-content");
+    });
+  }
+
+  _updateScoreInfo() {
+    if (this.score == undefined) {
+      $("#score-info").text("");
+      return;
+    }
+
+    var scoreInfo = "";
+    scoreInfo += `${this.score.name}:`;
+    scoreInfo += ` ${this.score.numBeats} beats`;
+    scoreInfo += ` @${this.score.bpm}BPM`;
+    scoreInfo += ` = ${this.score.getDurationStr()}`;
+    $("#score-info").text(scoreInfo);
+  }
+
   _buildInstrumentUI(instrumentId) {
     const instrument = this.instrumentMgr.list[instrumentId];
 
@@ -137,54 +185,6 @@ export class UIManager extends EventTarget {
     }
 
     return instrumentElm;
-  }
-
-  setScore(score, errorMsg) {
-    this.score = score;
-
-    this._updateScoreInfo();
-
-    if (this.score == undefined) {
-      $("#full-score-view").html("");
-      $("#score-content").html(`Cannot load score<br/>${errorMsg}`);
-      $("#sections-content").html(`Cannot load score<br/>${errorMsg}`);
-      return;
-    }
-
-    // Score -------------------------------------------------------
-    $("#full-score-view").html("");
-    this._buildScoreUI().appendTo("#full-score-view");
-
-    // Sections -------------------------------------------------------
-    $("#sections-content").html("");
-
-    if (this.score.sections == null) {
-      $("#sections-content").text(`[ERROR] Score has no sections`);
-      return;
-    }
-
-    for (const sectionId in this.score.sections) {
-      this._buildSectionUI(sectionId).appendTo("#sections-content");
-    }
-
-    $("#score-content").html("");
-    this.score.scoreSections.forEach((section, index) => {
-      this._buildSectionUI(section.id).appendTo("#score-content");
-    });
-  }
-
-  _updateScoreInfo() {
-    if (this.score == undefined) {
-      $("#score-info").text("");
-      return;
-    }
-
-    var scoreInfo = "";
-    scoreInfo += `${this.score.name}:`;
-    scoreInfo += ` ${this.score.numBeats} beats`;
-    scoreInfo += ` @${this.score.bpm}BPM`;
-    scoreInfo += ` = ${this.score.getDurationStr()}`;
-    $("#score-info").text(scoreInfo);
   }
 
   _buildScoreUI() {
