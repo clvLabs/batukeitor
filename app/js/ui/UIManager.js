@@ -146,7 +146,7 @@ export class UIManager extends EventTarget {
     scoreInfo += `${this.score.name}:`;
     scoreInfo += ` ${this.score.numBeats} beats`;
     scoreInfo += ` @${this.score.bpm}BPM`;
-    scoreInfo += ` = ${this.score.getDuration()}`;
+    scoreInfo += ` = ${this.score.getDurationStr()}`;
     $("#score-info").text(scoreInfo);
   }
 

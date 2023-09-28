@@ -37,11 +37,17 @@ export class Score extends EventTarget {
     });
   }
 
-  getDuration() {
-    var minutes = this.numBeats / this.bpm;
-    var seconds = (minutes % 1) * 60;
-    minutes = Math.floor(minutes);
-    seconds = Math.floor(seconds);
+  getDurationMinutes() {
+    return this.numBeats / this.bpm;
+  }
+
+  getDurationSeconds() {
+    return this.getDurationMinutes() * 60;
+  }
+
+  getDurationStr() {
+    var minutes = Math.floor(this.getDurationMinutes());
+    var seconds = this.getDurationSeconds() % 60;
 
     if (seconds < 10)
       return `${minutes}:0${seconds}`;
