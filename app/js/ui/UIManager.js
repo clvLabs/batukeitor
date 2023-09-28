@@ -223,10 +223,11 @@ export class UIManager extends EventTarget {
         className += " eighth-note-start";
       }
 
-      var sixteenWidth = 100 / track.length;
+      // var sixteenWidth = 100 / track.length;
+      var sixteenWidth = 100 / (4*4*2);    // 2 full 4/4 bars
 
-      // if (section.timeSignature.isCompound())
-      //   sixteenWidth *= (1/1.5);
+      if (section.timeSignature.isCompound())
+        sixteenWidth *= (1/1.5);
 
       const sixteenthElm = $("<div>", {
         id: `section-${section.id}-track-${track.id}-sixteenth-${index}`,
