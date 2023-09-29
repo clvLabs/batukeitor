@@ -11,7 +11,9 @@ export class Section {
     this.tracks = {};
     var _tmpTracks = {};
 
-    // Add score tracks to temporary list
+    if (this.color[0] == "#")
+    this.color = this.color.substring(1);
+
     for (const trackId in ymlData.tracks) {
       const ymlTrackNotes = ymlData.tracks[trackId];
       const instrument = this.instrumentMgr.list[trackId];
