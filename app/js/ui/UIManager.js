@@ -267,6 +267,7 @@ export class UIManager extends EventTarget {
     }
     sectionHeaderElm.text(`${headerTxt}`);
     sectionHeaderElm.css("background-color", `#${section.color}`);
+    this._adjustTextColor(sectionHeaderElm);
     sectionHeaderElm.appendTo(sectionElm);
 
     // Contents
@@ -411,6 +412,22 @@ export class UIManager extends EventTarget {
         instrumentId: e.data.instrumentId,
         sampleId: e.data.sampleId,
       }}));
-
   }
+
+  // From: https://www.jqueryscript.net/text/reverse-text-background-color.html
+  _adjustTextColor(DOMElem) {
+    var backgroundColor = DOMElem.css("background-color");
+    backgroundColor =  backgroundColor.split(',');
+    const R = parseInt(backgroundColor[0].split('(')[1]);
+    const G = parseInt(backgroundColor[1]);
+    const B = parseInt(backgroundColor[2].split(')')[0]);
+    const rPrime = R/255;
+    const gPrime = G/255;
+    const bPrime = B/255;
+    const cMax = Math.max(rPrime, gPrime, bPrime);
+    const cMin = Math.min(rPrime, gPrime, bPrime);
+    var lightness = (cMax + cMin)/2;
+    lightness >= 0.40 ? DOMElem.css("color", "black") : DOMElem.css("color", "white");
+  }
+
 }
