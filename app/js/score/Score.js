@@ -47,7 +47,7 @@ export class Score extends EventTarget {
 
   getDurationStr() {
     var minutes = Math.floor(this.getDurationMinutes());
-    var seconds = this.getDurationSeconds() % 60;
+    var seconds = Math.floor(this.getDurationSeconds() % 60);
 
     if (seconds < 10)
       return `${minutes}:0${seconds}`;
