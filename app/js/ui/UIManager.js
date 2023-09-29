@@ -117,7 +117,17 @@ export class UIManager extends EventTarget {
     const scoreTabContentElm = $("#score-tab-content");
     scoreTabContentElm.html("");
 
-    this._buildTrackInstrumentsUI("main", this.instrumentMgr.list).appendTo(scoreTabContentElm);
+    const instrumentsContainerElm = $("<div>", {
+      id: "score-instruments-container",
+    });
+    instrumentsContainerElm.appendTo(scoreTabContentElm);
+
+    const sectionHeaderElm = $("<div>", {
+      id: `score-instruments-container-header`,
+    });
+    sectionHeaderElm.appendTo(instrumentsContainerElm);
+
+    this._buildTrackInstrumentsUI("main", this.instrumentMgr.list, true).appendTo(instrumentsContainerElm);
 
     const scrollingContainerElm = $("<div>", {
       id: "score-scrolling-container",
@@ -249,7 +259,7 @@ export class UIManager extends EventTarget {
       headerTxt += `${section.name}`;
       headerTxt += ` (${section.timeSignature.name}`;
       if (section.numBars > 1) {
-        headerTxt += ` * ${section.numBars}`;
+        headerTxt += ` ${section.numBars}B`;
       }
       headerTxt += `)`;
     } else {
@@ -285,11 +295,19 @@ export class UIManager extends EventTarget {
     return sectionElm;
   }
 
-  _buildTrackInstrumentsUI(id, tracks) {
+  _buildTrackInstrumentsUI(id, tracks, addFakeHeader=false) {
     const sectionInstrumentsElm = $("<div>", {
       id: `section-${id}-instrument-list`,
       class: "section-instrument-list",
     });
+
+    if (addFakeHeader) {
+      const headerElm = $("<div>", {
+        class: "section-header",
+      });
+      headerElm.text("-");
+      headerElm.appendTo(sectionInstrumentsElm);
+    }
 
     for (const trackId in tracks) {
       const instrument = this.instrumentMgr.list[trackId];

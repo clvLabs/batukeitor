@@ -142,7 +142,18 @@ select {
   display: flex;
 }
 
+#score-instruments-container {
+  display: flex;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+#score-instruments-container-header {
+  margin-bottom: 0.5em;
+}
+
 #score-scrolling-container {
+  margin-top: 0.5em;
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
