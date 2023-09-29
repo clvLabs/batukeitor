@@ -14,8 +14,17 @@ export class Section {
     if (this.color[0] == "#")
     this.color = this.color.substring(1);
 
+    // Get max section length looking at all tracks
+    var maxSectionLen = 0;
     for (const trackId in ymlData.tracks) {
       const ymlTrackNotes = ymlData.tracks[trackId];
+      if (ymlTrackNotes.length > maxSectionLen)
+        maxSectionLen = ymlTrackNotes.length;
+    }
+
+    // Add score tracks to temporary list
+    for (const trackId in ymlData.tracks) {
+      const ymlTrackNotes = ymlData.tracks[trackId].padEnd(maxSectionLen, " ");
       const instrument = this.instrumentMgr.list[trackId];
       _tmpTracks[trackId] = new Track(
         trackId,
