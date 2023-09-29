@@ -92,15 +92,15 @@ export class UIManager extends EventTarget {
     this._updateScoreInfo();
 
     if (this.score == undefined) {
-      $("#full-score-view").html("");
+      $("#score-minimap").html("");
       $("#score-tab-content").html(`Cannot load score<br/>${errorMsg}`);
       $("#sections-tab-content").html(`Cannot load score<br/>${errorMsg}`);
       return;
     }
 
     // Score -------------------------------------------------------
-    $("#full-score-view").html("");
-    this._buildScoreUI().appendTo("#full-score-view");
+    $("#score-minimap").html("");
+    this._buildScoreMiniMap().appendTo("#score-minimap");
 
     // Sections -------------------------------------------------------
     $("#sections-tab-content").html("");
@@ -206,15 +206,15 @@ export class UIManager extends EventTarget {
     return instrumentElm;
   }
 
-  _buildScoreUI() {
+  _buildScoreMiniMap() {
     const containerElm = $("<div>");
 
     this.score.scoreSections.forEach((section, index) => {
       const sectionWidth = (section.numBeats / this.score.numBeats) * 100;
 
       const sectionElm = $("<div>", {
-        id: `full-score-view-section-${index}`,
-        class: "full-score-view-section",
+        id: `score-minimap-section-${index}`,
+        class: "score-minimap-section",
       });
       sectionElm.css("background-color", `#${section.color}`);
       sectionElm.css("width", `${sectionWidth}%`);

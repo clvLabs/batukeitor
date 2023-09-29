@@ -115,7 +115,7 @@ select {
   pointer-events: none;
 }
 
-#full-score-view {
+#score-minimap {
   display: block;
   width: 97%;
   margin-left: 1%;
@@ -123,7 +123,7 @@ select {
   border: 1px solid #777;
 }
 
-.full-score-view-section{
+.score-minimap-section{
   display: inline-block;
   border: 1px solid black;
   height: 48px;
