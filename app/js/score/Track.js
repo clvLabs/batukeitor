@@ -5,7 +5,9 @@ export class Track {
     this.timeSignature = timeSignature;
     this.instrument = instrument;
 
-    notes = notes.trimEnd();
+    if (notes.trimEnd() == "")
+      notes = "";
+
     this.numSixteenths = timeSignature.normalizeNumSixteenths(notes.length);
     this.length = this.numSixteenths;  // alias!
     this.notesStr = notes.padEnd(this.numSixteenths, " ");
