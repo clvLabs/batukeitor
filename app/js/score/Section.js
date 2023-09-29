@@ -5,7 +5,6 @@ export class Section {
   constructor(id, ymlData, instrumentMgr) {
     this.id = id;
     this.name = ymlData.name;
-    this.shortName = ymlData.shortName;
     this.color = ymlData.color;
     this.timeSignature = new TimeSignature(ymlData.timeSignature);
     this.instrumentMgr = instrumentMgr;
