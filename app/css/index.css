@@ -135,18 +135,35 @@ select {
   padding: 0.5em;
 }
 
-#score-content {
+#score-tab {
+}
+
+#score-tab-content {
   display: flex;
-  width: 100%;
+}
+
+#score-scrolling-container {
+  display: flex;
   overflow-x: auto;
   overflow-y: hidden;
 }
 
-.section-block {
+#score-scrolling-content {
+  display: flex;
+}
+
+.section-block-full {
   background-color: #171717;
   border: 1px solid #777;
-  margin-top: 1em;
+  margin-bottom: 1em;
   padding: 0.5em;
+}
+
+.section-block-simple {
+  background-color: #171717;
+  border: 1px solid #777;
+  margin: 0;
+  padding: 0;
 }
 
 .section-header {
@@ -206,7 +223,7 @@ select {
   display: inline-block;
   background-color: #222;
   cursor: default;
-  height: 48px;
+  height: 90%;
   margin: 0px;
   font-size: 32px;
   font-weight: bolder;
