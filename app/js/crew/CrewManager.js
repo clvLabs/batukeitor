@@ -4,7 +4,6 @@ export class CrewManager extends EventTarget {
     super();
     this.BASE_URL = "/data/crews";
     this.list = {}
-    this.crewsFileVersion = 1.0
     this.selectedCrew = undefined;
   }
 
@@ -29,12 +28,6 @@ export class CrewManager extends EventTarget {
   _parseCrewList(ymlData) {
     const _ymlCrewList = jsyaml.load(ymlData);
     this.loaded = true;
-
-    if (_ymlCrewList.crewsFileVersion != this.crewsFileVersion) {
-      this._error(`[Crews] Wrong file version in ${this.url}\n` +
-            `Found ${_ymlCrewList.crewsFileVersion}, expecting ${this.crewsFileVersion}`);
-      return;
-    }
 
     for (const crewId in _ymlCrewList.crews)
     {

@@ -5,7 +5,6 @@ export class InstrumentManager extends EventTarget {
     super();
     this.BASE_URL = "/data/instruments";
     this.list = {}
-    this.instrumentsFileVersion = 1.0
   }
 
   init() {
@@ -25,12 +24,6 @@ export class InstrumentManager extends EventTarget {
   _parseInstrumentList(ymlData) {
     const _ymlInstrumentList = jsyaml.load(ymlData);
     this.loaded = true;
-
-    if (_ymlInstrumentList.instrumentsFileVersion != this.instrumentsFileVersion) {
-      this._error(`[Instruments] Wrong file version in ${this.url}\n` +
-            `Found ${_ymlInstrumentList.instrumntsFileVersion}, expecting ${this.instrumntsFileVersion}`);
-      return;
-    }
 
     for (const instrumentId in _ymlInstrumentList.instruments)
     {

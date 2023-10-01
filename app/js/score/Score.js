@@ -5,7 +5,6 @@ export class Score extends EventTarget {
     super();
     this.DEFAULT_BPM = 90;
     this.instrumentMgr = instrumentMgr;
-    this.scoreFileVersion = 1.0;
     this._reset();
   }
 
@@ -64,20 +63,24 @@ export class Score extends EventTarget {
     this._ymlScore = jsyaml.load(ymlData);
     this.loaded = true;
 
-    if (this._ymlScore.scoreFileVersion != this.scoreFileVersion) {
-      this._error(`[Score] Wrong score version in ${this.url}\n` +
-            `Found ${this._ymlScore.scoreFileVersion}, expecting ${this.scoreFileVersion}`);
-      return;
-    }
-
     this.name = this._ymlScore.name;
     this.bpm = this._ymlScore.bpm;
-    this.scoreStr = this._ymlScore.score;
+
+    if ( this.bpm == undefined )
+      this.bpm = this.DEFAULT_BPM;
 
     this.sections = {};
     for (const sectionId in this._ymlScore.sections) {
       const _ymlSectionData = this._ymlScore.sections[sectionId];
       this.sections[sectionId] = new Section(sectionId, _ymlSectionData, this.instrumentMgr);
+    }
+
+    this.scoreStr = this._ymlScore.score;
+    if ( this.scoreStr == undefined ) {
+      this.scoreStr = "";
+      for (const sectionId in this._ymlScore.sections) {
+        this.scoreStr += `${sectionId} `;
+      }
     }
 
     this.numSixteenths = 0;
@@ -95,10 +98,6 @@ export class Score extends EventTarget {
         this.numBeats += section.numBeats;
       }
     }
-
-
-    if ( this.bpm == undefined )
-      this.bpm = this.DEFAULT_BPM;
 
     if ( this.name == undefined
       || this.sections == undefined

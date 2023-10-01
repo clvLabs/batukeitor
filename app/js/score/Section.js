@@ -3,10 +3,17 @@ import {Track} from "./Track.js"
 
 export class Section {
   constructor(id, ymlData, instrumentMgr) {
+    this.DEFAULT_TIME_SIGNATURE = "4/4";
+
     this.id = id;
     this.name = ymlData.name;
     this.color = ymlData.color;
-    this.timeSignature = new TimeSignature(ymlData.timeSignature);
+
+    if (ymlData.timeSignature)
+      this.timeSignature = new TimeSignature(ymlData.timeSignature);
+    else
+      this.timeSignature = new TimeSignature(this.DEFAULT_TIME_SIGNATURE);
+
     this.instrumentMgr = instrumentMgr;
     this.tracks = {};
     var _tmpTracks = {};
