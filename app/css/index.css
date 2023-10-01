@@ -177,6 +177,41 @@ select {
   padding: 0;
 }
 
+.play-button-icon {
+  width: 50px;
+  height: 26px;
+}
+
+.header-play-button {
+  width: 50px;
+}
+
+.play-button {
+  background-color: #323232;
+  border: 1px solid #777;
+  outline: none;
+  cursor: pointer;
+  padding: 0px;
+  margin: 0px;
+  transition: 0.3s;
+}
+
+.play-button:hover {
+  background-color: #387650;
+  color: white;
+  border: 1px solid #52aa74;
+}
+
+.play-button.active {
+  background-color: #b75757;
+  color: white;
+  border: 1px solid #d36565;
+}
+
+.section-header-container {
+  display: flex;
+}
+
 .section-header {
   width: 100%;
   text-align: center;

@@ -54,6 +54,29 @@ export class Score extends EventTarget {
       return `${minutes}:${seconds}`;
   }
 
+
+  getScoreSectionBy16thIndex(current16th) {
+    for (const section of this.scoreSections) {
+      if (current16th < section.num16ths)
+        return section;
+      else
+        current16th -= section.num16ths;
+    }
+    return undefined;
+  }
+
+
+  get16thScoreSectionOffset(current16th) {
+    for (const section of this.scoreSections) {
+      if (current16th < section.num16ths)
+        return current16th;
+      else
+        current16th -= section.num16ths;
+    }
+    return undefined;
+  }
+
+
   _error(msg) {
     this.dispatchEvent(new CustomEvent('error',
       {detail: { error: msg }}));

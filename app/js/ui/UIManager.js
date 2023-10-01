@@ -5,7 +5,8 @@ export class UIManager extends EventTarget {
     this.crews = crews;
     this.score = undefined;
     this.instrumentMgr = undefined;
-    this.PLAYER_BEAT_WIDTH = 100;
+    this.PLAYER_BEAT_WIDTH_PIXELS = 100;
+    this.FULL_MODULE_16THS = (4*4*2);    // 2 full 4/4 bars
   }
 
   init(crewId) {
@@ -139,7 +140,7 @@ export class UIManager extends EventTarget {
     });
     scrollingContentElm.appendTo(scrollingContainerElm);
 
-    var scoreWidth = this.score.numBeats * this.PLAYER_BEAT_WIDTH;
+    var scoreWidth = this.score.numBeats * this.PLAYER_BEAT_WIDTH_PIXELS;
     scoreWidth *= 1.008; // Add some pixels for borders
     scrollingContentElm.css("width", `${scoreWidth}px`);
 
@@ -182,8 +183,8 @@ export class UIManager extends EventTarget {
     const instrumentIconElm = $("<img>", {
       id: `instrument-${instrument.id}-icon`,
       class: "instrument-icon",
+      src: instrument.iconURL,
     });
-    instrumentIconElm.attr("src", instrument.iconURL);
     instrumentIconElm.appendTo(instrumentElm);
 
     // Name
@@ -243,6 +244,34 @@ export class UIManager extends EventTarget {
       class: fullModule ? "section-block-full" : "section-block-simple",
     });
 
+    // Header container
+    const sectionHeaderContainerElm = $("<div>", {
+      id: `section-${sectionId}-header-container`,
+      class: "section-header-container",
+    });
+    sectionHeaderContainerElm.appendTo(sectionElm);
+
+    if (fullModule) {
+      const playHeaderElm = $("<div>", {
+        class: "header-play-button",
+      });
+      playHeaderElm.appendTo(sectionHeaderContainerElm);
+
+      const playButtonElm = $("<button>", {
+        id: `section-${sectionId}-play-button`,
+        class: "play-button",
+      });
+      playButtonElm.on("click", {section: section}, this._onSectionPlayButton.bind(this));
+      playButtonElm.appendTo(playHeaderElm);
+
+      const playIconElm = $("<img>", {
+        id: `section-${sectionId}-play-button-icon`,
+        src: "/app/img/play-icon.svg",
+        class: "play-button-icon",
+      });
+      playIconElm.appendTo(playButtonElm);
+    }
+
     // Header
     const sectionHeaderElm = $("<div>", {
       id: `section-${sectionId}-header`,
@@ -250,7 +279,7 @@ export class UIManager extends EventTarget {
     });
 
     if (!fullModule) {
-      const sectionWidth = this.PLAYER_BEAT_WIDTH * (section.numBeats);
+      const sectionWidth = this.PLAYER_BEAT_WIDTH_PIXELS * (section.numBeats);
       sectionHeaderElm.css("width", `${sectionWidth}px`);
     }
 
@@ -268,7 +297,7 @@ export class UIManager extends EventTarget {
     sectionHeaderElm.text(`${headerTxt}`);
     sectionHeaderElm.css("background-color", `#${section.color}`);
     this._adjustTextColor(sectionHeaderElm);
-    sectionHeaderElm.appendTo(sectionElm);
+    sectionHeaderElm.appendTo(sectionHeaderContainerElm);
 
     // Contents
     const sectionContentElm = $("<div>", {
@@ -296,18 +325,31 @@ export class UIManager extends EventTarget {
     return sectionElm;
   }
 
-  _buildTrackInstrumentsUI(idPrefix, tracks, addFakeHeader=false) {
+  _buildTrackInstrumentsUI(idPrefix, tracks, addScorePlayButton=false) {
     const sectionInstrumentsElm = $("<div>", {
       id: `${idPrefix}-instrument-list`,
       class: "section-instrument-list",
     });
 
-    if (addFakeHeader) {
-      const headerElm = $("<div>", {
-        class: "section-header",
+    if (addScorePlayButton) {
+      const playHeaderElm = $("<div>", {
+        class: "header-play-button",
       });
-      headerElm.text("-");
-      headerElm.appendTo(sectionInstrumentsElm);
+      playHeaderElm.appendTo(sectionInstrumentsElm);
+
+      const playButtonElm = $("<button>", {
+        id: `${idPrefix}-play-button`,
+        class: "play-button",
+      });
+      playButtonElm.on("click", this._onScorePlayButton.bind(this));
+      playButtonElm.appendTo(playHeaderElm);
+
+      const playIconElm = $("<img>", {
+        id: `${idPrefix}-play-button-icon`,
+        src: "/app/img/play-icon.svg",
+        class: "play-button-icon",
+      });
+      playIconElm.appendTo(playButtonElm);
     }
 
     for (const trackId in tracks) {
@@ -350,7 +392,7 @@ export class UIManager extends EventTarget {
 
       if (fullModule) {
         // var note16thWidth = 100 / track.length;
-        var note16thWidth = 100 / (4*4*2);    // 2 full 4/4 bars
+        var note16thWidth = 100 / this.FULL_MODULE_16THS;
 
         if (section.timeSignature.isCompound())
           note16thWidth *= (1/1.5);
@@ -412,6 +454,51 @@ export class UIManager extends EventTarget {
         instrumentId: e.data.instrumentId,
         sampleId: e.data.sampleId,
       }}));
+  }
+
+  _onScorePlayButton(e) {
+    const playButton = $("#score-play-button");
+    const playIcon = $("#score-play-button-icon");
+
+    if (playButton.hasClass("active")) {
+      this.dispatchEvent(new Event("stop"));
+
+      playButton.removeClass("active");
+      playIcon.attr("src", "/app/img/play-icon.svg");
+    } else {
+      this.dispatchEvent(new CustomEvent("play",
+      {detail: {
+        type: "score",
+        score: this.score,
+      }}));
+
+      playButton.addClass("active");
+      playIcon.attr("src", "/app/img/stop-icon.svg");
+    }
+  }
+
+  _onSectionPlayButton(e) {
+    const section = e.data.section;
+    const playButton = $(`#section-${section.id}-play-button`);
+    const playIcon = $(`#section-${section.id}-play-button-icon`);
+
+    if (playButton.hasClass("active")) {
+      this.dispatchEvent(new Event("stop"));
+
+      playButton.removeClass("active");
+      playIcon.attr("src", "/app/img/play-icon.svg");
+    } else {
+      this.dispatchEvent(new CustomEvent("play",
+      {detail: {
+        type: "section",
+        score: this.score,
+        section: section,
+      }}));
+
+      playButton.addClass("active");
+      playIcon.attr("src", "/app/img/stop-icon.svg");
+    }
+
   }
 
   // From: https://www.jqueryscript.net/text/reverse-text-background-color.html

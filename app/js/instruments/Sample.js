@@ -14,9 +14,9 @@ export class Sample extends EventTarget {
     this.player = new Tone.Player(this.url).toDestination();
   }
 
-  play() {
+  play(time=undefined) {
     Tone.loaded().then(() => {
-      this.player.start();
+      this.player.start(time);
     });
   }
 

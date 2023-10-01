@@ -15,8 +15,7 @@ export class Track {
     this.samples = [];
     for (const index in this.notesStr) {
       const sampleId = this.notesStr[index];
-      const sample = instrument.samples[sampleId];
-      this.samples.push( sample );
+      this.samples.push( instrument.samples[sampleId] );
     }
 
     this.numBars = timeSignature.getNumBars(this.num16ths);
