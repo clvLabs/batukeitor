@@ -41,14 +41,14 @@ export class Section {
         instrument);
     }
 
-    // Calculate number of Sixteenths/Bars/Beats
-    this.numSixteenths = 0;
+    // Calculate number of 16ths/Bars/Beats
+    this.num16ths = 0;
     this.numBars = 0;
     this.numBeats = 0;
 
     Object.values(_tmpTracks).forEach(track => {
-      if (track.numSixteenths > this.numSixteenths) {
-        this.numSixteenths = track.numSixteenths;
+      if (track.num16ths > this.num16ths) {
+        this.num16ths = track.num16ths;
         this.numBars = track.numBars;
         this.numBeats = track.numBeats;
       }

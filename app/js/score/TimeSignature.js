@@ -21,39 +21,39 @@ export class TimeSignature {
       this.numBeats /= 3;
 
     if (this.beatNote == 4) {
-      this.sixteenthsPerBar = this.upperNum * 4;
+      this.num16thsPerBar = this.upperNum * 4;
     }
     else if (this.beatNote == 8) {
-      this.sixteenthsPerBar = this.upperNum * 2;
+      this.num16thsPerBar = this.upperNum * 2;
     }
   }
 
-  normalizeNumSixteenths(numSixteenths) {
-    return this.getNumBars(numSixteenths) * this.sixteenthsPerBar;
+  normalizeNum16ths(num16ths) {
+    return this.getNumBars(num16ths) * this.num16thsPerBar;
   }
 
-  getNumBars(numSixteenths) {
-    return Math.ceil(numSixteenths / this.sixteenthsPerBar);
+  getNumBars(num16ths) {
+    return Math.ceil(num16ths / this.num16thsPerBar);
   }
 
   getTrackNumBars(track) {
-    return this.getNumBars(track.numSixteenths);
+    return this.getNumBars(track.num16ths);
   }
 
   getSectionNumBars(section) {
-    var maxSixteenths = 0;
+    var max16ths = 0;
 
     for (const _trackId in section.tracks) {
       const _track = section.tracks[trackId];
-      if (_track.numSixteenths > maxSixteenths)
-        maxSixteenths = _track.numSixteenths;
+      if (_track.num16ths > max16ths)
+        max16ths = _track.num16ths;
     }
 
-    return this.getNumBars(maxSixteenths);
+    return this.getNumBars(max16ths);
   }
 
   isBarStart(pos) {
-    return (pos % this.sixteenthsPerBar) == 0;
+    return (pos % this.num16thsPerBar) == 0;
   }
 
   isBeatStart(pos) {

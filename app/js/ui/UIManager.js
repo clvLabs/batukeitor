@@ -338,7 +338,7 @@ export class UIManager extends EventTarget {
 
     for (var index=0; index < track.length; index++) {
       const sample = track.samples[index];
-      var className = "section-track-sixteenth";
+      var className = "section-track-16th";
 
       if (section.timeSignature.isBarStart(index)) {
         className += " bar-start";
@@ -349,25 +349,25 @@ export class UIManager extends EventTarget {
       }
 
       if (fullModule) {
-        // var sixteenWidth = 100 / track.length;
-        var sixteenWidth = 100 / (4*4*2);    // 2 full 4/4 bars
+        // var note16thWidth = 100 / track.length;
+        var note16thWidth = 100 / (4*4*2);    // 2 full 4/4 bars
 
         if (section.timeSignature.isCompound())
-          sixteenWidth *= (1/1.5);
+          note16thWidth *= (1/1.5);
       } else {
-        var sixteenWidth = 100 / track.length;
+        var note16thWidth = 100 / track.length;
       }
 
-      const sixteenthElm = $("<div>", {
-        id: `section-${section.id}-track-${track.id}-sixteenth-${index}`,
+      const note16thElm = $("<div>", {
+        id: `section-${section.id}-track-${track.id}-16th-${index}`,
         class: className,
-        style: `width: ${sixteenWidth}%`,
+        style: `width: ${note16thWidth}%`,
       });
 
       if (sample)
-        sixteenthElm.text(sample.id);
+        note16thElm.text(sample.id);
 
-      sixteenthElm.appendTo(trackElm);
+      note16thElm.appendTo(trackElm);
     }
 
     return trackElm;

@@ -17,7 +17,7 @@ export class Score extends EventTarget {
     this.scoreStr = undefined;
     this.sections = undefined;
     this.scoreSections = undefined;
-    this.numSixteenths = undefined;
+    this.num16ths = undefined;
     this.numBars = undefined;
     this.numBeats = undefined;
   }
@@ -83,7 +83,7 @@ export class Score extends EventTarget {
       }
     }
 
-    this.numSixteenths = 0;
+    this.num16ths = 0;
     this.numBars = 0;
     this.numBeats = 0;
     this.scoreSections = [];
@@ -93,7 +93,7 @@ export class Score extends EventTarget {
       const section = this.sections[sectionId];
       if (section) {
         this.scoreSections.push(section);
-        this.numSixteenths += section.numSixteenths;
+        this.num16ths += section.num16ths;
         this.numBars += section.numBars;
         this.numBeats += section.numBeats;
       }

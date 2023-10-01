@@ -8,9 +8,9 @@ export class Track {
     if (notes.trimEnd() == "")
       notes = "";
 
-    this.numSixteenths = timeSignature.normalizeNumSixteenths(notes.length);
-    this.length = this.numSixteenths;  // alias!
-    this.notesStr = notes.padEnd(this.numSixteenths, " ");
+    this.num16ths = timeSignature.normalizeNum16ths(notes.length);
+    this.length = this.num16ths;  // alias!
+    this.notesStr = notes.padEnd(this.num16ths, " ");
 
     this.samples = [];
     for (const index in this.notesStr) {
@@ -19,7 +19,7 @@ export class Track {
       this.samples.push( sample );
     }
 
-    this.numBars = timeSignature.getNumBars(this.numSixteenths);
+    this.numBars = timeSignature.getNumBars(this.num16ths);
     this.numBeats = this.numBars * timeSignature.numBeats;
   }
 }
