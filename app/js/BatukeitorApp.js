@@ -50,7 +50,7 @@ export class BatukeitorApp {
     if (crewId == null)
       crewId = DEFAULT_CREWID;
 
-    this.crew = this.crewMgr.list[crewId];
+    this.crew = this.crewMgr.get(crewId);
     if (this.crew == null) {
       alert(`[Crews] Crew not found: ${crewId}`);
     } else {

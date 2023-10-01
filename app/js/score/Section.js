@@ -32,7 +32,7 @@ export class Section {
     // Add score tracks to temporary list
     for (const trackId in ymlData.tracks) {
       const ymlTrackNotes = ymlData.tracks[trackId].padEnd(maxSectionLen, " ");
-      const instrument = this.instrumentMgr.list[trackId];
+      const instrument = this.instrumentMgr.get(trackId);
       _tmpTracks[trackId] = new Track(
         trackId,
         ymlTrackNotes,

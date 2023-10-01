@@ -4,7 +4,7 @@ export class InstrumentManager extends EventTarget {
   constructor() {
     super();
     this.BASE_URL = "/data/instruments";
-    this.list = {}
+    this._list = {}
   }
 
   init() {
@@ -14,6 +14,14 @@ export class InstrumentManager extends EventTarget {
     }).fail(function() {
       self._error(`[Instrument] ERROR loading instrument list: ${url}`);
     });
+  }
+
+  all() {
+    return this._list;
+  }
+
+  get(instrumentId) {
+    return this._list[instrumentId];
   }
 
   _error(msg) {
@@ -28,7 +36,7 @@ export class InstrumentManager extends EventTarget {
     for (const instrumentId in _ymlInstrumentList.instruments)
     {
       const instrumentData = _ymlInstrumentList.instruments[instrumentId];
-      this.list[instrumentId] = new Instrument(instrumentId, instrumentData);
+      this._list[instrumentId] = new Instrument(instrumentId, instrumentData);
     }
 
     this.dispatchEvent(new Event('ready'));

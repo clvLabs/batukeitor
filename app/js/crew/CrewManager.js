@@ -3,7 +3,7 @@ export class CrewManager extends EventTarget {
   constructor() {
     super();
     this.BASE_URL = "/data/crews";
-    this.list = {}
+    this._list = {}
     this.selectedCrew = undefined;
   }
 
@@ -16,8 +16,16 @@ export class CrewManager extends EventTarget {
     });
   }
 
+  all() {
+    return this._list;
+  }
+
+  get(crewId) {
+    return this._list[crewId];
+  }
+
   select(crewId) {
-    this.selectedCrew = this.list[crewId];
+    this.selectedCrew = this._list[crewId];
   }
 
   _error(msg) {
@@ -32,7 +40,7 @@ export class CrewManager extends EventTarget {
     for (const crewId in _ymlCrewList.crews)
     {
       const crew = _ymlCrewList.crews[crewId];
-      this.list[crewId] = {
+      this._list[crewId] = {
         id: crewId,
         name: crew.name,
         scores: crew.scores,

@@ -42,8 +42,8 @@ export class UIManager extends EventTarget {
 
     var crew;
 
-    for (const _crewId in this.crews.list) {
-      crew = this.crews.list[_crewId];
+    for (const _crewId in this.crews.all()) {
+      crew = this.crews.get(_crewId);
 
       $("#crew-selector").append(
         $("<option>",{
@@ -54,7 +54,7 @@ export class UIManager extends EventTarget {
       );
     }
 
-    crew = this.crews.list[crewId];
+    crew = this.crews.get(crewId);
     for (const _scoreId in crew.scores) {
       const _scoreName = crew.scores[_scoreId]
 
@@ -81,7 +81,7 @@ export class UIManager extends EventTarget {
     }
 
     $("#instruments-tab-content").html("");
-    for (const instrumentId in instrumentMgr.list) {
+    for (const instrumentId in instrumentMgr.all()) {
       this._buildInstrumentUI(instrumentId).appendTo("#instruments-tab-content");
     }
   }
@@ -127,7 +127,7 @@ export class UIManager extends EventTarget {
     });
     sectionHeaderElm.appendTo(instrumentsContainerElm);
 
-    this._buildTrackInstrumentsUI("score", this.instrumentMgr.list, true).appendTo(instrumentsContainerElm);
+    this._buildTrackInstrumentsUI("score", this.instrumentMgr.all(), true).appendTo(instrumentsContainerElm);
 
     const scrollingContainerElm = $("<div>", {
       id: "score-scrolling-container",
@@ -163,7 +163,7 @@ export class UIManager extends EventTarget {
   }
 
   _buildInstrumentUI(instrumentId) {
-    const instrument = this.instrumentMgr.list[instrumentId];
+    const instrument = this.instrumentMgr.get(instrumentId);
 
     const instrumentElm = $("<div>", {
       id: `instrument-${instrument.id}-info`,
@@ -311,7 +311,7 @@ export class UIManager extends EventTarget {
     }
 
     for (const trackId in tracks) {
-      const instrument = this.instrumentMgr.list[trackId];
+      const instrument = this.instrumentMgr.get(trackId);
 
       const instrumentRowElm = $("<div>", {
         class: "section-instrument-row",
