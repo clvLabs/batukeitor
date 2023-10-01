@@ -75,11 +75,14 @@ export class BatukeitorApp {
     this.score.load(this.crew.id, e.detail.scoreId);
   }
 
-  onUIManagerPlay() {
+  onUIManagerPlay(e) {
+    this.audioMgr.setBPM(this.score.bpm);
+    this.audioMgr.play(e.data.objectToPlay);    // TO-DO: check!!
   }
 
   onUIManagerPlaySample(e) {
-    this.instrumentMgr.list[e.detail.instrumentId].play(e.detail.sampleId);
+    const instrument = this.instrumentMgr.get(e.detail.instrumentId);
+    instrument.play(e.detail.sampleId);
   }
 
   onScoreReady(e) {
