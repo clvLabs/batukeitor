@@ -4,6 +4,7 @@ import {Track} from "./Track.js"
 export class Section {
   constructor(id, ymlData, instrumentMgr) {
     this.DEFAULT_TIME_SIGNATURE = "4/4";
+    this.METRONOME_INSTRUMENT_ID = "MT";
 
     this.id = id;
     this.name = ymlData.name;
@@ -54,11 +55,11 @@ export class Section {
     });
 
     // Add metronome track to "definitive" list
-    this.tracks["MT"] = new Track(
-      "MT",
+    this.tracks[this.METRONOME_INSTRUMENT_ID] = new Track(
+      this.METRONOME_INSTRUMENT_ID,
       this.timeSignature.getMetronomeBarDisplayStr().repeat(this.numBars),
       this.timeSignature,
-      this.instrumentMgr.list["MT"]);
+      this.instrumentMgr.get(this.METRONOME_INSTRUMENT_ID));
 
     // Add rest of tracks to "definitive" list
     Object.values(_tmpTracks).forEach(track => {
