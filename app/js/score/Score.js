@@ -84,8 +84,9 @@ export class Score extends EventTarget {
     this.numBars = 0;
     this.numBeats = 0;
     this.scoreSections = [];
-    for (const i in this.scoreStr) {
-      const sectionId = this.scoreStr[i];
+    const sectionList = this.scoreStr.split(" ");
+    for (const i in sectionList) {
+      const sectionId = sectionList[i];
       const section = this.sections[sectionId];
       if (section) {
         this.scoreSections.push(section);
