@@ -127,7 +127,7 @@ export class UIManager extends EventTarget {
     });
     sectionHeaderElm.appendTo(instrumentsContainerElm);
 
-    this._buildTrackInstrumentsUI("main", this.instrumentMgr.list, true).appendTo(instrumentsContainerElm);
+    this._buildTrackInstrumentsUI("score", this.instrumentMgr.list, true).appendTo(instrumentsContainerElm);
 
     const scrollingContainerElm = $("<div>", {
       id: "score-scrolling-container",
@@ -279,7 +279,7 @@ export class UIManager extends EventTarget {
 
     // Instrument list
     if (fullModule) {
-      this._buildTrackInstrumentsUI(section.id, section.tracks).appendTo(sectionContentElm);
+      this._buildTrackInstrumentsUI(`section-${section.id}`, section.tracks).appendTo(sectionContentElm);
     }
 
     // Track list
@@ -296,9 +296,9 @@ export class UIManager extends EventTarget {
     return sectionElm;
   }
 
-  _buildTrackInstrumentsUI(id, tracks, addFakeHeader=false) {
+  _buildTrackInstrumentsUI(idPrefix, tracks, addFakeHeader=false) {
     const sectionInstrumentsElm = $("<div>", {
-      id: `section-${id}-instrument-list`,
+      id: `${idPrefix}-instrument-list`,
       class: "section-instrument-list",
     });
 
@@ -320,7 +320,7 @@ export class UIManager extends EventTarget {
       instrumentRowElm.appendTo(sectionInstrumentsElm);
 
       $("<img>",{
-        id: `section-${id}-instrument-${instrument.id}-icon`,
+        id: `${idPrefix}-instrument-${instrument.id}-icon`,
         class: "section-instrument-icon",
         src: instrument.iconURL,
         title: `[${instrument.id}] ${instrument.name}`,
