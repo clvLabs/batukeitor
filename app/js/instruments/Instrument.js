@@ -26,7 +26,7 @@ export class Instrument extends EventTarget {
   }
 
   play(sampleId) {
-    if (muted)
+    if (this.muted)
       return;
 
     Tone.loaded().then(() => {
