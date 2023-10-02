@@ -90,17 +90,33 @@ export class UIManager extends EventTarget {
     this._muteInstrument(this.instrumentMgr.get("MT"), true);
   }
 
-  setScore(score, errorMsg) {
+  setAudioManagerPlaying(playing) {
+    if (playing) {
+      // Nothing so far
+    } else {
+      $(`.play-button`).each((index, item) => {
+        $(item).removeClass("disabled");
+        $(item).removeClass("active");
+    });
+    $(`.play-button-icon`).each((index, item) => {
+      $(item).attr("src", "/app/img/play-icon.svg");
+  });
+
+    }
+  }
+
+  setScoreError(errorMsg) {
+    this.score = undefined;
+    $("#score-info").text("");
+    $("#score-minimap").html("");
+    $("#score-tab-content").html(`Cannot load score<br/>${errorMsg}`);
+    $("#sections-tab-content").html(`Cannot load score<br/>${errorMsg}`);
+  }
+
+  setScore(score) {
     this.score = score;
 
     this._updateScoreInfo();
-
-    if (this.score == undefined) {
-      $("#score-minimap").html("");
-      $("#score-tab-content").html(`Cannot load score<br/>${errorMsg}`);
-      $("#sections-tab-content").html(`Cannot load score<br/>${errorMsg}`);
-      return;
-    }
 
     // Score -------------------------------------------------------
     $("#score-minimap").html("");
@@ -159,11 +175,6 @@ export class UIManager extends EventTarget {
   }
 
   _updateScoreInfo() {
-    if (this.score == undefined) {
-      $("#score-info").text("");
-      return;
-    }
-
     var scoreInfo = "";
     scoreInfo += `${this.score.name}:`;
     scoreInfo += ` ${this.score.numBeats} beats`;
@@ -488,7 +499,29 @@ export class UIManager extends EventTarget {
       {detail: {
         instrumentId: e.data.instrumentId,
         sampleId: e.data.sampleId,
-      }}));
+      }}
+    ));
+  }
+
+  _updatePlayButtons(playButton, playIcon) {
+    if (playButton.hasClass("active")) {
+      // It's active -> Go to stopped mode
+      $(`.play-button`).each((index, item) => {
+        $(item).removeClass("disabled");
+      });
+
+      playButton.removeClass("active");
+      playIcon.attr("src", "/app/img/play-icon.svg");
+    } else {
+      // It's inactive -> Go to playing mode
+      $(`.play-button`).each((index, item) => {
+        $(item).addClass("disabled");
+      });
+
+      playButton.removeClass("disabled");
+      playButton.addClass("active");
+      playIcon.attr("src", "/app/img/stop-icon.svg");
+    }
   }
 
   _onScorePlayButton(e) {
@@ -497,19 +530,15 @@ export class UIManager extends EventTarget {
 
     if (playButton.hasClass("active")) {
       this.dispatchEvent(new Event("stop"));
-
-      playButton.removeClass("active");
-      playIcon.attr("src", "/app/img/play-icon.svg");
     } else {
       this.dispatchEvent(new CustomEvent("play",
       {detail: {
         type: "score",
         score: this.score,
       }}));
-
-      playButton.addClass("active");
-      playIcon.attr("src", "/app/img/stop-icon.svg");
     }
+
+    this._updatePlayButtons(playButton, playIcon);
   }
 
   _onSectionPlayButton(e) {
@@ -519,9 +548,6 @@ export class UIManager extends EventTarget {
 
     if (playButton.hasClass("active")) {
       this.dispatchEvent(new Event("stop"));
-
-      playButton.removeClass("active");
-      playIcon.attr("src", "/app/img/play-icon.svg");
     } else {
       this.dispatchEvent(new CustomEvent("play",
       {detail: {
@@ -529,11 +555,9 @@ export class UIManager extends EventTarget {
         score: this.score,
         section: section,
       }}));
-
-      playButton.addClass("active");
-      playIcon.attr("src", "/app/img/stop-icon.svg");
     }
 
+    this._updatePlayButtons(playButton, playIcon);
   }
 
   // From: https://www.jqueryscript.net/text/reverse-text-background-color.html

@@ -16,6 +16,7 @@ export class AudioManager extends EventTarget {
     this.max16th = 0;
     this.nextNoteTime = 0.0;
     this.scheduleAheadTime = 0.1;
+    this.loop = false;
   }
 
   init(instrumentMgr) {
@@ -52,6 +53,10 @@ export class AudioManager extends EventTarget {
 
   stop() {
     this.metronome.stop();
+    // Delay the stopped event
+    setTimeout(() => {
+      this.dispatchEvent(new Event('stopped'));
+    }, this.scheduleAheadTime * 5 * 1000);
   }
 
   _play() {
@@ -71,6 +76,7 @@ export class AudioManager extends EventTarget {
 
     this.metronome.start();
     this.nextNoteTime = this.audioContext.currentTime + 0.1; // Add a little delay to avoid "glitches"
+    this.dispatchEvent(new Event('started'));
   }
 
   _tick() {
@@ -107,7 +113,10 @@ export class AudioManager extends EventTarget {
 
       this.current16th++;
       if (this.current16th == this.max16th) {
-        this.current16th = 0;
+        if (this.loop)
+          this.current16th = 0;
+        else
+          this.stop();
       }
     }
   }

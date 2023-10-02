@@ -91,24 +91,25 @@ select {
   background-color: #323232;
   font-size: 24px;
   float: left;
-  border: 1px solid #777;
+  border: 0px;
   outline: none;
   cursor: pointer;
   padding: 4px 16px;
   transition: 0.3s;
   margin-right: 0.5em;
+  opacity: 0.5;
 }
 
 .tab-button:hover {
-  background-color: #7aba77;
-  border: 1px solid white;
+  border: 1px solid #777;
   color: black;
+  opacity: 1;
 }
 
 .tab-button.active {
-  background-color: #087d00;
   color: black;
-  border: 1px solid #80bf7b;
+  border: 1px solid white;
+  opacity: 1;
 }
 
 .tab-button-content {
@@ -203,9 +204,15 @@ select {
 }
 
 .play-button.active {
-  background-color: #b75757;
+  background-color: #57b76f;
   color: white;
-  border: 1px solid #d36565;
+  border: 1px solid #00ff00;
+}
+
+.play-button.disabled {
+  opacity: 0.1;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .section-header-container {
