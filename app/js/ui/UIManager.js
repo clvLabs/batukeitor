@@ -131,7 +131,7 @@ export class UIManager extends EventTarget {
     }
 
     for (const sectionId in this.score.sections) {
-      this._buildSectionUI(sectionId).appendTo("#sections-tab-content");
+      this._buildSectionUI("section-", sectionId).appendTo("#sections-tab-content");
     }
 
     const scoreTabContentElm = $("#score-tab-content");
@@ -164,7 +164,7 @@ export class UIManager extends EventTarget {
     scrollingContentElm.css("width", `${scoreWidth}px`);
 
     this.score.scoreSections.forEach((section, index) => {
-      this._buildSectionUI(section.id, false).appendTo(scrollingContentElm);
+      this._buildSectionUI(`score-section-${index}-`, section.id, false).appendTo(scrollingContentElm);
     });
 
     // Update muted instruments
@@ -256,17 +256,18 @@ export class UIManager extends EventTarget {
     return containerElm;
   }
 
-  _buildSectionUI(sectionId, fullModule=true) {
+  _buildSectionUI(idPrefix, sectionId, fullModule=true) {
     const section = this.score.sections[sectionId];
+    const sectionElmId = `${idPrefix}${sectionId}`;
 
     const sectionElm = $("<div>", {
-      id: `section-${sectionId}`,
+      id: sectionElmId,
       class: fullModule ? "section-block-full" : "section-block-simple",
     });
 
     // Header container
     const sectionHeaderContainerElm = $("<div>", {
-      id: `section-${sectionId}-header-container`,
+      id: `${sectionElmId}-header-container`,
       class: "section-header-container",
     });
     sectionHeaderContainerElm.appendTo(sectionElm);
@@ -278,14 +279,14 @@ export class UIManager extends EventTarget {
       playHeaderElm.appendTo(sectionHeaderContainerElm);
 
       const playButtonElm = $("<button>", {
-        id: `section-${sectionId}-play-button`,
+        id: `${sectionElmId}-play-button`,
         class: "play-button",
       });
       playButtonElm.on("click", {section: section}, this._onSectionPlayButton.bind(this));
       playButtonElm.appendTo(playHeaderElm);
 
       const playIconElm = $("<img>", {
-        id: `section-${sectionId}-play-button-icon`,
+        id: `${sectionElmId}-play-button-icon`,
         src: "/app/img/play-icon.svg",
         class: "play-button-icon",
       });
@@ -294,7 +295,7 @@ export class UIManager extends EventTarget {
 
     // Header
     const sectionHeaderElm = $("<div>", {
-      id: `section-${sectionId}-header`,
+      id: `${sectionElmId}-header`,
       class: "section-header",
     });
 
@@ -321,7 +322,7 @@ export class UIManager extends EventTarget {
 
     // Contents
     const sectionContentElm = $("<div>", {
-      id: `section-${sectionId}-content`,
+      id: `${sectionElmId}-content`,
       class: "section-content",
     });
     sectionContentElm.appendTo(sectionElm);
@@ -333,13 +334,13 @@ export class UIManager extends EventTarget {
 
     // Track list
     const sectionTracksElm = $("<div>", {
-      id: `section-${sectionId}-track-list`,
+      id: `${sectionElmId}-track-list`,
       class: "section-track-list",
     });
     sectionTracksElm.appendTo(sectionContentElm);
 
     Object.values(section.tracks).forEach(track => {
-      this._buildTrackUI(section, track, fullModule).appendTo(sectionTracksElm);
+      this._buildTrackUI(sectionElmId, section, track, fullModule).appendTo(sectionTracksElm);
     });
 
     return sectionElm;
@@ -394,9 +395,9 @@ export class UIManager extends EventTarget {
     return sectionInstrumentsElm;
   }
 
-  _buildTrackUI(section, track, fullModule=true) {
+  _buildTrackUI(sectionElmId, section, track, fullModule=true) {
     const trackElm = $("<div>", {
-      id: `section-${section.id}-track-${track.id}`,
+      id: `${sectionElmId}-track-${track.id}`,
       class: `section-track-row  track-${track.id}-mute`,
     });
 
@@ -423,7 +424,7 @@ export class UIManager extends EventTarget {
       }
 
       const note16thElm = $("<div>", {
-        id: `section-${section.id}-track-${track.id}-16th-${index}`,
+        id: `${sectionElmId}-track-${track.id}-16th-${index}`,
         class: className,
         style: `width: ${note16thWidth}%`,
       });
