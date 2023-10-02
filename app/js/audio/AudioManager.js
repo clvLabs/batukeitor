@@ -74,40 +74,41 @@ export class AudioManager extends EventTarget {
   }
 
   _tick() {
+    var _currentSection = undefined;
+    var _currentSection16thIndex = undefined;
+
     while (this.nextNoteTime < this.audioContext.currentTime + this.scheduleAheadTime ) {
-      this._scheduleNote( this.current16th, this.nextNoteTime );
-      this._nextNote();
-    }
-  }
 
-  _scheduleNote( current16th, time ) {
-    var _section;
-    var _index;
-    if (this.sectionMode) {
-      _section = this.section;
-      _index = current16th;
-    } else {
-      _section = this.score.getScoreSectionBy16thIndex(current16th);
-      _index = this.score.get16thScoreSectionOffset(current16th);
-    }
-
-    Object.values(_section.tracks).forEach(track => {
-      const sample = track.samples[_index];
-      if (sample) {
-        sample.play(time);
+      // Find section/16thIndex
+      if (this.sectionMode) {
+        _currentSection = this.section;
+        _currentSection16thIndex = this.current16th;
+      } else {
+        _currentSection = this.score.getScoreSectionBy16thIndex(this.current16th);
+        _currentSection16thIndex = this.score.get16thScoreSectionOffset(this.current16th);
       }
-    });
-  }
 
-  _nextNote() {
-    // Advance current note and time by a 16th note...
-    var secondsPerBeat = 60.0 / this.bpm;
-    this.nextNoteTime += 0.25 * secondsPerBeat;    // Add beat length to last beat time
+      // Schedule notes
+      Object.values(_currentSection.tracks).forEach(track => {
+        const sample = track.samples[_currentSection16thIndex];
+        if (sample) {
+          sample.play(this.nextNoteTime);
+        }
+      });
 
-    this.current16th++;
-    if (this.current16th == this.max16th) {
-      this.current16th = 0;
+      // Advance current note and time by a 16th note...
+      var secondsPerBeat = 60.0 / this.bpm;
+
+      // Add beat length to last beat time
+      if (_currentSection.timeSignature.isCompound())
+        this.nextNoteTime += secondsPerBeat/6;
+      else
+        this.nextNoteTime += secondsPerBeat/4;
+
+      this.current16th++;
+      if (this.current16th == this.max16th) {
+        this.current16th = 0;
+      }
     }
   }
-
 }
