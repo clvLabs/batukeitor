@@ -85,6 +85,9 @@ export class UIManager extends EventTarget {
     for (const instrumentId in instrumentMgr.all()) {
       this._buildInstrumentUI(instrumentId).appendTo("#instruments-tab-content");
     }
+
+    // Mute metronome at startup
+    this._muteInstrument(this.instrumentMgr.get("MT"), true);
   }
 
   setScore(score, errorMsg) {
@@ -147,6 +150,12 @@ export class UIManager extends EventTarget {
     this.score.scoreSections.forEach((section, index) => {
       this._buildSectionUI(section.id, false).appendTo(scrollingContentElm);
     });
+
+    // Update muted instruments
+    Object.values(this.instrumentMgr.all()).forEach(instrument => {
+      this._updateInstrumentMute(instrument);
+    });
+
   }
 
   _updateScoreInfo() {
@@ -361,12 +370,14 @@ export class UIManager extends EventTarget {
 
       instrumentRowElm.appendTo(sectionInstrumentsElm);
 
-      $("<img>",{
+      const instrumentIconElm = $("<img>",{
         id: `${idPrefix}-instrument-${instrument.id}-icon`,
-        class: "section-instrument-icon",
+        class: `section-instrument-icon track-${instrument.id}-mute`,
         src: instrument.iconURL,
         title: `[${instrument.id}] ${instrument.name}`,
-      }).appendTo(instrumentRowElm);
+      });
+      instrumentIconElm.on("click", {instrument: instrument}, this._onTrackInstrumentClick.bind(this));
+      instrumentIconElm.appendTo(instrumentRowElm);
 
     }
     return sectionInstrumentsElm;
@@ -375,7 +386,7 @@ export class UIManager extends EventTarget {
   _buildTrackUI(section, track, fullModule=true) {
     const trackElm = $("<div>", {
       id: `section-${section.id}-track-${track.id}`,
-      class: `section-track-row`,
+      class: `section-track-row  track-${track.id}-mute`,
     });
 
     for (var index=0; index < track.length; index++) {
@@ -445,6 +456,30 @@ export class UIManager extends EventTarget {
       } else {
         $(`#${obj.id}`).hide();
       }
+    });
+  }
+
+  _onTrackInstrumentClick(e) {
+    const instrument = e.data.instrument;
+    var mute = true;
+
+    if ($(e.target).hasClass("muted"))
+      mute = false;
+
+    this._muteInstrument(instrument, mute);
+  }
+
+  _muteInstrument(instrument, mute) {
+    instrument.muted = mute;
+    this._updateInstrumentMute(instrument);
+  }
+
+  _updateInstrumentMute(instrument) {
+    $(`.track-${instrument.id}-mute`).each((index, item) => {
+      if (instrument.muted)
+        $(item).addClass("muted");
+      else
+        $(item).removeClass("muted");
     });
   }
 

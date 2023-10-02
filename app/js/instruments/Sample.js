@@ -1,9 +1,10 @@
 import * as Tone from "https://cdn.skypack.dev/tone";
 
 export class Sample extends EventTarget {
-  constructor(id, fileName) {
+  constructor(instrument, id, fileName) {
     super();
     this.BASE_URL = "/data/instruments";
+    this.instrument = instrument;
     this.id = id;
     this.fileName = fileName;
     this.url = `${this.BASE_URL}/samples/${fileName}`;
@@ -15,6 +16,9 @@ export class Sample extends EventTarget {
   }
 
   play(time=undefined) {
+    if (this.instrument.muted)
+      return;
+
     Tone.loaded().then(() => {
       this.player.start(time);
     });

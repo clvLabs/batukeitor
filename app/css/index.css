@@ -277,6 +277,10 @@ select {
   overflow: hidden;
 }
 
+.muted {
+  opacity: 0.1;
+}
+
 .bar-start {
   background-color: #7a2828;
 }
