@@ -25,12 +25,12 @@ export class Instrument extends EventTarget {
     }
   }
 
-  play(sampleId) {
-    if (this.muted)
+  play(sampleId, force=false) {
+    if (this.muted && !force)
       return;
 
     Tone.loaded().then(() => {
-      this.samples[sampleId].play();
+      this.samples[sampleId].play(undefined, force);
     });
   }
 

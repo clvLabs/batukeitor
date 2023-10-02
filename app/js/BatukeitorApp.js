@@ -91,7 +91,7 @@ export class BatukeitorApp {
 
   onUIManagerPlaySample(e) {
     const instrument = this.instrumentMgr.get(e.detail.instrumentId);
-    instrument.play(e.detail.sampleId);
+    instrument.play(e.detail.sampleId, true);
   }
 
   onScoreReady(e) {
