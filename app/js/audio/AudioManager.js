@@ -15,7 +15,7 @@ export class AudioManager extends EventTarget {
     this.current16th = 0;
     this.max16th = 0;
     this.nextNoteTime = 0.0;
-    this.scheduleAheadTime = 0.2;
+    this.scheduleAheadTime = 0.1;
   }
 
   init(instrumentMgr) {
@@ -68,9 +68,9 @@ export class AudioManager extends EventTarget {
     }
 
     this.current16th = 0;
-    this.nextNoteTime = this.audioContext.currentTime;
 
     this.metronome.start();
+    this.nextNoteTime = this.audioContext.currentTime + 0.1; // Add a little delay to avoid "glitches"
   }
 
   _tick() {
