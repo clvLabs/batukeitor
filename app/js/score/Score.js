@@ -66,6 +66,21 @@ export class Score extends EventTarget {
   }
 
 
+  getScoreSectionIndexBy16thIndex(current16th) {
+    for (var index=0; index < this.scoreSections.length; index++) {
+      const section = this.scoreSections[index];
+
+      if (current16th < section.num16ths) {
+        return index;
+      } else {
+        current16th -= section.num16ths;
+      }
+    };
+
+    return undefined;
+  }
+
+
   get16thScoreSectionOffset(current16th) {
     for (const section of this.scoreSections) {
       if (current16th < section.num16ths)

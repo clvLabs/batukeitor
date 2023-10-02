@@ -13,6 +13,7 @@ export class BatukeitorApp {
     this.audioMgr.addEventListener("error", this.onAudioManagerError.bind(this));
     this.audioMgr.addEventListener("started", this.onAudioManagerStarted.bind(this));
     this.audioMgr.addEventListener("stopped", this.onAudioManagerStopped.bind(this));
+    this.audioMgr.addEventListener("tick", this.onAudioManagerTick.bind(this));
 
     this.crewMgr = new CrewManager();
     this.crewMgr.addEventListener("ready", this.onCrewManagerReady.bind(this));
@@ -52,6 +53,28 @@ export class BatukeitorApp {
 
   onAudioManagerStopped() {
     this.uiMgr.setAudioManagerPlaying(false);
+  }
+
+  onAudioManagerTick(e) {
+    var lastPlayedBeatIndex = undefined;
+
+    for (var i=0; i < this.audioMgr.scheduledBeatTimes.length; i++) {
+      const currentBeat = this.audioMgr.scheduledBeatTimes[i];
+
+      if (currentBeat.time < this.audioMgr.audioContext.currentTime) {
+        lastPlayedBeatIndex = i;
+      } else {
+        break;
+      }
+    }
+
+    if (lastPlayedBeatIndex == undefined)
+      return;
+
+    const currentBeat = this.audioMgr.scheduledBeatTimes[lastPlayedBeatIndex];
+    this.uiMgr.setAudioManagerCurrentBeat(currentBeat);
+
+    this.audioMgr.scheduledBeatTimes = this.audioMgr.scheduledBeatTimes.slice(lastPlayedBeatIndex+1);
   }
 
   onCrewManagerReady() {

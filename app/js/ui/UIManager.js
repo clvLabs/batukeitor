@@ -2,11 +2,12 @@
 export class UIManager extends EventTarget {
   constructor(crews) {
     super();
+    this.PLAYER_BEAT_WIDTH_PIXELS = 100;
+    this.FULL_MODULE_16THS = (4*4*2);    // 2 full 4/4 bars
     this.crews = crews;
     this.score = undefined;
     this.instrumentMgr = undefined;
-    this.PLAYER_BEAT_WIDTH_PIXELS = 100;
-    this.FULL_MODULE_16THS = (4*4*2);    // 2 full 4/4 bars
+    this.lastPlayedBeat = undefined;
   }
 
   init(crewId) {
@@ -103,6 +104,21 @@ export class UIManager extends EventTarget {
   });
 
     }
+  }
+
+  setAudioManagerCurrentBeat(currentBeat) {
+
+    if (this.lastPlayedBeat == undefined) {
+      this.lastPlayedBeat = currentBeat;
+      return;
+    }
+
+    // console.log(`[DBG] [TICK] ` +
+    //             `[${this.lastPlayedBeat.global16thIndex}] ${this.lastPlayedBeat.scoreSectionIndex}:${this.lastPlayedBeat.section.id} - ${this.lastPlayedBeat.section16thIndex}` +
+    //             `[${currentBeat.global16thIndex}] ${currentBeat.scoreSectionIndex}:${currentBeat.section.id} - ${currentBeat.section16thIndex}`);
+
+    this.lastPlayedBeat = currentBeat;
+
   }
 
   setScoreError(errorMsg) {

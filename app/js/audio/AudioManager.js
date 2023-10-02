@@ -17,6 +17,7 @@ export class AudioManager extends EventTarget {
     this.nextNoteTime = 0.0;
     this.scheduleAheadTime = 0.1;
     this.loop = false;
+    this.scheduledBeatTimes = [];
   }
 
   init(instrumentMgr) {
@@ -52,6 +53,7 @@ export class AudioManager extends EventTarget {
   }
 
   stop() {
+    this.scheduledBeatTimes = [];
     this.metronome.stop();
     // Delay the stopped event
     setTimeout(() => {
@@ -74,6 +76,7 @@ export class AudioManager extends EventTarget {
 
     this.current16th = 0;
 
+    this.scheduledBeatTimes = [];
     this.metronome.start();
     this.nextNoteTime = this.audioContext.currentTime + 0.1; // Add a little delay to avoid "glitches"
     this.dispatchEvent(new Event('started'));
@@ -81,6 +84,7 @@ export class AudioManager extends EventTarget {
 
   _tick() {
     var _currentSection = undefined;
+    var _currentScoreSectionIndex = undefined;
     var _currentSection16thIndex = undefined;
 
     while (this.nextNoteTime < this.audioContext.currentTime + this.scheduleAheadTime ) {
@@ -89,18 +93,30 @@ export class AudioManager extends EventTarget {
       if (this.sectionMode) {
         _currentSection = this.section;
         _currentSection16thIndex = this.current16th;
+        _currentScoreSectionIndex = undefined;
       } else {
         _currentSection = this.score.getScoreSectionBy16thIndex(this.current16th);
         _currentSection16thIndex = this.score.get16thScoreSectionOffset(this.current16th);
+        _currentScoreSectionIndex = this.score.getScoreSectionIndexBy16thIndex(this.current16th);
       }
 
       // Schedule notes
+      this.scheduledBeatTimes.push({
+        time: this.nextNoteTime,
+        global16thIndex: this.current16th,
+        section: _currentSection,
+        section16thIndex: _currentSection16thIndex,
+        scoreSectionIndex: _currentScoreSectionIndex,
+      });
+
       Object.values(_currentSection.tracks).forEach(track => {
         const sample = track.samples[_currentSection16thIndex];
         if (sample) {
           sample.play(this.nextNoteTime);
         }
       });
+
+      this.dispatchEvent(new Event('tick'));
 
       // Advance current note and time by a 16th note...
       var secondsPerBeat = 60.0 / this.bpm;
