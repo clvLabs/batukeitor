@@ -129,6 +129,7 @@ export class UIManager extends EventTarget {
         $(`#score-minimap-section-${lb.scoreSectionIndex}`).removeClass("score-minimap-active-section");
     }
 
+    var sampleNoteElm = undefined;
     if (currentBeat) {
       const cb = currentBeat;
       Object.values(cb.section.tracks).forEach(track => {
@@ -138,10 +139,19 @@ export class UIManager extends EventTarget {
           noteElmId = `section-${cb.section.id}-track-${track.id}-16th-${cb.section16thIndex}`;
 
         $(`#${noteElmId}`).addClass("note-active");
+
+        if (sampleNoteElm == undefined) {
+          sampleNoteElm = $(`#${noteElmId}`);
+        }
       });
 
       if (this.playMode == "score") {
-        $("#score-scrolling-container").scrollLeft(cb.global16thIndex * (this.PLAYER_BEAT_WIDTH_PIXELS/4));
+        var currentXPos = sampleNoteElm.offset().left
+                        - $("#score-scrolling-content").offset().left
+                        - this.PLAYER_BEAT_WIDTH_PIXELS;  // Leave a beat past current played note
+
+        $("#score-scrolling-container").scrollLeft(currentXPos);
+
         $(`#score-minimap-section-${cb.scoreSectionIndex}`).addClass("score-minimap-active-section");
       }
     }
@@ -204,7 +214,6 @@ export class UIManager extends EventTarget {
     scrollingContentElm.appendTo(scrollingContainerElm);
 
     var scoreWidth = this.score.numBeats * this.PLAYER_BEAT_WIDTH_PIXELS;
-    scoreWidth *= 1.008; // Add some pixels for borders
     scrollingContentElm.css("width", `${scoreWidth}px`);
 
     this.score.scoreSections.forEach((section, index) => {
