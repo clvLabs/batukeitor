@@ -116,7 +116,9 @@ export class AudioManager extends EventTarget {
         }
       });
 
-      this.dispatchEvent(new Event('tick'));
+      setTimeout(() => {
+        this.dispatchEvent(new Event('tick'));
+      });
 
       // Advance current note and time by a 16th note...
       var secondsPerBeat = 60.0 / this.bpm;
@@ -134,6 +136,7 @@ export class AudioManager extends EventTarget {
         else
           this.stop();
       }
+
     }
   }
 }
