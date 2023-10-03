@@ -133,6 +133,9 @@ export class UIManager extends EventTarget {
 
         $(`#${noteElmId}`).addClass("note-active");
       });
+
+      if (this.playMode == "score")
+        $("#score-scrolling-container").scrollLeft(cb.global16thIndex * (this.PLAYER_BEAT_WIDTH_PIXELS/4));
     }
 
     this.lastPlayedBeat = currentBeat;
