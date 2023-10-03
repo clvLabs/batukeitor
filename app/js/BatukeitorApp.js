@@ -4,8 +4,6 @@ import {InstrumentManager} from "./instruments/InstrumentManager.js"
 import {UIManager} from "./ui/UIManager.js"
 import {Score} from "./score/Score.js"
 
-const DEFAULT_CREWID = "btu-k";
-
 export class BatukeitorApp {
   constructor() {
     this.audioMgr = new AudioManager();
@@ -84,7 +82,7 @@ export class BatukeitorApp {
     const urlParams = new URLSearchParams(queryString);
     var crewId = urlParams.get('crew');
     if (crewId == null)
-      crewId = DEFAULT_CREWID;
+      crewId = this.crewMgr.getFirstCrewId();
 
     this.crew = this.crewMgr.get(crewId);
     if (this.crew == null) {

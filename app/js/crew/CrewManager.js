@@ -24,6 +24,10 @@ export class CrewManager extends EventTarget {
     return this._list[crewId];
   }
 
+  getFirstCrewId() {
+    return Object.keys(this._list)[0];
+  }
+
   select(crewId) {
     this.selectedCrew = this._list[crewId];
   }
