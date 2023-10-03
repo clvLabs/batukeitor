@@ -13,6 +13,7 @@ export class Score extends EventTarget {
     this._ymlScore = undefined;
     this.loaded = false;
     this.name = undefined;
+    this.originalbpm = undefined;
     this.bpm = undefined;
     this.scoreStr = undefined;
     this.sections = undefined;
@@ -102,10 +103,12 @@ export class Score extends EventTarget {
     this.loaded = true;
 
     this.name = this._ymlScore.name;
-    this.bpm = this._ymlScore.bpm;
+    this.originalbpm = this._ymlScore.bpm;
 
-    if ( this.bpm == undefined )
-      this.bpm = this.DEFAULT_BPM;
+    if ( this.originalbpm == undefined )
+      this.originalbpm = this.DEFAULT_BPM;
+
+    this.bpm = this.originalbpm;
 
     this.sections = {};
     for (const sectionId in this._ymlScore.sections) {

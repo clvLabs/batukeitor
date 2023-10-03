@@ -40,6 +40,8 @@ export class UIManager extends EventTarget {
     $("#tab-button-sections").on("click", { tab: "sections-tab"}, this._onTabSelected.bind(this));
     $("#tab-button-instruments").on("click", { tab: "instruments-tab"}, this._onTabSelected.bind(this));
     $("#extra-control-loop").on("click", this._onLoopChecked.bind(this));
+    $("#extra-control-bpm-slider").on("input", this._onBPMSliderInput.bind(this));
+    $("#extra-control-bpm-reset").on("click", this._onBPMResetClicked.bind(this));
 
     $("#tab-button-score").addClass("active");
     $(`#score-tab`).show();
@@ -223,6 +225,9 @@ export class UIManager extends EventTarget {
     scoreInfo += ` @${this.score.bpm}BPM`;
     scoreInfo += ` = ${this.score.getDurationStr()}`;
     $("#score-info").text(scoreInfo);
+
+    $("#current-bpm").text(this.score.bpm);
+    $("#extra-control-bpm-slider").val(this.score.bpm);
   }
 
   _buildInstrumentUI(instrumentId) {
@@ -532,7 +537,28 @@ export class UIManager extends EventTarget {
         enable: enable,
       }}
     ));
+  }
 
+  _onBPMSliderInput(e) {
+    this.score.bpm = e.target.value;
+    this._updateScoreInfo();
+
+    this.dispatchEvent(new CustomEvent("setBPM",
+      {detail: {
+        bpm: this.score.bpm,
+      }}
+    ));
+  }
+
+  _onBPMResetClicked(e) {
+    this.score.bpm = this.score.originalbpm;
+    this._updateScoreInfo();
+
+    this.dispatchEvent(new CustomEvent("setBPM",
+      {detail: {
+        bpm: this.score.bpm,
+      }}
+    ));
   }
 
   _onTrackInstrumentClick(e) {

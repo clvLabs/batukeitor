@@ -121,6 +121,24 @@ select {
   vertical-align:auto;
 }
 
+#extra-control-bpm-reset {
+  color: #fff;
+  background-color: #222;
+  font-size: 24px;
+  height: 100%;
+  border: 0px;
+  outline: none;
+  cursor: pointer;
+}
+
+#extra-control-bpm-reset:hover {
+  color: #ffc400;
+}
+
+#extra-control-bpm-reset:active {
+  color: #ff0101;
+}
+
 #extra-control-bpm-container {
   background-color: #222;
   margin-right: 1em;
