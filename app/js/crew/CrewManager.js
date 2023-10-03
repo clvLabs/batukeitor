@@ -6,6 +6,7 @@ export class CrewManager extends EventTarget {
     this._list = {}
     this._loadPendingCrews = [];
     this.selectedCrew = undefined;
+    this.defaultCrewId = undefined;
   }
 
   init() {
@@ -29,8 +30,8 @@ export class CrewManager extends EventTarget {
     return this._list[crewId];
   }
 
-  getFirstCrewId() {
-    return Object.keys(this._list)[0];
+  getDefaultCrewId() {
+    return this.defaultCrewId;
   }
 
   select(crewId) {
@@ -52,6 +53,8 @@ export class CrewManager extends EventTarget {
     }
 
     this.loaded = true;
+
+    this.defaultCrewId = _ymlCrewList.defaultCrew;
 
     for (const crewId of _ymlCrewList.crews)
     {

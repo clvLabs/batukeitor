@@ -82,7 +82,7 @@ export class BatukeitorApp {
     const urlParams = new URLSearchParams(queryString);
     var crewId = urlParams.get('crew');
     if (crewId == null)
-      crewId = this.crewMgr.getFirstCrewId();
+      crewId = this.crewMgr.getDefaultCrewId();
 
     this.crew = this.crewMgr.get(crewId);
     if (this.crew == null) {
