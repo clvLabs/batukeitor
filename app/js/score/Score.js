@@ -31,7 +31,11 @@ export class Score extends EventTarget {
 
     const self = this;
     $.get(noCacheURL).done(function(data) {
-      self._parseScore(data);
+      try {
+        self._parseScore(data);
+      } catch (error) {
+        self._error(`[Score] ERROR processing ${scoreId}: ${error}`);
+      }
     }).fail(function(e) {
       self._error(`[Score] ERROR loading ${url} (${e.statusText})`);
     });
@@ -99,7 +103,12 @@ export class Score extends EventTarget {
   }
 
   _parseScore(ymlData) {
-    this._ymlScore = jsyaml.load(ymlData);
+    try {
+      this._ymlScore = jsyaml.load(ymlData);
+    } catch (error) {
+      this._error(`[Score] ERROR: Invalid data in ${this.url} - ${error}`);
+      return;
+    }
     this.loaded = true;
 
     this.name = this._ymlScore.name;

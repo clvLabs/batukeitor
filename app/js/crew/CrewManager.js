@@ -11,7 +11,11 @@ export class CrewManager extends EventTarget {
   init() {
     const self = this;
     $.get(this._getCrewListURL()).done(function(data) {
-      self._parseCrewList(data);
+      try {
+        self._parseCrewList(data);
+      } catch (error) {
+        self._error(`[Crews] ERROR processing crews list file: ${error}`);
+      }
     }).fail(function() {
       self._error(`[Crews] ERROR loading crew list: ${url}`);
     });
@@ -39,7 +43,14 @@ export class CrewManager extends EventTarget {
   }
 
   _parseCrewList(ymlData) {
-    const _ymlCrewList = jsyaml.load(ymlData);
+    var _ymlCrewList;
+    try {
+      _ymlCrewList = jsyaml.load(ymlData);
+    } catch (error) {
+      this._error(`[Crews] ERROR: Invalid data in crews list file: ${error}`);
+      return;
+    }
+
     this.loaded = true;
 
     for (const crewId of _ymlCrewList.crews)
@@ -48,7 +59,11 @@ export class CrewManager extends EventTarget {
 
       const self = this;
       $.get(this._getCrewDataURL(crewId)).done(function(data) {
-        self._parseCrewData(crewId, data);
+        try {
+          self._parseCrewData(crewId, data);
+        } catch (error) {
+          self._error(`[Crews] ERROR processing crew [${crewId}] data file: ${error}`);
+        }
       }).fail(function() {
         self._error(`[Crews] ERROR loading crew data: ${url}`);
       }).always(function() {
@@ -61,7 +76,14 @@ export class CrewManager extends EventTarget {
   }
 
   _parseCrewData(crewId, ymlData) {
-    const _ymlCrewData = jsyaml.load(ymlData);
+    var _ymlCrewData;
+    try {
+      _ymlCrewData = jsyaml.load(ymlData);
+    } catch (error) {
+      this._error(`[Crews] ERROR: Invalid data in crew [${crewId}] data file: ${error}`);
+      return;
+    }
+
     this._list[crewId] = {
       id: crewId,
       name: _ymlCrewData.name,

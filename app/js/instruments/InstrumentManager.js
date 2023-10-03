@@ -10,7 +10,11 @@ export class InstrumentManager extends EventTarget {
   init() {
     const self = this;
     $.get(this._getInstrumentListURL()).done(function(data) {
-      self._parseInstrumentList(data);
+      try {
+        self._parseInstrumentList(data);
+      } catch (error) {
+        self._error(`[Instrument] ERROR processing instrument list: ${error}`);
+      }
     }).fail(function() {
       self._error(`[Instrument] ERROR loading instrument list: ${url}`);
     });
@@ -30,7 +34,13 @@ export class InstrumentManager extends EventTarget {
   }
 
   _parseInstrumentList(ymlData) {
-    const _ymlInstrumentList = jsyaml.load(ymlData);
+    var _ymlInstrumentList;
+    try {
+      _ymlInstrumentList = jsyaml.load(ymlData);
+    } catch (error) {
+      this._error(`[Instrument] ERROR: Invalid data in instruments file - ${error}`);
+      return;
+    }
     this.loaded = true;
 
     for (const instrumentId in _ymlInstrumentList.instruments)
