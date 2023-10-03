@@ -2,7 +2,7 @@
 export class CrewManager extends EventTarget {
   constructor() {
     super();
-    this.BASE_URL = "/data/crews";
+    this.BASE_URL = "./data/crews";
     this._list = {}
     this._loadPendingCrews = [];
     this.selectedCrew = undefined;

@@ -3,7 +3,7 @@ import {Instrument} from "./Instrument.js"
 export class InstrumentManager extends EventTarget {
   constructor() {
     super();
-    this.BASE_URL = "/data/instruments";
+    this.BASE_URL = "./data/instruments";
     this._list = {}
   }
 

@@ -104,7 +104,7 @@ export class UIManager extends EventTarget {
         $(item).removeClass("active");
     });
     $(`.play-button-icon`).each((index, item) => {
-      $(item).attr("src", "/app/img/play-icon.svg");
+      $(item).attr("src", "./app/img/play-icon.svg");
   });
 
     }
@@ -343,7 +343,7 @@ export class UIManager extends EventTarget {
 
       const playIconElm = $("<img>", {
         id: `${sectionElmId}-play-button-icon`,
-        src: "/app/img/play-icon.svg",
+        src: "./app/img/play-icon.svg",
         class: "play-button-icon",
       });
       playIconElm.appendTo(playButtonElm);
@@ -423,7 +423,7 @@ export class UIManager extends EventTarget {
 
       const playIconElm = $("<img>", {
         id: `${idPrefix}-play-button-icon`,
-        src: "/app/img/play-icon.svg",
+        src: "./app/img/play-icon.svg",
         class: "play-button-icon",
       });
       playIconElm.appendTo(playButtonElm);
@@ -611,7 +611,7 @@ export class UIManager extends EventTarget {
       });
 
       playButton.removeClass("active");
-      playIcon.attr("src", "/app/img/play-icon.svg");
+      playIcon.attr("src", "./app/img/play-icon.svg");
     } else {
       // It's inactive -> Go to playing mode
       $(`.play-button`).each((index, item) => {
@@ -620,7 +620,7 @@ export class UIManager extends EventTarget {
 
       playButton.removeClass("disabled");
       playButton.addClass("active");
-      playIcon.attr("src", "/app/img/stop-icon.svg");
+      playIcon.attr("src", "./app/img/stop-icon.svg");
     }
   }
 

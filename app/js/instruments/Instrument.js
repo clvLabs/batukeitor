@@ -4,7 +4,7 @@ import {Sample} from "./Sample.js"
 export class Instrument extends EventTarget {
   constructor(instrumentId, ymlInstrumentData) {
     super();
-    this.BASE_URL = "/data/instruments";
+    this.BASE_URL = "./data/instruments";
     this.id = instrumentId;
     this.name = ymlInstrumentData.name;
     this.iconURL = `${this.BASE_URL}/img/${this.id}.png`;

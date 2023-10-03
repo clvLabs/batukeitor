@@ -7,7 +7,7 @@ export class Metronome extends EventTarget {
     this.timerId = null;
     this.bpm = 0;
     this.interval = 1000;
-    this.worker = new Worker("/app/js/audio/MetronomeWorker.js");
+    this.worker = new Worker("./app/js/audio/MetronomeWorker.js");
     this.worker.onmessage = this._onWorkerMessage.bind(this);
     this.workerReady = false;
     this.workerStarted = false;

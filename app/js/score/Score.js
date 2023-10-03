@@ -159,6 +159,6 @@ export class Score extends EventTarget {
   }
 
   _getScoreURL(crewId, scoreId) {
-    return `/data/crews/${crewId}/scores/${scoreId}.yml?ts=${Date.now()}`;
+    return `./data/crews/${crewId}/scores/${scoreId}.yml?ts=${Date.now()}`;
   }
 }
