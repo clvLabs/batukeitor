@@ -39,6 +39,7 @@ export class UIManager extends EventTarget {
     $("#tab-button-score").on("click", { tab: "score-tab"}, this._onTabSelected.bind(this));
     $("#tab-button-sections").on("click", { tab: "sections-tab"}, this._onTabSelected.bind(this));
     $("#tab-button-instruments").on("click", { tab: "instruments-tab"}, this._onTabSelected.bind(this));
+    $("#extra-control-loop").on("click", this._onLoopChecked.bind(this));
 
     $("#tab-button-score").addClass("active");
     $(`#score-tab`).show();
@@ -121,6 +122,9 @@ export class UIManager extends EventTarget {
 
         $(`#${noteElmId}`).removeClass("note-active");
       });
+
+      if (this.playMode == "score")
+        $(`#score-minimap-section-${lb.scoreSectionIndex}`).removeClass("score-minimap-active-section");
     }
 
     if (currentBeat) {
@@ -134,8 +138,10 @@ export class UIManager extends EventTarget {
         $(`#${noteElmId}`).addClass("note-active");
       });
 
-      if (this.playMode == "score")
+      if (this.playMode == "score") {
         $("#score-scrolling-container").scrollLeft(cb.global16thIndex * (this.PLAYER_BEAT_WIDTH_PIXELS/4));
+        $(`#score-minimap-section-${cb.scoreSectionIndex}`).addClass("score-minimap-active-section");
+      }
     }
 
     this.lastPlayedBeat = currentBeat;
@@ -490,7 +496,10 @@ export class UIManager extends EventTarget {
   }
 
   _onTabSelected(e) {
-    $("#main-tab-buttons").children().each( (i,obj) => {
+    $("#main-tab-buttons")
+    .children()
+    .filter(".tab-button")
+    .each( (i,obj) => {
       if (obj == e.target) {
         $(obj).addClass("active");
       } else {
@@ -505,6 +514,25 @@ export class UIManager extends EventTarget {
         $(`#${obj.id}`).hide();
       }
     });
+  }
+
+  _onLoopChecked(e) {
+    const loopElem = $("#extra-control-loop");
+
+    const enable = !loopElem.hasClass("active");
+
+    if (enable) {
+      loopElem.addClass("active");
+    } else {
+      loopElem.removeClass("active");
+    }
+
+    this.dispatchEvent(new CustomEvent("enableLoop",
+      {detail: {
+        enable: enable,
+      }}
+    ));
+
   }
 
   _onTrackInstrumentClick(e) {

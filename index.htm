@@ -39,23 +39,40 @@
     <!-- ------------------------------------------------------- APP STICKY HEADER -->
     <div id="app-sticky-header">
 
-      <!-- ------------------------------------------------------- TAB BUTTONS -->
-      <div id="main-tab-buttons">
-        <button id="tab-button-score" class="tab-button">
-          <span class="tab-button-content">
-            <img src="/app/img/player-icon.svg">
-          </span>
-        </button>
-        <button id="tab-button-sections" class="tab-button">
-          <span class="tab-button-content">
-            <img src="/app/img/score-icon.svg">
-          </span>
-        </button>
-        <button id="tab-button-instruments" class="tab-button">
-          <span class="tab-button-content">
-            <img src="/data/instruments/img/S1.png" width="24px">
-          </span>
-        </button>
+      <div id="app-sticky-header-row">
+        <!-- ------------------------------------------------------- TAB BUTTONS -->
+        <div id="main-tab-buttons">
+          <button id="tab-button-score" class="tab-button">
+            <span class="tab-button-content">
+              <img src="/app/img/player-icon.svg">
+            </span>
+          </button>
+          <button id="tab-button-sections" class="tab-button">
+            <span class="tab-button-content">
+              <img src="/app/img/score-icon.svg">
+            </span>
+          </button>
+          <button id="tab-button-instruments" class="tab-button">
+            <span class="tab-button-content">
+              <img src="/data/instruments/img/S1.png" width="24px">
+            </span>
+          </button>
+        </div>
+
+        <!-- ------------------------------------------------------- MAIN CONTROLS -->
+        <div id="main-controls-div">
+          <div id="extra-control-bpm-container" class="extra-control">
+            <span>BPM</span><span id="current-bpm"></span>
+            <input id="extra-control-bpm-slider" type="range" min="60" max="130" value="100" class="slider">
+          </div>
+
+          <button id="extra-control-loop" class="extra-control">
+            <span class="">
+              <img src="/app/img/loop-icon.svg" width="32px">
+            </span>
+          </button>
+        </div>
+
       </div>
 
       <!-- ------------------------------------------------------- FULL SCORE VIEW -->
