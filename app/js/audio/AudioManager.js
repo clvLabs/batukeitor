@@ -58,7 +58,7 @@ export class AudioManager extends EventTarget {
     // Delay the stopped event
     setTimeout(() => {
       this.dispatchEvent(new Event('stopped'));
-    }, this.scheduleAheadTime * 5 * 1000);
+    }, this.scheduleAheadTime * 1000);
   }
 
   _play() {

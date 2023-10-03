@@ -7,6 +7,7 @@ export class UIManager extends EventTarget {
     this.crews = crews;
     this.score = undefined;
     this.instrumentMgr = undefined;
+    this.playMode = "";
     this.lastPlayedBeat = undefined;
   }
 
@@ -108,17 +109,33 @@ export class UIManager extends EventTarget {
 
   setAudioManagerCurrentBeat(currentBeat) {
 
-    if (this.lastPlayedBeat == undefined) {
-      this.lastPlayedBeat = currentBeat;
-      return;
+    var noteElmId;
+
+    if (this.lastPlayedBeat) {
+      const lb = this.lastPlayedBeat;
+      Object.values(lb.section.tracks).forEach(track => {
+        if (this.playMode == "score")
+          noteElmId = `score-section-${lb.scoreSectionIndex}-${lb.section.id}-track-${track.id}-16th-${lb.section16thIndex}`;
+        else
+          noteElmId = `section-${lb.section.id}-track-${track.id}-16th-${lb.section16thIndex}`;
+
+        $(`#${noteElmId}`).removeClass("note-active");
+      });
     }
 
-    // console.log(`[DBG] [TICK] ` +
-    //             `[${this.lastPlayedBeat.global16thIndex}] ${this.lastPlayedBeat.scoreSectionIndex}:${this.lastPlayedBeat.section.id} - ${this.lastPlayedBeat.section16thIndex}` +
-    //             `[${currentBeat.global16thIndex}] ${currentBeat.scoreSectionIndex}:${currentBeat.section.id} - ${currentBeat.section16thIndex}`);
+    if (currentBeat) {
+      const cb = currentBeat;
+      Object.values(cb.section.tracks).forEach(track => {
+        if (this.playMode == "score")
+          noteElmId = `score-section-${cb.scoreSectionIndex}-${cb.section.id}-track-${track.id}-16th-${cb.section16thIndex}`;
+        else
+          noteElmId = `section-${cb.section.id}-track-${track.id}-16th-${cb.section16thIndex}`;
+
+        $(`#${noteElmId}`).addClass("note-active");
+      });
+    }
 
     this.lastPlayedBeat = currentBeat;
-
   }
 
   setScoreError(errorMsg) {
@@ -544,13 +561,14 @@ export class UIManager extends EventTarget {
   _onScorePlayButton(e) {
     const playButton = $("#score-play-button");
     const playIcon = $("#score-play-button-icon");
+    this.playMode = "score";
 
     if (playButton.hasClass("active")) {
       this.dispatchEvent(new Event("stop"));
     } else {
       this.dispatchEvent(new CustomEvent("play",
       {detail: {
-        type: "score",
+        mode: this.playMode,
         score: this.score,
       }}));
     }
@@ -562,13 +580,14 @@ export class UIManager extends EventTarget {
     const section = e.data.section;
     const playButton = $(`#section-${section.id}-play-button`);
     const playIcon = $(`#section-${section.id}-play-button-icon`);
+    this.playMode = "section";
 
     if (playButton.hasClass("active")) {
       this.dispatchEvent(new Event("stop"));
     } else {
       this.dispatchEvent(new CustomEvent("play",
       {detail: {
-        type: "section",
+        mode: this.playMode,
         score: this.score,
         section: section,
       }}));

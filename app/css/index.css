@@ -284,6 +284,11 @@ select {
   overflow: hidden;
 }
 
+.section-track-16th.note-active {
+  color: red;
+  border: 2px solid red;
+}
+
 .muted {
   opacity: 0.1;
 }

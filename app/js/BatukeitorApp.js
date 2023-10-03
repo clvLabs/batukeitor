@@ -52,6 +52,7 @@ export class BatukeitorApp {
   }
 
   onAudioManagerStopped() {
+    this.uiMgr.setAudioManagerCurrentBeat(undefined);
     this.uiMgr.setAudioManagerPlaying(false);
   }
 
@@ -61,9 +62,10 @@ export class BatukeitorApp {
     for (var i=0; i < this.audioMgr.scheduledBeatTimes.length; i++) {
       const currentBeat = this.audioMgr.scheduledBeatTimes[i];
 
-      if (currentBeat.time < this.audioMgr.audioContext.currentTime) {
+      if (currentBeat.time <= this.audioMgr.audioContext.currentTime) {
         lastPlayedBeatIndex = i;
       } else {
+        lastPlayedBeatIndex = i;
         break;
       }
     }
@@ -71,8 +73,8 @@ export class BatukeitorApp {
     if (lastPlayedBeatIndex == undefined)
       return;
 
-    const currentBeat = this.audioMgr.scheduledBeatTimes[lastPlayedBeatIndex];
-    this.uiMgr.setAudioManagerCurrentBeat(currentBeat);
+    const lastPlayedBeat = this.audioMgr.scheduledBeatTimes[lastPlayedBeatIndex];
+    this.uiMgr.setAudioManagerCurrentBeat(lastPlayedBeat);
 
     this.audioMgr.scheduledBeatTimes = this.audioMgr.scheduledBeatTimes.slice(lastPlayedBeatIndex+1);
   }
@@ -111,9 +113,9 @@ export class BatukeitorApp {
 
   onUIManagerPlay(e) {
     this.audioMgr.setBPM(this.score.bpm);
-    if (e.detail.type == "score") {
+    if (e.detail.mode == "score") {
       this.audioMgr.playScore(e.detail.score);
-    } else if (e.detail.type == "section") {
+    } else if (e.detail.mode == "section") {
       this.audioMgr.playSection(e.detail.score, e.detail.section);
     }
   }
