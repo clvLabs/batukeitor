@@ -3,5 +3,6 @@
 
 # Keep this
 !.gitignore
+!README.md
 !/crews
 
