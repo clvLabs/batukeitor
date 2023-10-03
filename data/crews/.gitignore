@@ -1,0 +1,6 @@
+# Ignore everything!
+*
+
+# Keep this
+!.gitignore
+!index.sample.yml

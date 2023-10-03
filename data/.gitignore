@@ -1,0 +1,7 @@
+# Ignore everything!
+*
+
+# Keep this
+!.gitignore
+!/crews
+

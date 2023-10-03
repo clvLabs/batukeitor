@@ -4,6 +4,7 @@ export class CrewManager extends EventTarget {
     super();
     this.BASE_URL = "/data/crews";
     this._list = {}
+    this._loadPendingCrews = [];
     this.selectedCrew = undefined;
   }
 
@@ -12,7 +13,7 @@ export class CrewManager extends EventTarget {
     $.get(this._getCrewListURL()).done(function(data) {
       self._parseCrewList(data);
     }).fail(function() {
-      self._error(`[Crew] ERROR loading crew list: ${url}`);
+      self._error(`[Crews] ERROR loading crew list: ${url}`);
     });
   }
 
@@ -41,21 +42,39 @@ export class CrewManager extends EventTarget {
     const _ymlCrewList = jsyaml.load(ymlData);
     this.loaded = true;
 
-    for (const crewId in _ymlCrewList.crews)
+    for (const crewId of _ymlCrewList.crews)
     {
-      const crew = _ymlCrewList.crews[crewId];
-      this._list[crewId] = {
-        id: crewId,
-        name: crew.name,
-        scores: crew.scores,
-      };
-    }
+      this._loadPendingCrews.push(crewId);
 
-    this.dispatchEvent(new Event('ready'));
+      const self = this;
+      $.get(this._getCrewDataURL(crewId)).done(function(data) {
+        self._parseCrewData(crewId, data);
+      }).fail(function() {
+        self._error(`[Crews] ERROR loading crew data: ${url}`);
+      }).always(function() {
+        self._loadPendingCrews = self._loadPendingCrews.filter(id => id != crewId);
+
+        if (self._loadPendingCrews.length == 0)
+          self.dispatchEvent(new Event('ready'));
+      });
+    }
+  }
+
+  _parseCrewData(crewId, ymlData) {
+    const _ymlCrewData = jsyaml.load(ymlData);
+    this._list[crewId] = {
+      id: crewId,
+      name: _ymlCrewData.name,
+      scores: _ymlCrewData.scores,
+    };
   }
 
   _getCrewListURL() {
-    return `${this.BASE_URL}/crews.yml`;
+    return `${this.BASE_URL}/index.yml`;
+  }
+
+  _getCrewDataURL(crewId) {
+    return `${this.BASE_URL}/${crewId}/index.yml`;
   }
 
 }
