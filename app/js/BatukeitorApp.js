@@ -57,26 +57,24 @@ export class BatukeitorApp {
   }
 
   onAudioManagerTick(e) {
-    var lastPlayedBeatIndex = undefined;
+    var nextBeatToPlay = undefined;
 
     for (var i=0; i < this.audioMgr.scheduledBeatTimes.length; i++) {
       const currentBeat = this.audioMgr.scheduledBeatTimes[i];
 
-      if (currentBeat.time <= this.audioMgr.audioContext.currentTime) {
-        lastPlayedBeatIndex = i;
-      } else {
-        lastPlayedBeatIndex = i;
+      nextBeatToPlay = i;
+      if (currentBeat.time > this.audioMgr.audioContext.currentTime) {
         break;
       }
     }
 
-    if (lastPlayedBeatIndex == undefined)
+    if (nextBeatToPlay == undefined)
       return;
 
-    const lastPlayedBeat = this.audioMgr.scheduledBeatTimes[lastPlayedBeatIndex];
+    const lastPlayedBeat = this.audioMgr.scheduledBeatTimes[nextBeatToPlay];
     this.uiMgr.setAudioManagerCurrentBeat(lastPlayedBeat);
 
-    this.audioMgr.scheduledBeatTimes = this.audioMgr.scheduledBeatTimes.slice(lastPlayedBeatIndex+1);
+    this.audioMgr.scheduledBeatTimes = this.audioMgr.scheduledBeatTimes.slice(nextBeatToPlay+1);
   }
 
   onCrewManagerReady() {
