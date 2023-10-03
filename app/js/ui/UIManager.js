@@ -495,7 +495,7 @@ export class UIManager extends EventTarget {
   }
 
   _onCrewSelectorInput(e) {
-    const newLocation = "/"
+    const newLocation = "./"
         + "?crew="
         + $("#crew-selector option:selected").val();
 
