@@ -92,11 +92,11 @@ export class CrewManager extends EventTarget {
   }
 
   _getCrewListURL() {
-    return `${this.BASE_URL}/index.yml`;
+    return `${this.BASE_URL}/index.yml?ts=${Date.now()}`;
   }
 
   _getCrewDataURL(crewId) {
-    return `${this.BASE_URL}/${crewId}/index.yml`;
+    return `${this.BASE_URL}/${crewId}/index.yml?ts=${Date.now()}`;
   }
 
 }

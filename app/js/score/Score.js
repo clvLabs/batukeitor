@@ -27,10 +27,9 @@ export class Score extends EventTarget {
     const url = this._getScoreURL(crewId, scoreId);
     this._reset();
     this.url = url;
-    const noCacheURL = `${url}?ts=${Date.now()}`;
 
     const self = this;
-    $.get(noCacheURL).done(function(data) {
+    $.get(url).done(function(data) {
       try {
         self._parseScore(data);
       } catch (error) {
@@ -160,6 +159,6 @@ export class Score extends EventTarget {
   }
 
   _getScoreURL(crewId, scoreId) {
-    return `/data/crews/${crewId}/scores/${scoreId}.yml`;
+    return `/data/crews/${crewId}/scores/${scoreId}.yml?ts=${Date.now()}`;
   }
 }

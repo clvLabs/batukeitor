@@ -53,7 +53,7 @@ export class InstrumentManager extends EventTarget {
   }
 
   _getInstrumentListURL() {
-    return `${this.BASE_URL}/instruments.yml`;
+    return `${this.BASE_URL}/instruments.yml?ts=${Date.now()}`;
   }
 
 }
