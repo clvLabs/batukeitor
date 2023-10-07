@@ -9,7 +9,8 @@ export class Instrument extends EventTarget {
     this.name = ymlInstrumentData.name;
     this.iconURL = `${this.BASE_URL}/img/${this.id}.png`;
     this.samples = {};
-    this.muted = false;
+    this._muted = false;
+    this._solo = undefined;
 
     for (const sampleId in ymlInstrumentData.samples) {
       const fileName = ymlInstrumentData.samples[sampleId];
@@ -25,8 +26,23 @@ export class Instrument extends EventTarget {
     }
   }
 
+  muted() {
+      return this._muted;
+  }
+
+  solo() {
+    return this._solo;
+  }
+
+  audible() {
+    if (this._solo !== undefined)
+      return this._solo;
+
+    return !this._muted;
+  }
+
   play(sampleId, force=false) {
-    if (this.muted && !force)
+    if (!this.audible() && !force)
       return;
 
     Tone.loaded().then(() => {

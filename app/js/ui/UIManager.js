@@ -220,11 +220,8 @@ export class UIManager extends EventTarget {
       this._buildSectionUI(`score-section-${index}-`, section.id, false).appendTo(scrollingContentElm);
     });
 
-    // Update muted instruments
-    Object.values(this.instrumentMgr.all()).forEach(instrument => {
-      this._updateInstrumentMute(instrument);
-    });
-
+    // Update instrument states
+    this._updateInstrumentStates();
   }
 
   _updateScoreInfo() {
@@ -440,7 +437,7 @@ export class UIManager extends EventTarget {
 
       const instrumentIconElm = $("<img>",{
         id: `${idPrefix}-instrument-${instrument.id}-icon`,
-        class: `section-instrument-icon track-${instrument.id}-mute`,
+        class: `section-instrument-icon track-${instrument.id}-mute track-${instrument.id}-solo`,
         src: instrument.iconURL,
         title: `[${instrument.id}] ${instrument.name}`,
       });
@@ -572,25 +569,44 @@ export class UIManager extends EventTarget {
 
   _onTrackInstrumentClick(e) {
     const instrument = e.data.instrument;
-    var mute = true;
 
-    if ($(e.target).hasClass("muted"))
-      mute = false;
+    if (e.shiftKey) {
+      this._soloInstrument(instrument, !instrument.solo());
+      return;
+    }
 
-    this._muteInstrument(instrument, mute);
+    if (instrument.solo())
+      this._soloInstrument(instrument, !instrument.solo());
+    else
+      this._muteInstrument(instrument, !instrument.muted());
   }
 
   _muteInstrument(instrument, mute) {
-    instrument.muted = mute;
-    this._updateInstrumentMute(instrument);
+    this.instrumentMgr.muteInstrument(instrument, mute);
+    this._updateInstrumentStates();
   }
 
-  _updateInstrumentMute(instrument) {
-    $(`.track-${instrument.id}-mute`).each((index, item) => {
-      if (instrument.muted)
-        $(item).addClass("muted");
-      else
-        $(item).removeClass("muted");
+  _soloInstrument(instrument, solo) {
+    this.instrumentMgr.soloInstrument(instrument, solo);
+    this._updateInstrumentStates();
+  }
+
+  _updateInstrumentStates() {
+    Object.values(this.instrumentMgr.all()).forEach(instrument => {
+      $(`.track-${instrument.id}-mute`).each((index, item) => {
+        if (instrument.audible())
+          $(item).removeClass("muted");
+        else
+          $(item).addClass("muted");
+      });
+
+      $(`.track-${instrument.id}-solo`).each((index, item) => {
+        if (instrument.solo())
+          $(item).addClass("solo");
+        else {
+          $(item).removeClass("solo");
+        }
+      });
     });
   }
 

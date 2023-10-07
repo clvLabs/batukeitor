@@ -343,6 +343,12 @@ select {
   opacity: 0.1;
 }
 
+.solo {
+  opacity: 1 !important;
+  background-color: #7a2828;
+  border: 2px solid #7a2828;
+}
+
 .bar-start {
   background-color: #7a2828;
 }

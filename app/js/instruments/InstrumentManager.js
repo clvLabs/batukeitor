@@ -5,6 +5,7 @@ export class InstrumentManager extends EventTarget {
     super();
     this.BASE_URL = "./data/instruments";
     this._list = {}
+    this._soloInstruments = [];
   }
 
   init() {
@@ -26,6 +27,40 @@ export class InstrumentManager extends EventTarget {
 
   get(instrumentId) {
     return this._list[instrumentId];
+  }
+
+  muteInstrument(instrument, mute) {
+    instrument._muted = mute;
+  }
+
+  soloInstrument(instrument, solo) {
+    if (solo == true) {
+      if (!this._soloInstruments.includes(instrument)){
+        instrument._solo = true;
+        this._soloInstruments.push(instrument);
+      }
+
+      Object.values(this._list).forEach(_instrument => {
+        if (_instrument !== instrument){
+          if (_instrument._solo == undefined) {
+            _instrument._solo = false;
+          }
+        }
+      });
+    } else {
+      if (this._soloInstruments.includes(instrument)){
+        instrument._solo = false;
+
+        const index = this._soloInstruments.indexOf(instrument);
+        this._soloInstruments.splice(index, 1);
+
+        if (!this._soloInstruments.length) {
+          Object.values(this._list).forEach(_instrument => {
+            _instrument._solo = undefined;
+          });
+        }
+      }
+    }
   }
 
   _error(msg) {

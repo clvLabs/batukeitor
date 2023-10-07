@@ -16,7 +16,7 @@ export class Sample extends EventTarget {
   }
 
   play(time=undefined, force=false) {
-    if (this.instrument.muted && !force)
+    if (!this.instrument.audible() && !force)
       return;
 
     Tone.loaded().then(() => {
