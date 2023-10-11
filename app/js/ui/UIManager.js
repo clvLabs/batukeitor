@@ -467,8 +467,11 @@ export class UIManager extends EventTarget {
       }
 
       if (fullModule) {
-        // var note16thWidth = 100 / track.length;
-        var note16thWidth = 100 / this.FULL_MODULE_16THS;
+        var note16thWidth;
+        if (section.num16ths <= this.FULL_MODULE_16THS)
+          note16thWidth = 100 / this.FULL_MODULE_16THS;
+        else
+          note16thWidth = 100 / section.num16ths;
 
         if (section.timeSignature.isCompound())
           note16thWidth *= (1/1.5);
