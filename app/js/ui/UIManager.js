@@ -100,9 +100,11 @@ export class UIManager extends EventTarget {
 
   setAudioManagerPlaying(playing) {
     if (playing) {
+      $(`.score-minimap-section`).addClass("playing");
       $(`#extra-control-play-button`).addClass("disabled");
       $(`#extra-control-stop-button`).removeClass("disabled");
     } else {
+      $(`.score-minimap-section`).removeClass("playing");
       $(`#extra-control-play-button`).removeClass("disabled");
       $(`#extra-control-stop-button`).addClass("disabled");
 
@@ -324,6 +326,7 @@ export class UIManager extends EventTarget {
       });
       sectionElm.css("background-color", `#${section.color}`);
       sectionElm.css("width", `${sectionWidth}%`);
+      sectionElm.on("click", {scoreSectionIndex: index}, this._onMinimapSectionClick.bind(this));
 
       const tooltipElm = $("<span>", {
         class: "tooltip",
@@ -786,6 +789,23 @@ export class UIManager extends EventTarget {
     }
 
     this._updatePlayButtons(loopButton, loopIcon);
+  }
+
+  _onMinimapSectionClick(e) {
+
+    if ($(e.target).hasClass("playing"))
+      return;
+
+    const scoreSectionIndex = e.data.scoreSectionIndex;
+    const section = this.score.scoreSections[scoreSectionIndex];
+
+    const sectionElm = $(`#score-section-${scoreSectionIndex}-${section.id}`);
+
+    var currentXPos = sectionElm.offset().left
+                    - $("#score-scrolling-content").offset().left
+                    - this.PLAYER_BEAT_WIDTH_PIXELS;  // Leave a beat past current played note
+
+    $("#score-scrolling-container").scrollLeft(currentXPos);
   }
 
 
