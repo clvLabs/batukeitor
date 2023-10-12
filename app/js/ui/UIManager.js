@@ -43,6 +43,7 @@ export class UIManager extends EventTarget {
     $("#extra-control-bpm-slider").on("input", this._onBPMSliderInput.bind(this));
     $("#extra-control-bpm-reset").on("click", this._onBPMResetClicked.bind(this));
     $("#extra-control-stop").on("click", this._onExtraStopButton.bind(this));
+    $("#extra-control-play").on("click", this._onExtraPlayButton.bind(this));
 
 
     $("#tab-button-score").addClass("active");
@@ -99,9 +100,10 @@ export class UIManager extends EventTarget {
 
   setAudioManagerPlaying(playing) {
     if (playing) {
+      $(`#extra-control-play`).addClass("disabled");
       $(`#extra-control-stop`).removeClass("disabled");
     } else {
-      // Stop
+      $(`#extra-control-play`).removeClass("disabled");
       $(`#extra-control-stop`).addClass("disabled");
 
       // Play
@@ -351,7 +353,7 @@ export class UIManager extends EventTarget {
 
     // Play
     const playHeaderElm = $("<div>", {
-      class: "header-play-button",
+      class: "section-header-item",
     });
     playHeaderElm.appendTo(sectionHeaderContainerElm);
 
@@ -375,7 +377,7 @@ export class UIManager extends EventTarget {
 
     // Loop
     const loopHeaderElm = $("<div>", {
-      class: "header-loop-button",
+      class: "section-header-item",
     });
     loopHeaderElm.appendTo(sectionHeaderContainerElm);
 
@@ -450,30 +452,17 @@ export class UIManager extends EventTarget {
     return sectionElm;
   }
 
-  _buildTrackInstrumentsUI(idPrefix, tracks, addScorePlayButton=false) {
+  _buildTrackInstrumentsUI(idPrefix, tracks, addHeaderSpacer=false) {
     const sectionInstrumentsElm = $("<div>", {
       id: `${idPrefix}-instrument-list`,
       class: "section-instrument-list",
     });
 
-    if (addScorePlayButton) {
+    if (addHeaderSpacer) {
       const playHeaderElm = $("<div>", {
-        class: "header-play-button",
+        class: "section-header-item",
       });
       playHeaderElm.appendTo(sectionInstrumentsElm);
-
-      const playButtonElm = $("<button>", {
-        id: `${idPrefix}-play-button`,
-        class: "play-button",
-      });
-      playButtonElm.on("click", this._onScorePlayButton.bind(this));
-      playButtonElm.appendTo(playHeaderElm);
-
-      const playIconElm = $("<img>", {
-        id: `${idPrefix}-play-button-icon`,
-        class: "play-button-icon",
-      });
-      playIconElm.appendTo(playButtonElm);
     }
 
     for (const trackId in tracks) {
@@ -685,25 +674,17 @@ export class UIManager extends EventTarget {
     this.dispatchEvent(new Event("stop"));
   }
 
-  _onScorePlayButton(e) {
-    const playButton = $("#score-play-button");
-    const playIcon = $("#score-play-button-icon");
+  _onExtraPlayButton(e) {
     this.playMode = "score";
     this.playLoop = false;
 
-    if (playButton.hasClass("active")) {
-      this.dispatchEvent(new Event("stop"));
-    } else {
-      this.dispatchEvent(new CustomEvent("play",
-      {detail: {
-        mode: this.playMode,
-        score: this.score,
-        scoreSectionIndex: 0,
-        loop: this.playLoop,
-      }}));
-    }
-
-    this._updatePlayButtons(playButton, playIcon);
+    this.dispatchEvent(new CustomEvent("play",
+    {detail: {
+      mode: this.playMode,
+      score: this.score,
+      scoreSectionIndex: 0,
+      loop: this.playLoop,
+    }}));
   }
 
   _onSectionPlayButton(e) {
