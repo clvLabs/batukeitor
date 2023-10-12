@@ -344,16 +344,11 @@ export class UIManager extends EventTarget {
       const sectionElm = $("<div>", {
         id: `score-minimap-section-${index}`,
         class: "score-minimap-section",
+        title: section.name,
       });
       sectionElm.css("background-color", `#${section.color}`);
       sectionElm.css("width", `${sectionWidth}%`);
       sectionElm.on("click", {scoreSectionIndex: index}, this._onMinimapSectionClick.bind(this));
-
-      const tooltipElm = $("<span>", {
-        class: "tooltip",
-      });
-      tooltipElm.text(section.name);
-      tooltipElm.appendTo(sectionElm);
 
       sectionElm.appendTo(containerElm);
     });
