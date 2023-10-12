@@ -42,8 +42,8 @@ export class UIManager extends EventTarget {
     $("#tab-button-instruments").on("click", { tab: "instruments-tab"}, this._onTabSelected.bind(this));
     $("#extra-control-bpm-slider").on("input", this._onBPMSliderInput.bind(this));
     $("#extra-control-bpm-reset").on("click", this._onBPMResetClicked.bind(this));
-    $("#extra-control-stop").on("click", this._onExtraStopButton.bind(this));
-    $("#extra-control-play").on("click", this._onExtraPlayButton.bind(this));
+    $("#extra-control-stop-button").on("click", this._onExtraStopButton.bind(this));
+    $("#extra-control-play-button").on("click", this._onExtraPlayButton.bind(this));
 
 
     $("#tab-button-score").addClass("active");
@@ -100,11 +100,11 @@ export class UIManager extends EventTarget {
 
   setAudioManagerPlaying(playing) {
     if (playing) {
-      $(`#extra-control-play`).addClass("disabled");
-      $(`#extra-control-stop`).removeClass("disabled");
+      $(`#extra-control-play-button`).addClass("disabled");
+      $(`#extra-control-stop-button`).removeClass("disabled");
     } else {
-      $(`#extra-control-play`).removeClass("disabled");
-      $(`#extra-control-stop`).addClass("disabled");
+      $(`#extra-control-play-button`).removeClass("disabled");
+      $(`#extra-control-stop-button`).addClass("disabled");
 
       // Play
       $(`.play-button`).each((index, item) => {
@@ -681,6 +681,8 @@ export class UIManager extends EventTarget {
   }
 
   _onExtraPlayButton(e) {
+    const playButton = $(`#extra-control-play-button`);
+    const playIcon = $(`#extra-control-play-icon`);
     this.playMode = "score";
     this.playLoop = false;
 
@@ -691,6 +693,9 @@ export class UIManager extends EventTarget {
       scoreSectionIndex: 0,
       loop: this.playLoop,
     }}));
+
+    this._updatePlayButtons(playButton, playIcon);
+    playButton.addClass("disabled");
   }
 
   _onSectionPlayButton(e) {

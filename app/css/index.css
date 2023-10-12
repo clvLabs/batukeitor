@@ -144,31 +144,31 @@ select {
   margin-right: 1em;
 }
 
-#extra-control-play {
+#extra-control-play-button {
   background-color: #347a2e;
   border: 1px solid #00bb00;
 }
 
-#extra-control-play:hover {
+#extra-control-play-button:hover {
   background-color: #00b900;
 }
 
-#extra-control-play.disabled {
+#extra-control-play-button.disabled {
   opacity: 0.1;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-#extra-control-stop {
+#extra-control-stop-button {
   background-color: #b75757;
   border: 1px solid #ff0000;
 }
 
-#extra-control-stop:hover {
+#extra-control-stop-button:hover {
   background-color: #ff0000;
 }
 
-#extra-control-stop.disabled {
+#extra-control-stop-button.disabled {
   opacity: 0.1;
   cursor: not-allowed;
   pointer-events: none;
