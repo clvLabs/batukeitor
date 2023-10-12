@@ -484,6 +484,25 @@ select {
   margin-right: 1em;
 }
 
+.instrument-volume {
+  margin-right: 2em;
+}
+
+.instrument-volume-icon {
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  margin-right: 1em;
+}
+
+.instrument-volume-icon:hover {
+  border: 1px solid #52aa74;
+}
+
+.instrument-volume-icon:active {
+  border: 1px solid #ffffff;
+}
+
 .instrument-name {
   cursor: default;
   width: 6em;

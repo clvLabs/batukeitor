@@ -9,10 +9,19 @@ export class Sample extends EventTarget {
     this.fileName = fileName;
     this.url = `${this.BASE_URL}/samples/${fileName}`;
     this.player = undefined;
+    this._volume = 0;
   }
 
   init() {
     this.player = new Tone.Player(this.url).toDestination();
+  }
+
+  getVolume() {
+    return this._volume;
+  }
+
+  setVolume(db) {
+    this._volume = db;
   }
 
   play(time=undefined, force=false) {
@@ -20,6 +29,7 @@ export class Sample extends EventTarget {
       return;
 
     Tone.loaded().then(() => {
+      this.player.volume.value = this._volume;
       this.player.start(time);
     });
   }

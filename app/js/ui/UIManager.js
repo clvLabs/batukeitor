@@ -292,6 +292,27 @@ export class UIManager extends EventTarget {
     instrumentNameElm.text(instrument.name);
     instrumentNameElm.appendTo(instrumentElm);
 
+    // Volume Icon
+    const volumeIconElm = $("<img>", {
+      id: `instrument-${instrument.id}-volume-icon`,
+      class: "instrument-volume-icon",
+      src: "./app/img/volume-icon.svg",
+    });
+    volumeIconElm.on("click", { instrument: instrument }, this._onInstrumentVolumeIconClick.bind(this));
+    volumeIconElm.appendTo(instrumentElm);
+
+    // Volume slider
+    const volumeElm = $("<input>", {
+      id: `instrument-${instrument.id}-volume`,
+      class: "instrument-volume slider",
+      type: "range",
+      min: -30,
+      max: 10,
+      value: 0,
+    });
+    instrumentElm.on("input", { instrumentId: instrumentId }, this._onInstrumentVolumeSliderInput.bind(this));
+    volumeElm.appendTo(instrumentElm);
+
     // Samples
     const instrumentSamplesElm = $("<div>", {
       id: `instrument-${instrument.id}-samples-container`,
@@ -808,6 +829,27 @@ export class UIManager extends EventTarget {
     $("#score-scrolling-container").scrollLeft(currentXPos);
   }
 
+  _onInstrumentVolumeIconClick(e) {
+    const instrument = e.data.instrument;
+    const slider = $(`#instrument-${instrument.id}-volume`);
+
+    slider.val(0);
+    this.dispatchEvent(new CustomEvent("changeInstrumentVolume",
+      {detail: {
+        instrumentId: instrument.id,
+        volume: 0,
+      }}
+    ));
+  }
+
+  _onInstrumentVolumeSliderInput(e) {
+    this.dispatchEvent(new CustomEvent("changeInstrumentVolume",
+      {detail: {
+        instrumentId: e.data.instrumentId,
+        volume: e.target.value,
+      }}
+    ));
+  }
 
   // From: https://www.jqueryscript.net/text/reverse-text-background-color.html
   _adjustTextColor(DOMElem) {

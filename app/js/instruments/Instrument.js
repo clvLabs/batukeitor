@@ -11,6 +11,7 @@ export class Instrument extends EventTarget {
     this.samples = {};
     this._muted = false;
     this._solo = undefined;
+    this._volume = 0;
 
     for (const sampleId in ymlInstrumentData.samples) {
       const fileName = ymlInstrumentData.samples[sampleId];
@@ -24,6 +25,17 @@ export class Instrument extends EventTarget {
       const sample = this.samples[sampleId];
       sample.init();
     }
+  }
+
+  getVolume() {
+    return this._volume;
+  }
+
+  setVolume(db) {
+    this._volume = db;
+    Object.values(this.samples).forEach(sample => {
+      sample.setVolume(db);
+    });
   }
 
   muted() {
