@@ -325,6 +325,12 @@ export class UIManager extends EventTarget {
       sectionElm.css("background-color", `#${section.color}`);
       sectionElm.css("width", `${sectionWidth}%`);
 
+      const tooltipElm = $("<span>", {
+        class: "tooltip",
+      });
+      tooltipElm.text(section.name);
+      tooltipElm.appendTo(sectionElm);
+
       sectionElm.appendTo(containerElm);
     });
 

@@ -196,10 +196,30 @@ select {
   border: 1px solid #777;
 }
 
-.score-minimap-section{
+.score-minimap-section {
   display: inline-block;
   border: 1px solid black;
   height: 48px;
+  cursor: pointer;
+}
+
+.score-minimap-section .tooltip {
+  visibility: hidden;
+  display: flex;
+  width: 200px;
+  background-color: #3c3c3c;
+  border: 1px solid #777;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 10px;
+  position: relative;
+  z-index: 1;
+  top: 60px;
+}
+
+.score-minimap-section:hover .tooltip {
+  visibility: visible;
 }
 
 .score-minimap-active-section{
