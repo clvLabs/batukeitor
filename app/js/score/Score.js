@@ -96,6 +96,17 @@ export class Score extends EventTarget {
   }
 
 
+  getScoreSection16thOffset(sectionIndex) {
+    var offset = 0;
+
+    for (var index=0; index < sectionIndex; index++) {
+      offset += this.scoreSections[index].num16ths;
+    };
+
+    return offset;
+  }
+
+
   _error(msg) {
     this.dispatchEvent(new CustomEvent('error',
       {detail: { error: msg }}));

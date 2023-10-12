@@ -13,6 +13,7 @@ export class AudioManager extends EventTarget {
     this.bpm = 1;
     this.sectionMode = false;
     this.current16th = 0;
+    this.min16th = 0;
     this.max16th = 0;
     this.nextNoteTime = 0.0;
     this.scheduleAheadTime = 0.1;
@@ -37,10 +38,21 @@ export class AudioManager extends EventTarget {
     this.metronome.setBPM(bpm);
   }
 
-  playScore(score) {
+  playScore(score, scoreSectionIndex) {
     this.score = score;
     this.sectionMode = false;
-    this.max16th = score.num16ths;
+
+    this.current16th = this.score.getScoreSection16thOffset(scoreSectionIndex);
+
+    if (this.loop) {
+      const section = this.score.scoreSections[scoreSectionIndex];
+      this.min16th = this.current16th;
+      this.max16th = this.current16th + section.num16ths;
+    } else {
+      this.min16th = 0;
+      this.max16th = score.num16ths;
+    }
+
     this._play();
   }
 
@@ -48,7 +60,9 @@ export class AudioManager extends EventTarget {
     this.score = score;
     this.section = section;
     this.sectionMode = true;
+    this.min16th = 0;
     this.max16th = section.num16ths;
+    this.current16th = 0;
     this._play();
   }
 
@@ -73,8 +87,6 @@ export class AudioManager extends EventTarget {
       node.start(0);
       this.audioContextUnlocked = true;
     }
-
-    this.current16th = 0;
 
     this.scheduledBeatTimes = [];
     this.metronome.start();
@@ -132,7 +144,7 @@ export class AudioManager extends EventTarget {
       this.current16th++;
       if (this.current16th == this.max16th) {
         if (this.loop)
-          this.current16th = 0;
+          this.current16th = this.min16th;
         else
           this.stop();
       }

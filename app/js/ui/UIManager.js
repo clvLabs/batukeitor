@@ -8,6 +8,7 @@ export class UIManager extends EventTarget {
     this.score = undefined;
     this.instrumentMgr = undefined;
     this.playMode = "";
+    this.playLoop = false;
     this.lastPlayedBeat = undefined;
   }
 
@@ -39,9 +40,10 @@ export class UIManager extends EventTarget {
     $("#tab-button-score").on("click", { tab: "score-tab"}, this._onTabSelected.bind(this));
     $("#tab-button-sections").on("click", { tab: "sections-tab"}, this._onTabSelected.bind(this));
     $("#tab-button-instruments").on("click", { tab: "instruments-tab"}, this._onTabSelected.bind(this));
-    $("#extra-control-loop").on("click", this._onLoopChecked.bind(this));
     $("#extra-control-bpm-slider").on("input", this._onBPMSliderInput.bind(this));
     $("#extra-control-bpm-reset").on("click", this._onBPMResetClicked.bind(this));
+    $("#extra-control-stop").on("click", this._onExtraStopButton.bind(this));
+
 
     $("#tab-button-score").addClass("active");
     $(`#score-tab`).show();
@@ -97,16 +99,32 @@ export class UIManager extends EventTarget {
 
   setAudioManagerPlaying(playing) {
     if (playing) {
-      // Nothing so far
+      $(`#extra-control-stop`).removeClass("disabled");
     } else {
+      // Stop
+      $(`#extra-control-stop`).addClass("disabled");
+
+      // Play
       $(`.play-button`).each((index, item) => {
         $(item).removeClass("disabled");
         $(item).removeClass("active");
-    });
-    $(`.play-button-icon`).each((index, item) => {
-      $(item).attr("src", "./app/img/play-icon.svg");
-  });
+      });
 
+      $(`.play-button-icon`).each((index, item) => {
+        $(item).removeClass("disabled");
+        $(item).removeClass("active");
+      });
+
+      // Loop
+      $(`.loop-button`).each((index, item) => {
+        $(item).removeClass("disabled");
+        $(item).removeClass("active");
+      });
+
+      $(`.loop-button-icon`).each((index, item) => {
+        $(item).removeClass("disabled");
+        $(item).removeClass("active");
+      });
     }
   }
 
@@ -146,11 +164,13 @@ export class UIManager extends EventTarget {
       });
 
       if (this.playMode == "score") {
-        var currentXPos = sampleNoteElm.offset().left
-                        - $("#score-scrolling-content").offset().left
-                        - this.PLAYER_BEAT_WIDTH_PIXELS;  // Leave a beat past current played note
+        if (!this.playLoop) {
+          var currentXPos = sampleNoteElm.offset().left
+                          - $("#score-scrolling-content").offset().left
+                          - this.PLAYER_BEAT_WIDTH_PIXELS;  // Leave a beat past current played note
 
-        $("#score-scrolling-container").scrollLeft(currentXPos);
+          $("#score-scrolling-container").scrollLeft(currentXPos);
+        }
 
         $(`#score-minimap-section-${cb.scoreSectionIndex}`).addClass("score-minimap-active-section");
       }
@@ -217,7 +237,7 @@ export class UIManager extends EventTarget {
     scrollingContentElm.css("width", `${scoreWidth}px`);
 
     this.score.scoreSections.forEach((section, index) => {
-      this._buildSectionUI(`score-section-${index}-`, section.id, false).appendTo(scrollingContentElm);
+      this._buildSectionUI(`score-section-${index}-`, section.id, index).appendTo(scrollingContentElm);
     });
 
     // Update instrument states
@@ -309,7 +329,11 @@ export class UIManager extends EventTarget {
     return containerElm;
   }
 
-  _buildSectionUI(idPrefix, sectionId, fullModule=true) {
+  _buildSectionUI(idPrefix, sectionId, scoreSectionIndex=undefined) {
+    var fullModule = true;
+    if (scoreSectionIndex != undefined)
+      fullModule = false;
+
     const section = this.score.sections[sectionId];
     const sectionElmId = `${idPrefix}${sectionId}`;
 
@@ -325,26 +349,53 @@ export class UIManager extends EventTarget {
     });
     sectionHeaderContainerElm.appendTo(sectionElm);
 
-    if (fullModule) {
-      const playHeaderElm = $("<div>", {
-        class: "header-play-button",
-      });
-      playHeaderElm.appendTo(sectionHeaderContainerElm);
+    // Play
+    const playHeaderElm = $("<div>", {
+      class: "header-play-button",
+    });
+    playHeaderElm.appendTo(sectionHeaderContainerElm);
 
-      const playButtonElm = $("<button>", {
-        id: `${sectionElmId}-play-button`,
-        class: "play-button",
-      });
+    const playButtonElm = $("<button>", {
+      id: `${sectionElmId}-play-button`,
+      class: "play-button",
+    });
+
+    if (fullModule)
       playButtonElm.on("click", {section: section}, this._onSectionPlayButton.bind(this));
-      playButtonElm.appendTo(playHeaderElm);
+    else
+      playButtonElm.on("click", {scoreSectionIndex: scoreSectionIndex}, this._onScoreSectionPlayButton.bind(this));
 
-      const playIconElm = $("<img>", {
-        id: `${sectionElmId}-play-button-icon`,
-        src: "./app/img/play-icon.svg",
-        class: "play-button-icon",
-      });
-      playIconElm.appendTo(playButtonElm);
-    }
+    playButtonElm.appendTo(playHeaderElm);
+
+    const playIconElm = $("<img>", {
+      id: `${sectionElmId}-play-button-icon`,
+      class: "play-button-icon",
+    });
+    playIconElm.appendTo(playButtonElm);
+
+    // Loop
+    const loopHeaderElm = $("<div>", {
+      class: "header-loop-button",
+    });
+    loopHeaderElm.appendTo(sectionHeaderContainerElm);
+
+    const loopButtonElm = $("<button>", {
+      id: `${sectionElmId}-loop-button`,
+      class: "loop-button",
+    });
+
+    if (fullModule)
+      loopButtonElm.on("click", {section: section}, this._onSectionLoopButton.bind(this));
+    else
+      loopButtonElm.on("click", {scoreSectionIndex: scoreSectionIndex}, this._onScoreSectionLoopButton.bind(this));
+
+    loopButtonElm.appendTo(loopHeaderElm);
+
+    const loopIconElm = $("<img>", {
+      id: `${sectionElmId}-loop-button-icon`,
+      class: "loop-button-icon",
+    });
+    loopIconElm.appendTo(loopButtonElm);
 
     // Header
     const sectionHeaderElm = $("<div>", {
@@ -420,7 +471,6 @@ export class UIManager extends EventTarget {
 
       const playIconElm = $("<img>", {
         id: `${idPrefix}-play-button-icon`,
-        src: "./app/img/play-icon.svg",
         class: "play-button-icon",
       });
       playIconElm.appendTo(playButtonElm);
@@ -530,24 +580,6 @@ export class UIManager extends EventTarget {
     });
   }
 
-  _onLoopChecked(e) {
-    const loopElem = $("#extra-control-loop");
-
-    const enable = !loopElem.hasClass("active");
-
-    if (enable) {
-      loopElem.addClass("active");
-    } else {
-      loopElem.removeClass("active");
-    }
-
-    this.dispatchEvent(new CustomEvent("enableLoop",
-      {detail: {
-        enable: enable,
-      }}
-    ));
-  }
-
   _onBPMSliderInput(e) {
     this.score.bpm = e.target.value;
     this._updateScoreInfo();
@@ -622,31 +654,42 @@ export class UIManager extends EventTarget {
     ));
   }
 
-  _updatePlayButtons(playButton, playIcon) {
-    if (playButton.hasClass("active")) {
+  _updatePlayButtons(button, icon) {
+    if (button.hasClass("active")) {
       // It's active -> Go to stopped mode
       $(`.play-button`).each((index, item) => {
         $(item).removeClass("disabled");
       });
+      $(`.loop-button`).each((index, item) => {
+        $(item).removeClass("disabled");
+      });
 
-      playButton.removeClass("active");
-      playIcon.attr("src", "./app/img/play-icon.svg");
+      button.removeClass("active");
+      icon.removeClass("active");
     } else {
       // It's inactive -> Go to playing mode
       $(`.play-button`).each((index, item) => {
         $(item).addClass("disabled");
       });
+      $(`.loop-button`).each((index, item) => {
+        $(item).addClass("disabled");
+      });
 
-      playButton.removeClass("disabled");
-      playButton.addClass("active");
-      playIcon.attr("src", "./app/img/stop-icon.svg");
+      button.removeClass("disabled");
+      button.addClass("active");
+      icon.addClass("active");
     }
+  }
+
+  _onExtraStopButton(e) {
+    this.dispatchEvent(new Event("stop"));
   }
 
   _onScorePlayButton(e) {
     const playButton = $("#score-play-button");
     const playIcon = $("#score-play-button-icon");
     this.playMode = "score";
+    this.playLoop = false;
 
     if (playButton.hasClass("active")) {
       this.dispatchEvent(new Event("stop"));
@@ -655,6 +698,8 @@ export class UIManager extends EventTarget {
       {detail: {
         mode: this.playMode,
         score: this.score,
+        scoreSectionIndex: 0,
+        loop: this.playLoop,
       }}));
     }
 
@@ -666,6 +711,7 @@ export class UIManager extends EventTarget {
     const playButton = $(`#section-${section.id}-play-button`);
     const playIcon = $(`#section-${section.id}-play-button-icon`);
     this.playMode = "section";
+    this.playLoop = false;
 
     if (playButton.hasClass("active")) {
       this.dispatchEvent(new Event("stop"));
@@ -675,11 +721,81 @@ export class UIManager extends EventTarget {
         mode: this.playMode,
         score: this.score,
         section: section,
+        loop: this.playLoop,
       }}));
     }
 
     this._updatePlayButtons(playButton, playIcon);
   }
+
+  _onSectionLoopButton(e) {
+    const section = e.data.section;
+    const loopButton = $(`#section-${section.id}-loop-button`);
+    const loopIcon = $(`#section-${section.id}-loop-button-icon`);
+    this.playMode = "section";
+    this.playLoop = true;
+
+    if (loopButton.hasClass("active")) {
+      this.dispatchEvent(new Event("stop"));
+    } else {
+      this.dispatchEvent(new CustomEvent("play",
+      {detail: {
+        mode: this.playMode,
+        score: this.score,
+        section: section,
+        loop: this.playLoop,
+      }}));
+    }
+
+    this._updatePlayButtons(loopButton, loopIcon);
+  }
+
+  _onScoreSectionPlayButton(e) {
+    const scoreSectionIndex = e.data.scoreSectionIndex;
+    const section = this.score.scoreSections[scoreSectionIndex];
+    const playButton = $(`#score-section-${scoreSectionIndex}-${section.id}-play-button`);
+    const playIcon = $(`#score-section-${scoreSectionIndex}-${section.id}-play-button-icon`);
+    this.playMode = "score";
+    this.playLoop = false;
+
+    if (playButton.hasClass("active")) {
+      this.dispatchEvent(new Event("stop"));
+    } else {
+      this.dispatchEvent(new CustomEvent("play",
+      {detail: {
+        mode: this.playMode,
+        score: this.score,
+        scoreSectionIndex: scoreSectionIndex,
+        loop: this.playLoop,
+      }}));
+    }
+
+    this._updatePlayButtons(playButton, playIcon);
+  }
+
+  _onScoreSectionLoopButton(e) {
+    const scoreSectionIndex = e.data.scoreSectionIndex;
+    const section = this.score.scoreSections[scoreSectionIndex];
+    const loopButton = $(`#score-section-${scoreSectionIndex}-${section.id}-loop-button`);
+    const loopIcon = $(`#score-section-${scoreSectionIndex}-${section.id}-loop-button-icon`);
+    this.playMode = "score";
+    this.playLoop = true;
+
+    if (loopButton.hasClass("active")) {
+      this.dispatchEvent(new Event("stop"));
+    } else {
+      this.dispatchEvent(new CustomEvent("play",
+      {detail: {
+        mode: this.playMode,
+        score: this.score,
+        scoreSectionIndex: scoreSectionIndex,
+        loop: this.playLoop,
+      }}));
+    }
+
+    this._updatePlayButtons(loopButton, loopIcon);
+  }
+
 
   // From: https://www.jqueryscript.net/text/reverse-text-background-color.html
   _adjustTextColor(DOMElem) {

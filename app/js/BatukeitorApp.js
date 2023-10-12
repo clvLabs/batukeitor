@@ -28,7 +28,6 @@ export class BatukeitorApp {
     this.uiMgr.addEventListener("stop", this.onUIManagerStop.bind(this));
     this.uiMgr.addEventListener("setBPM", this.onUIManagerSetBPM.bind(this));
     this.uiMgr.addEventListener("playSample", this.onUIManagerPlaySample.bind(this));
-    this.uiMgr.addEventListener("enableLoop", this.onUIManagerEnableLoop.bind(this));
 
     this.score = new Score(this.instrumentMgr);
     this.score.addEventListener("ready", this.onScoreReady.bind(this));
@@ -111,8 +110,9 @@ export class BatukeitorApp {
 
   onUIManagerPlay(e) {
     this.audioMgr.setBPM(this.score.bpm);
+    this.audioMgr.loop = e.detail.loop;
     if (e.detail.mode == "score") {
-      this.audioMgr.playScore(e.detail.score);
+      this.audioMgr.playScore(e.detail.score, e.detail.scoreSectionIndex);
     } else if (e.detail.mode == "section") {
       this.audioMgr.playSection(e.detail.score, e.detail.section);
     }
@@ -129,10 +129,6 @@ export class BatukeitorApp {
   onUIManagerPlaySample(e) {
     const instrument = this.instrumentMgr.get(e.detail.instrumentId);
     instrument.play(e.detail.sampleId, true);
-  }
-
-  onUIManagerEnableLoop(e) {
-    this.audioMgr.loop = e.detail.enable;
   }
 
   onScoreReady(e) {
