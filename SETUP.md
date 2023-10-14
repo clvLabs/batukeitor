@@ -1,13 +1,12 @@
 # Batukeitor setup instructions
 
 # The easy way
-See https://github.com/clvLabs/batukeitor-demo for a sample installation.
+See https://github.com/clvLabs/batukeitor-demo for a simple installation.
 
 The _live_ version is at https://clvlabs.github.io/batukeitor-demo.
 
 If you want to go _the easy way_, you can make yorself a copy of the code in this repo, publish it in your web server (or local server) and change the configuration and score files as you see fit.
 
-However, this setup method will not allow you to easily apply updates in the future.
 
 # Web setup
 
