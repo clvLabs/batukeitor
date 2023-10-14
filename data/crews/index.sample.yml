@@ -5,7 +5,7 @@
 #
 
 crews:
-  #- sample-crew-1:
-  #- sample-crew-2:
+  #- sample-crew-1
+  #- sample-crew-2
 
-# defaultCrew: sample-crew-1:
+# defaultCrew: sample-crew-1
