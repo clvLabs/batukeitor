@@ -83,7 +83,7 @@ name: Uphill samba
 ...
 ```
 
-### Update the crew's index
+### Update the new crew's info file
 
 Now you should edit the new crew index file:
 ```bash
@@ -114,9 +114,9 @@ You can repeat these steps as many times as crews you'll manage. For this exampl
 
 It's a personal preference of mine, but I recommend keeping folder names in lower case.
 
-## Prepare the crew index
+## Update the main crew index
 
-Now, we'll prepare the crew index file (the one used for the crew selection combo in the user interface):
+Now, we'll prepare the main crew index file (the one used for the crew selection combo in the user interface):
 ```bash
 ~/www/batukeitor/data/crews$ cp index.sample.yml index.yml
 ~/www/batukeitor/data/crews$ nano index.yml
