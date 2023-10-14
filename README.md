@@ -60,7 +60,7 @@ This one is mostly for practicing individual sections:
 * All different sections are displayed vertically.
 * Sections are displayed once (never repeated).
 * `play` button plays the section.
-* `loop` button loops the section (same is in `Full score` tab).
+* `loop` button loops the section (same as in `Full score` tab).
 
 ### <img src="app/img/instruments-tab-icon.png" width="20"> Instruments tab
 ![screenshot](resources/img/screenshot-instruments.png)
@@ -190,7 +190,7 @@ No special software is required to host this app, you can even create a new fold
 * Audio timing is not always perfect (the app is meant for students, not for an audio studio).
 * Current audio samples are not the nicest (but you can change them!).
 * Due to the _fixed time_ nature of the score files, triplets are not available.
-* Time resolution is limited to eighth notes: while limiting for the repenique and caixa sometimes, it keeps the scores easy to write/read.
+* Time resolution is limited to eighth notes: while sometimes limiting for the repenique and some embelishments, it keeps the scores easy to write/read.
 * No section/score editor, a text editor is needed to create/edit scores.
 * Only one combination of sections (song) per score is allowed.
 * Only one track per instrument is allowed.
