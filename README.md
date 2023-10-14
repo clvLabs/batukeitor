@@ -4,6 +4,8 @@ _Non-musician-friendly_ score reader/player web app for batucada crews.
 
 ![screenshot](resources/img/screenshot-main.png)
 
+See it working at https://clvlabs.github.io/batukeitor-demo/
+
 ## User interface
 
 ### Selection combos
