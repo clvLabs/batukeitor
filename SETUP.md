@@ -1,5 +1,14 @@
 # Batukeitor setup instructions
 
+# The easy way
+See https://github.com/clvLabs/batukeitor-demo for a sample installation.
+
+The _live_ version is at https://clvlabs.github.io/batukeitor-demo.
+
+If you want to go _the easy way_, you can make yorself a copy of the code in this repo, publish it in your web server (or local server) and change the configuration and score files as you see fit.
+
+However, this setup method will not allow you to easily apply updates in the future.
+
 # Web setup
 
 ## Pre-requisites
@@ -204,3 +213,26 @@ To have a local web server to test the app locally, you either need:
 * [PHP](https://www.php.net/manual/en/features.commandline.webserver.php)
 * ... or any other you may find looking for **_my_operating_system_ local web server** on your search engine of choice.
 
+# Updates
+
+If you installed `Batukeitor` using `git` and at some point in the future you want to benefit from the latest changes, the procedure is quite simple:
+
+Go to the folder where `Batukeitor` is installed and do a `git pull`... that's all!
+```bash
+~$ cd www/batukeitor
+~/www/batukeitor$ git pull
+remote: Counting objects: (n), done.
+...
+ (n) files changed, (n) insertions(+), (n) deletions(-)
+ ~/www/batukeitor$
+```
+
+You can also update your instrument pack the same way:
+```bash
+~$ cd www/batukeitor/data/instruments
+~/www/batukeitor/data/instruments$ git pull
+remote: Counting objects: (n), done.
+...
+ (n) files changed, (n) insertions(+), (n) deletions(-)
+ ~/www/batukeitor/data/instruments$
+```
