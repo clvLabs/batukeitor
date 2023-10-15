@@ -27,7 +27,8 @@ A _quick view_ of the structure of the score.
 ![screenshot](../img/screenshot-minimap.png)
 
 ### Base instruments
-* 11 ([configurable](#configurable-instruments)) instrument tracks:
+* 12 ([configurable](#configurable-instruments)) instrument tracks:
+  * `DD`: Diretor
   * `AP`: Apito
   * `CH`: Chocalho
   * `AG`: Agogô
@@ -39,7 +40,7 @@ A _quick view_ of the structure of the score.
   * `S3`: Surdo 3ª
   * `S2`: Surdo 2ª
   * `S1`: Surdo 1ª
-* Extra tracks for _Metrónomo_ and _Diretor_
+* Extra track for _Metrónomo_ (not editable in scores).
 
 ### Easy-to-write scores
 `Batukeitor` scores are formatted as [YAML](yaml.md) text files for easy editing.
