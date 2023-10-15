@@ -1,26 +1,11 @@
-# Batukeitor setup instructions
+# Batukeitor docs
 
-# The easy way
-See https://github.com/clvLabs/batukeitor-demo for a simple installation.
+## Batukeitor from scratch
+More advanced users can benefit from the modular nature of the app and manage repos for instrument packs and crews in a more efficient way.
 
-The _live_ version is at https://clvlabs.github.io/batukeitor-demo.
-
-If you want to go _the easy way_, you can make yorself a copy of the code in this repo, publish it in your web server (or local server) and change the configuration and score files as you see fit.
-
-
-# Web setup
-
-## Pre-requisites
-* You must have somewhere to publish it (hosting).
-* You must have some kind of web server running on it (be it WordPress or whatever).
-* You must have `SSH` access to that server.
-* Your server's `SSH` shell should have [git](https://git-scm.com/) installed.
-
-... (otherwise check with your closest _IT friend_) or see the [Local setup](#local-setup) section at the end.
-
+This install method also helps you understand the way `Batukeitor` works.
 
 ## Install the main app
-
 Clone the `batukeitor` repo inside your exposed `www` folder (not necessarily in its root, it could be in a subfolder).
 ```bash
 ~$ cd www
@@ -32,7 +17,6 @@ Resolving deltas: 100% (404/404), done.
 ```
 
 ## Install the instruments pack
-
 Enter the `batukeitor/data` folder and clone the `instruments` repo:
 ```bash
 ~/www$ cd batukeitor/data
@@ -63,7 +47,6 @@ Because you will be using this crew only as a template, you can remove the repo 
 ```
 
 ### Keep a single score from the template
-
 Now we'll keep one of the demo scores to modify it and delete the rest. We'll name the new score `Uphill Samba`:
 ```bash
 ~/www/batukeitor/data/crews$ cd batuqueiros/scores/
@@ -92,7 +75,6 @@ name: Uphill samba
 ```
 
 ### Update the new crew's info file
-
 Now you should edit the new crew index file:
 ```bash
 ~/www/batukeitor/data/crews/batuqueiros/scores$ cd ..
@@ -117,13 +99,11 @@ scores:
   uphill-samba: "Uphill samba"
 ```
 
-
 You can repeat these steps as many times as crews you'll manage. For this example, I'll assume I cloned the `crews` repo again for the `Bambas do Surdo` crew.
 
 It's a personal preference of mine, but I recommend keeping folder names in lower case.
 
 ## Update the main crew index
-
 Now, we'll prepare the main crew index file (the one used for the crew selection combo in the user interface):
 ```bash
 ~/www/batukeitor/data/crews$ cp index.sample.yml index.yml
@@ -166,6 +146,7 @@ crews:
 
 defaultCrew: batuqueiros
 ```
+
 ## Test the app
 Congratulations! Now you have `Batukeitor` up and running.
 
@@ -175,63 +156,4 @@ If you find any problems, try using your browser's dev tools to see if you can f
 
 But if it works... you'll find you only have the `Demo` score (even if we renamed it as `Uphill samba`).
 
-From this point on you'll need to be able to add new scores and edit the existing ones.
-
-## Add new scores
-
-To create a new score:
-* Add a `yml` file inside the `scores` folder of the corresponding `crew`.
-* Update the corresponding `crews/xxx/index.yml` for the score to show in the interface combo.
-
-For more details on score format, see the [Demo crew README](https://github.com/clvLabs/batukeitor-crew-demo/tree/master/README.md).
-
-## Customize instruments
-
-If you are going to customize your instruments, you should remove the repo link (not really necessary):
-```bash
-~$ cd www/batukeitor/data/instruments
-~www/batukeitor/data/instruments$ rm -rf .git
-~www/batukeitor/data/instruments$
-```
-
-Please see the [instruments pack README](https://github.com/clvLabs/batukeitor-instruments/blob/master/README.md) for more details on instruments.
-
-# Local setup
-
-If you are going to write/edit scores, it's always better/faster to edit files locally, test them until you're happy with the changes and then upload the scores to your web host using `FTP`.
-
-Or maybe you just want to play with it for a while and you don't have or don't want to use your web hosting... whatever.
-
-To install the `Batukeitor` app and the `instruments` and `demo crew` packs, [git](https://git-scm.com/) will be the easiest choice, as you can follow the setup instructions in the [Web setup](#web-setup) section.
-
-If you don't have (and don't want) `git` or the setup instructions in the [Web setup](#web-setup) section don't fit your operating system (maybe installing on Windows), you can download `zip` files of the repos from https://github.com/clvLabs and extracting them instead of cloning the repos...
-
-To have a local web server to test the app locally, you either need:
-* Using [Python](https://www.python.org/) - Here [a sample article](https://realpython.com/python-http-server/) explaining how to do it.
-* [XAMPP](https://www.apachefriends.org/)
-* [PHP](https://www.php.net/manual/en/features.commandline.webserver.php)
-* ... or any other you may find looking for **_my_operating_system_ local web server** on your search engine of choice.
-
-# Updates
-
-If you installed `Batukeitor` using `git` and at some point in the future you want to benefit from the latest changes, the procedure is quite simple:
-
-Go to the folder where `Batukeitor` is installed and do a `git pull`... that's all!
-```bash
-~$ cd www/batukeitor
-~/www/batukeitor$ git pull
-remote: Counting objects: (n), done.
-...
- (n) files changed, (n) insertions(+), (n) deletions(-)
- ~/www/batukeitor$
-```
-
-You can also update your instrument pack the same way:
-```bash
-~$ cd www/batukeitor/data/instruments
-~/www/batukeitor/data/instruments$ git pull
-remote: Counting objects: (n), done.
-...
- (n) files changed, (n) insertions(+), (n) deletions(-)
- ~/www/batukeitor/data/instruments$
-```
+From this point on you'll need to be able to add new scores and edit the existing ones, you will find help in the [docs](index.md).
