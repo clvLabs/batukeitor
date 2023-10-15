@@ -12,7 +12,7 @@ Quick links:
 * [User interface](resources/docs/user-interface.md)
 * [Easy setup](resources/docs/easy-setup.md)
 
-Browse the [documentation index](resources/docs/index.md) for more info.
+Browse the [documentation index](resources/docs/README.md) for more info.
 
 ## Motivation
 Main facts:

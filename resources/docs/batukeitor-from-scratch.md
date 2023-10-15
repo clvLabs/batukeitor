@@ -156,4 +156,4 @@ If you find any problems, try using your browser's dev tools to see if you can f
 
 But if it works... you'll find you only have the `Demo` score (even if we renamed it as `Uphill samba`).
 
-From this point on you'll need to be able to add new scores and edit the existing ones, you will find help in the [docs](index.md).
+From this point on you'll need to be able to add new scores and edit the existing ones, you will find help in the [docs](README.md).
