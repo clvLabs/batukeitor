@@ -41,6 +41,7 @@ A _quick view_ of the structure of the score.
   * `S2`: Surdo 2ª
   * `S1`: Surdo 1ª
 * Extra track for _Metrónomo_ (not editable in scores).
+* Not limited to 12 instruments/tracks, you can add as many as your computer can handle (please see the [instruments docs](instruments.md)).
 
 ### Simple score editor
 Change scores _on the fly_ and hear the result.

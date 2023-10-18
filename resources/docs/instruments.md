@@ -7,6 +7,8 @@ However, because anyone can want to have his/her own instrument pack in his/her 
 
 The [default instrument pack](https://github.com/clvLabs/batukeitor-instruments) is available on github and included by default in the [batukeitor-demo](https://github.com/clvLabs/batukeitor-demo) repo.
 
+It comes with 12+1 instruments/tracks (12 configurable + `MT`) (_Metrónomo_ is required), but it's not limited to that (see [expanding the pack](#expanding-the-pack)).
+
 ## Structure of an `instruments pack`
 ```
  instruments/
@@ -98,3 +100,40 @@ This folder should contain all audio files specified in the `samples` sections o
 
 Note: `mp3` and `wav` files are tested and working (maybe more formats work).
 
+## Expanding the pack
+
+### Adding samples to an existing instrument
+To add a new sample:
+* Copy the audio sample to the `samples` folder.
+* Edit `instruments.yml`.
+  * Find the `instrument` you want to add the sample to.
+  * Add a new entry in its `samples` section.
+    * The `id` you use will be the character to use in scores.
+    * The file name must match the one of the new audio sample.
+* Now you can start using the new `sample` for this `instrument`in your scores.
+
+### Adding instruments
+To add a new instrument:
+* Copy the audio samples you have for that instrument to the `samples` folder.
+* Add a `png` icon for the instrument in the `img` folder.
+* Edit `instruments.yml`.
+* Duplicate one of the existing instruments.
+* Change its `id`, `name` and `samples`.
+
+### Adding tracks
+Sometimes you want to add an extra track for an instrument you already have (let's say you want to have 2 independent _Caixa_ tracks).
+
+You can create a new `instrument` with a new `id` and `name`, but _recycling_ the instrument's `samples`:
+```yml
+instruments:
+
+  #(...more content...)
+
+  CX2:
+    name: "Caixa 2"
+    samples:
+      "X": "CX_hi.mp3"
+      "-": "CX_lo.mp3"
+```
+
+Also, you will have to duplicate `img/CX.png` as `img/CX2.png` (or provide a new icon named `img/CX2.png`).
