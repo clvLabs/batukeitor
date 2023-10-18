@@ -22,10 +22,11 @@ Some information about the score is displayed below. Note that calculated total 
 
 ### App tabs (screens)
 ![screenshot](../img/screenshot-tab-buttons.png)
-The three icons below the song info allow changing between the app screens (tabs).
+The four icons below the song info allow changing between the app screens (tabs).
 * <img src="../../app/img/score-tab-icon.svg" width="20"> Full score tab
 * <img src="../../app/img/sections-tab-icon.svg" width="20"> Score sections tab
 * <img src="../../app/img/instruments-tab-icon.svg" width="20"> Instruments tab
+* <img src="../../app/img/editor-tab-icon.svg" width="20"> Editor tab
 
 ### Minimap
 ![screenshot](../img/screenshot-minimap.png)
@@ -50,7 +51,7 @@ The instrument icons can be clicked to mute individual tracks. (shift+click will
 
 ![screenshot](../img/screenshot-instruments-muted.png)
 
-### <img src="../../app/img/score-icon.svg" width="20"> Score sections tab
+### <img src="../../app/img/sections-tab-icon.svg" width="20"> Score sections tab
 ![screenshot](../img/screenshot-score-sections.png)
 
 This one is mostly for practicing individual sections:
@@ -66,3 +67,17 @@ Here you can:
 * Adjust individual instrument volumes.
 * Reset individual instrument volumes (by clicking on the loudspeaker icon)
 * Hear the configured samples for each instrument.
+
+### <img src="../../app/img/editor-tab-icon.svg" width="20"> Editor tab
+![screenshot](../img/screenshot-editor.png)
+
+In this tab you can modify the score.
+
+The three buttons on the top right allow to:
+* Apply the changes.
+* Copy the score text to the clipboard.
+* Reload the original score.
+
+If you edit the score, you'll have to be **very** careful with the [YAML](yaml.md) syntax.
+
+Note the changes you make to the score will not be saved anywhere, if you want to keep the score for later use or save it in your server, use the _copy to clipboard_ button.

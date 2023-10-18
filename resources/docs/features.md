@@ -5,14 +5,14 @@
 ### Built-in score player
 `Play` / `loop` / `stop` buttons can be found in the interface.
 
-![screenshot](../img/screenshot-playback-controls.png)
-
-![screenshot](../img/screenshot-section-buttons.png)
-
 You can:
 * Play the entire score.
 * Play the score starting from any section.
 * Play a single section in `loop` mode to practice.
+
+![screenshot](../img/screenshot-playback-controls.png)
+
+![screenshot](../img/screenshot-section-buttons.png)
 
 ### Mute instruments
 When practicing, you can mute your own instrument and practice with a _virtual version_ of the rest of instruments :)
@@ -41,6 +41,12 @@ A _quick view_ of the structure of the score.
   * `S2`: Surdo 2ª
   * `S1`: Surdo 1ª
 * Extra track for _Metrónomo_ (not editable in scores).
+
+### Simple score editor
+Change scores _on the fly_ and hear the result.
+
+(changes can not be saved... sorry!)
+![screenshot](../img/screenshot-editor.png)
 
 ### Easy-to-write scores
 `Batukeitor` scores are formatted as [YAML](yaml.md) text files for easy editing.
@@ -160,12 +166,15 @@ You can even create a new folder in your existing web space and install `Batukei
 * Current audio samples are not the nicest (but you can change them!).
 * Due to the _fixed time_ nature of the score files, triplets are not available.
 * Time resolution is limited to eighth notes: while sometimes limiting for the repenique and some embelishments, it keeps the scores easy to write/read.
-* No section/score editor, a text editor is needed to create/edit scores.
+* Very simple section/score editor.
+* No possibility to save scores in the current editor.
 * Only one combination of sections (song) per score is allowed.
 * Only one track per instrument is allowed.
 * No time/volume dynamics available in scores.
 
-#### About the _no section/score editor_
-I know... maybe some day...
+#### About the editor limitations
+I know... maybe some day I can make a graphical interface...
 
 In the meanwhile you can use the **great** [MestreJS](https://mestrejs.com) app to play around with beats until you get what you want to write. Check it out, it's awesome!
+
+The _saving scores_ thing... I might not do this one. It would need some additional software for database, user authentication and so on... I would rather keep this simple :)
