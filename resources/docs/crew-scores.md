@@ -47,3 +47,28 @@ To create a new score:
     teoria: "Teoría"
   ```
 * Note that you can alter the ordering in which the scores are shown in the interface combo.
+
+### Add subfolders to organize scores
+You can use subfolders if you accumulate a lot of scores, or you just want to keep them organized:
+```
+ demo/
+├──  index.yml
+└──  scores/
+    ├──  2021
+    │   └──  demo1.yml
+    ├──  2022
+    │   └──  teoria.yml
+    └──  2023
+        ├──  new-score.yml
+        └──  samba-reggae.yml
+```
+
+```yml
+# Batukeitor crew file
+name: Demo
+scores:
+  2023/new-score: "My new score"
+  2021/demo1: "Demo score"
+  2023/samba-reggae: "Samba Reggae"
+  2022/teoria: "Teoría"
+```
