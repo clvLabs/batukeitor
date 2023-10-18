@@ -23,9 +23,9 @@ Some information about the score is displayed below. Note that calculated total 
 ### App tabs (screens)
 ![screenshot](../img/screenshot-tab-buttons.png)
 The three icons below the song info allow changing between the app screens (tabs).
-* <img src="../../app/img/player-icon.svg" width="20"> Full score tab
-* <img src="../../app/img/score-icon.svg" width="20"> Score sections tab
-* <img src="../../app/img/instruments-tab-icon.png" width="20"> Instruments tab
+* <img src="../../app/img/score-tab-icon.svg" width="20"> Full score tab
+* <img src="../../app/img/sections-tab-icon.svg" width="20"> Score sections tab
+* <img src="../../app/img/instruments-tab-icon.svg" width="20"> Instruments tab
 
 ### Minimap
 ![screenshot](../img/screenshot-minimap.png)
@@ -35,7 +35,7 @@ Below these controls is the `minimap`, a visual representation of the sequence o
 * If you place your mouse over any of them its name will be displayed.
 * You can click on any of the sections to go to that section in the `Full score tab`.
 
-### <img src="../../app/img/player-icon.svg" width="20"> Full score tab
+### <img src="../../app/img/score-tab-icon.svg" width="20"> Full score tab
 In this tab you can view, play and "play with" the whole score:
 
 All sections are shown in the order set in the score (same as in the `minimap`, but with all instruments and samples).
@@ -59,7 +59,7 @@ This one is mostly for practicing individual sections:
 * `play` button plays the section.
 * `loop` button loops the section (same as in `Full score` tab).
 
-### <img src="../../app/img/instruments-tab-icon.png" width="20"> Instruments tab
+### <img src="../../app/img/instruments-tab-icon.svg" width="20"> Instruments tab
 ![screenshot](../img/screenshot-instruments.png)
 
 Here you can:
