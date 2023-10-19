@@ -50,8 +50,8 @@ Because you will be using this crew only as a template, you can remove the repo 
 Now we'll keep one of the demo scores to modify it and delete the rest. We'll name the new score `Uphill Samba`:
 ```bash
 ~/www/batukeitor/data/crews$ cd batuqueiros/scores/
-~/www/batukeitor/data/crews/batuqueiros/scores$ mv demo1.yml uphill-samba.yml
-~/www/batukeitor/data/crews/batuqueiros/scores$ rm samba-reggae.yml teoria.yml
+~/www/batukeitor/data/crews/batuqueiros/scores$ mv sample.yml uphill-samba.yml
+~/www/batukeitor/data/crews/batuqueiros/scores$ rm samba-reggae.yml theory.yml
 ~/www/batukeitor/data/crews/batuqueiros/scores$
 ```
 
@@ -63,7 +63,7 @@ We won't change the contents of the score yet, but we can change the name that w
 The contents of the file will be:
 ```yml
 # Batukeitor score
-name: Demo 1
+name: Sample score
 ...
 ```
 
@@ -84,11 +84,11 @@ Now you should edit the new crew index file:
 The initial contents of the file will be:
 ```yml
 # Batukeitor crew file
-name: Demo
+name: Demo crew
 scores:
-  demo1: "Demo"
+  sample: "Sample score"
   samba-reggae: "Samba Reggae"
-  teoria: "Teoría"
+  theory: "Basic Theory"
 ```
 
 In this case, we would edit the file to be like follows:
@@ -154,6 +154,6 @@ Use your browser of choice to check if everything is working as it should. In th
 
 If you find any problems, try using your browser's dev tools to see if you can find any clues.
 
-But if it works... you'll find you only have the `Demo` score (even if we renamed it as `Uphill samba`).
+But if it works... you'll find you only have the `Sample` score (even if we renamed it as `Uphill samba`).
 
 From this point on you'll need to be able to add new scores and edit the existing ones, you will find help in the [docs](README.md).

@@ -77,9 +77,9 @@ The scores allow you to write all independent sections of a song and then define
 score:
   intro
   base base base base
-  base base base cut
+  base base base variation
   base base base base
-  base base base cut
+  base base base variation
   end
 
 sections:
@@ -98,7 +98,7 @@ sections:
       S2: "    X       X   "
       S1: "X       X       "
 
-  cut:
+  variation:
     tracks:
       #   "1---2---3---4---"
       S3: "X       XX      "
@@ -142,10 +142,10 @@ instruments:
   RP:
     name: "Repenique"
     samples:
-      "X": "RP_Baqueta_Centro.mp3"
-      "x": "RP_Baqueta_Aro.mp3"
-      "-": "RP_Palma_Abierta.mp3"
-      ".": "RP_Palma_Cerrada.mp3"
+      "X": "RP_Drumstick_Center.mp3"
+      "x": "RP_Drumstick_Edge.mp3"
+      "-": "RP_Open_palm.mp3"
+      ".": "RP_Closed_palm.mp3"
 ```
 
 Please see the [instruments docs](instruments.md) for more details on instruments.

@@ -13,19 +13,19 @@ It can be used as a template to add new crews to your instance of `Batukeitor`.
  demo/
 ├──  index.yml
 └──  scores/
-    ├──  demo1.yml
     ├──  samba-reggae.yml
-    └──  teoria.yml
+    ├──  sample.yml
+    └──  theory.yml
 ```
 
 ### The `index.yml` file
 ```yml
 # Batukeitor crew file
-name: Demo
+name: Demo crew
 scores:
-  demo1: "Demo score"
+  sample: "Sample score"
   samba-reggae: "Samba Reggae"
-  teoria: "Teoría"
+  theory: "Basic Theory"
 ```
 
 * The `name` field should be filled with the crew name.
@@ -34,9 +34,9 @@ scores:
   * A description string (score _display name_).
 
 Given the example above, score:
-* `scores/demo1.yml` will be published as `Demo score`.
+* `scores/sample` will be published as `Demo score`.
 * `scores/samba-reggae.yml` will be published as `Samba Reggae`.
-* `scores/teoria.yml` will be published as `Teoría`.
+* `scores/theory.yml` will be published as `Basic Theory`.
 
 ### The `scores` folder
 All score `yml` files should be placed under this folder.

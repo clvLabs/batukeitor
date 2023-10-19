@@ -5,9 +5,16 @@
 
 You can find score samples in the [scores folder of the demo crew repo](https://github.com/clvLabs/batukeitor-crew-demo/tree/master/scores).
 
+### The file's header comments
+```yml
+# Batukeitor score
+# Based on: https://www.youtube.com/watch?v=xQ6Lr1CqbfU
+```
+Comments can be used in the file header to add information about the score.
+
 ### The `name` field
 ```yml
-name: Demo 1
+name: Sample score
 ```
 The _display name_ of the score, used in the user interface.
 
@@ -22,13 +29,13 @@ The initial/recommended `BPM` for the score.
 score:
   intro
   ---
-  base1 base1 base1 c1
-  base1 base1 base1 c3
+  b1 b1 b1 v1
+  b1 b1 b1 v3
   ---
-  base2 base2 base2 c2
-  base2 base2 base2 c3
+  b2 b2 b2 v2
+  b2 b2 b2 v3
   ---
-  fin
+  end
 ```
 The sequence of `sections` used to build the full score:
 * Each `section` is identified by its `id` (See [Single section structure](#single-section-structure)).
@@ -42,18 +49,18 @@ sections:
   intro:
     # (...section contents...)
 
-  base1:
+  b1:
     # (...section contents...)
 
   #(...more sections...)
 ```
 The list of available `sections` in the score.
 
-Each `section` is identified by its `id` (`intro`/`base1` in this example) and contains details in its _inner fields_.
+Each `section` is identified by its `id` (`intro`/`b1` in this example) and contains details in its _inner fields_.
 
 ### Single `section` structure
 ```yml
-  base1:
+  b1:
     name: Base 1
     color: "#006000"
     timeSignature: 4/4
@@ -73,7 +80,7 @@ Each `section` is identified by its `id` (`intro`/`base1` in this example) and c
       S1: "X  X  X   X     "
 ```
 
-* The `id` (_identificator_) of this section is `base1`.
+* The `id` (_identificator_) of this section is `b1`.
   * This is the section name used to build the `score` field.
   * It's a _short version_ of the _display_ name meant to keep the `score` readable.
   * It can have no spaces or start with symbols.
@@ -119,7 +126,7 @@ Each `section` is identified by its `id` (`intro`/`base1` in this example) and c
 
 ### Time signatures
 ```yml
-  base1:
+  b1:
     name: Base 1
     color: "#006000"
     timeSignature: 4/4
@@ -144,7 +151,7 @@ Allowed values for time signatures:
 
 If a `section` does not specify `timeSignature`, `4/4` will be assumed.
 ```yml
-  base1:
+  b1:
     name: Base 1
     color: "#006000"
     tracks:
@@ -165,7 +172,7 @@ If a `section` does not specify `timeSignature`, `4/4` will be assumed.
 
 #### Those color numbers are too weird
 ```yml
-  base1:
+  b1:
     name: Base 1
     color: "#006000"
 ```

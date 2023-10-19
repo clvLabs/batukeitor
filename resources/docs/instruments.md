@@ -55,10 +55,10 @@ instruments:
   RP:
     name: "Repenique"
     samples:
-      "X": "RP_Baqueta_Centro.mp3"
-      "x": "RP_Baqueta_Aro.mp3"
-      "-": "RP_Palma_Abierta.mp3"
-      ".": "RP_Palma_Cerrada.mp3"
+      "X": "RP_Drumstick_Center.mp3"
+      "x": "RP_Drumstick_Edge.mp3"
+      "-": "RP_Open_palm.mp3"
+      ".": "RP_Closed_palm.mp3"
 
   #(...more content...)
 
@@ -74,17 +74,17 @@ Each instrument is defined by an `instrument block`:
   RP:
     name: "Repenique"
     samples:
-      "X": "RP_Baqueta_Centro.mp3"
-      "x": "RP_Baqueta_Aro.mp3"
-      "-": "RP_Palma_Abierta.mp3"
-      ".": "RP_Palma_Cerrada.mp3"
+      "X": "RP_Drumstick_Center.mp3"
+      "x": "RP_Drumstick_Edge.mp3"
+      "-": "RP_Open_palm.mp3"
+      ".": "RP_Closed_palm.mp3"
 ```
 
 In this case, the instrument's `id` (identificator) is `RP`, its `name` is `Repenique` and it has different `samples` (notes):
-* `X`: Drumstick on center (file: `RP_Baqueta_Centro.mp3`)
-* `x`: Drumstick on edge (file: `RP_Baqueta_Aro.mp3`)
-* `-`: Open palm (file: `RP_Palma_Abierta.mp3`)
-* `.`: Closed palm (file: `RP_Palma_Cerrada.mp3`)
+* `X`: Drumstick on center (file: `RP_Drumstick_Center.mp3`)
+* `x`: Drumstick on edge (file: `RP_Drumstick_Edge.mp3`)
+* `-`: Open palm (file: `RP_Open_palm.mp3`)
+* `.`: Closed palm (file: `RP_Closed_palm.mp3`)
 
 These notes can be used later to write scores.
 
