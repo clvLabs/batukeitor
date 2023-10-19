@@ -39,5 +39,6 @@ What I wanted to achieve:
   * No need for complicated installations and dependencies (pure HTML/css/js).
   * Easy-to-write score files.
   * Easy-to-mantain crew packs.
+  * Easy-to-mantain instrument packs.
 
 So far I think `Batukeitor` can fill this gaps for my crew, and maybe for yours too... enjoy it!
