@@ -60,14 +60,6 @@ This one is mostly for practicing individual sections:
 * `play` button plays the section.
 * `loop` button loops the section (same as in `Full score` tab).
 
-### <img src="../../app/img/instruments-tab-icon.svg" width="20"> Instruments tab
-![screenshot](../img/screenshot-instruments.png)
-
-Here you can:
-* Adjust individual instrument volumes.
-* Reset individual instrument volumes (by clicking on the loudspeaker icon)
-* Hear the configured samples for each instrument.
-
 ### <img src="../../app/img/editor-tab-icon.svg" width="20"> Editor tab
 ![screenshot](../img/screenshot-editor.png)
 
@@ -81,3 +73,11 @@ The three buttons on the top right allow to:
 If you edit the score, you'll have to be **very** careful with the [YAML](yaml.md) syntax.
 
 Note the changes you make to the score will not be saved anywhere, if you want to keep the score for later use or save it in your server, use the _copy to clipboard_ button.
+
+### <img src="../../app/img/instruments-tab-icon.svg" width="20"> Instruments tab
+![screenshot](../img/screenshot-instruments.png)
+
+Here you can:
+* Adjust individual instrument volumes.
+* Reset individual instrument volumes (by clicking on the loudspeaker icon)
+* Hear the configured samples for each instrument.

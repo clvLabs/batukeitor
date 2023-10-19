@@ -19,15 +19,21 @@ When practicing, you can mute your own instrument and practice with a _virtual v
 
 ![screenshot](../img/screenshot-instruments-muted.png)
 
-### Individual instrument volume control
-![screenshot](../img/screenshot-instruments.png)
-
 ### Minimap
 A _quick view_ of the structure of the score.
 ![screenshot](../img/screenshot-minimap.png)
 
-### Base instruments
-* 12 ([configurable](#configurable-instruments)) instrument tracks:
+### Simple score editor
+Change scores _on the fly_ and hear the result.
+
+(changes can not be saved... sorry!)
+![screenshot](../img/screenshot-editor.png)
+
+### Individual instrument volume control
+![screenshot](../img/screenshot-instruments.png)
+
+### Configurable instruments/tracks
+* 12 configurable instrument tracks:
   * `DD`: Diretor
   * `AP`: Apito
   * `CH`: Chocalho
@@ -41,13 +47,41 @@ A _quick view_ of the structure of the score.
   * `S2`: Surdo 2ª
   * `S1`: Surdo 1ª
 * Extra track for _Metrónomo_ (not editable in scores).
-* Not limited to 12 instruments/tracks, you can add as many as your computer can handle (please see the [instruments docs](instruments.md)).
+* Not limited to 12 instruments/tracks, you can add as many as your computer can handle.
 
-### Simple score editor
-Change scores _on the fly_ and hear the result.
+The `instruments.yml` in the _instruments pack_ allows you to set as many different instruments/tracks and sounds for each instrument as you wish:
 
-(changes can not be saved... sorry!)
-![screenshot](../img/screenshot-editor.png)
+```yml
+instruments:
+
+  CH:
+    name: "Chocalho"
+    samples:
+      "X": "CH_hi.mp3"
+      "-": "CH_lo.mp3"
+      ".": "CH_lo2.mp3"
+
+  AG:
+    name: "Agogô"
+    samples:
+      "X": "AG_hi.mp3"
+      "-": "AG_lo.mp3"
+
+  TB:
+    name: "Tamborim"
+    samples:
+      "X": "TB_hi.mp3"
+      "-": "TB_lo.mp3"
+
+  RP:
+    name: "Repenique"
+    samples:
+      "X": "RP_Drumstick_Center.mp3"
+      "x": "RP_Drumstick_Edge.mp3"
+      "-": "RP_Open_palm.mp3"
+      ".": "RP_Closed_palm.mp3"
+```
+Please see the [instruments docs](instruments.md) for more details on instruments.
 
 ### Easy-to-write scores
 `Batukeitor` scores are formatted as [YAML](yaml.md) text files for easy editing.
@@ -113,42 +147,6 @@ sections:
       S1: "X               "
 ```
 Please note that these scores are simplified, see the [Batukeitor YAML score format](batukeitor-yaml-score.md) for more details on scores.
-
-### Configurable instruments
-The `instruments.yml` in the _instruments pack_ allows you to set as many different sounds for each instrument as you wish:
-
-```yml
-instruments:
-
-  CH:
-    name: "Chocalho"
-    samples:
-      "X": "CH_hi.mp3"
-      "-": "CH_lo.mp3"
-      ".": "CH_lo2.mp3"
-
-  AG:
-    name: "Agogô"
-    samples:
-      "X": "AG_hi.mp3"
-      "-": "AG_lo.mp3"
-
-  TB:
-    name: "Tamborim"
-    samples:
-      "X": "TB_hi.mp3"
-      "-": "TB_lo.mp3"
-
-  RP:
-    name: "Repenique"
-    samples:
-      "X": "RP_Drumstick_Center.mp3"
-      "x": "RP_Drumstick_Edge.mp3"
-      "-": "RP_Open_palm.mp3"
-      ".": "RP_Closed_palm.mp3"
-```
-
-Please see the [instruments docs](instruments.md) for more details on instruments.
 
 ### Unlimited number of crews
 If you want to manage scores for different crews, just add more _crew packs_ into your `data/crews` folder, configure them and have each crew own their scores.
