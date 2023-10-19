@@ -25,8 +25,8 @@ Some information about the score is displayed below. Note that calculated total 
 The four icons below the song info allow changing between the app screens (tabs).
 * <img src="../../app/img/score-tab-icon.svg" width="20"> Full score tab
 * <img src="../../app/img/sections-tab-icon.svg" width="20"> Score sections tab
-* <img src="../../app/img/instruments-tab-icon.svg" width="20"> Instruments tab
 * <img src="../../app/img/editor-tab-icon.svg" width="20"> Editor tab
+* <img src="../../app/img/instruments-tab-icon.svg" width="20"> Instruments tab
 
 ### Minimap
 ![screenshot](../img/screenshot-minimap.png)
