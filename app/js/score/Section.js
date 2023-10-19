@@ -7,7 +7,11 @@ export class Section {
     this.METRONOME_INSTRUMENT_ID = "MT";
 
     this.id = id;
-    this.name = ymlData.name;
+
+    if (ymlData.name)
+      this.name = ymlData.name;
+    else
+      this.name = this.id;
 
     if (ymlData.color)
       this.color = ymlData.color;

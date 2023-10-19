@@ -86,7 +86,7 @@ Each `section` is identified by its `id` (`intro`/`b1` in this example) and cont
   * It can have no spaces or start with symbols.
   * It can not be repeated amongst sections.
 * Each `section` has some _inner fields_:
-  * `name` with its _display name_.
+  * `name` with its _display name_. The section's `id` will be used when not provided.
   * `color` with its _display color_. A default color pallette will be used when not provided.
   * `timeSignature` with its time signature (See [Time signatures](#time-signatures)).
   * `tracks` with the list of tracks (See [Tracks](#tracks)).
