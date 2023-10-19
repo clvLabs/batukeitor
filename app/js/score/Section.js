@@ -8,7 +8,14 @@ export class Section {
 
     this.id = id;
     this.name = ymlData.name;
-    this.color = ymlData.color;
+
+    if (ymlData.color)
+      this.color = ymlData.color;
+    else
+      this.color = "";
+
+    if (this.color[0] == "#")
+      this.color = this.color.substring(1);
 
     if (ymlData.timeSignature)
       this.timeSignature = new TimeSignature(ymlData.timeSignature);
@@ -18,9 +25,6 @@ export class Section {
     this.instrumentMgr = instrumentMgr;
     this.tracks = {};
     var _tmpTracks = {};
-
-    if (this.color[0] == "#")
-    this.color = this.color.substring(1);
 
     // Get max section length looking at all tracks
     var maxSectionLen = 0;
