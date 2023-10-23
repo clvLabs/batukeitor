@@ -831,6 +831,11 @@ export class UIManager extends EventTarget {
     if ($(e.target).hasClass("playing"))
       return;
 
+    this._onTabSelected({
+      target: $("#tab-button-score"),
+      data: { tab: "score-tab" },
+    });
+
     const scoreSectionIndex = e.data.scoreSectionIndex;
     const section = this.score.scoreSections[scoreSectionIndex];
 
