@@ -91,8 +91,8 @@ As an example, this fraction of a score file corresponds to 8 beats for an agog√
       #   "1---2---3---4---1---2---3---4---"
       AG: "X - X - X- -X - X - X - X- -X - "
       S3: "X X     XX X    X X  X XXX X    "
-      S2: "X       X       X       X       "
-      S1: "    X       X       X       X   "
+      S2: "    X       X       X       X   "
+      S1: "X       X       X       X       "
 ```
 
 Each character corresponds to an eighth note:
