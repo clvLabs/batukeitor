@@ -33,7 +33,7 @@ Change scores _on the fly_ and hear the result.
 ![screenshot](../img/screenshot-instruments.png)
 
 ### Configurable instruments/tracks
-* 12 configurable instrument tracks:
+* 12 configurable instrument tracks with the `default` pack:
   * `DD`: Diretor
   * `AP`: Apito
   * `CH`: Chocalho
@@ -48,6 +48,8 @@ Change scores _on the fly_ and hear the result.
   * `S1`: Surdo 1ª
 * Extra track for _Metrónomo_ (not editable in scores).
 * Not limited to 12 instruments/tracks, you can add as many as your computer can handle.
+* Multiple tracks can be created for each instruments (i.e. 2 different _Caixa_ tracks).
+* New instrument packs can be created and shared amongst crews.
 
 The `instruments.yml` in the _instruments pack_ allows you to set as many different instruments/tracks and sounds for each instrument as you wish:
 
@@ -168,7 +170,6 @@ You can even create a new folder in your existing web space and install `Batukei
 * Very simple section/score editor.
 * No possibility to save scores in the current editor.
 * Only one combination of sections (song) per score is allowed.
-* Only one track per instrument is allowed.
 * No time/volume dynamics available in scores.
 
 #### About the editor limitations

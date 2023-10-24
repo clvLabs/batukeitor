@@ -22,6 +22,7 @@ It can be used as a template to add new crews to your instance of `Batukeitor`.
 ```yml
 # Batukeitor crew file
 name: Demo crew
+instrumentPack: default
 scores:
   sample: "Sample score"
   samba-reggae: "Samba Reggae"
@@ -29,11 +30,15 @@ scores:
 ```
 
 * The `name` field should be filled with the crew name.
+* The `instrumentPack` field identifies the instrument pack to use.
+  * It should match the folder name under `data/instruments`.
+  * If not specified, `default` will be assumed.
 * The `scores` list should contain, for each score we want published:
   * Its filename (without the `.yml` extension).
   * A description string (score _display name_).
 
 Given the example above, score:
+* Instruments will be loaded from `data/instruments/default`
 * `scores/sample` will be published as `Demo score`.
 * `scores/samba-reggae.yml` will be published as `Samba Reggae`.
 * `scores/theory.yml` will be published as `Basic Theory`.

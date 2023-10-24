@@ -16,16 +16,23 @@ Resolving deltas: 100% (404/404), done.
 ~/www$
 ```
 
-## Install the instruments pack
-Enter the `batukeitor/data` folder and clone the `instruments` repo:
+## Install the default instruments pack
+Enter the `batukeitor/data/instruments` folder and clone the `instruments` repo as `default`:
 ```bash
-~/www$ cd batukeitor/data
-~/www/batukeitor/data$ git clone https://github.com/clvLabs/batukeitor-instruments.git instruments
-Cloning into 'instruments'...
+~/www$ cd batukeitor/data/instruments
+~/www/batukeitor/data/instruments$ git clone https://github.com/clvLabs/batukeitor-instruments.git default
+Cloning into 'default'...
 ...
 Receiving objects: 100% (47/47), 355.47 KiB | 2.32 MiB/s, done.
 ~/www/batukeitor/data$
 ```
+
+## Create additional instrument packs
+Duplicate the `default` as many times as you need:
+```bash
+~/www$ cd batukeitor/data/instruments cp -r default special-instrument-pack
+```
+Then, edit the contents of the new folder as needed.
 
 ## Create crews (as many as needed)
 
@@ -85,6 +92,7 @@ The initial contents of the file will be:
 ```yml
 # Batukeitor crew file
 name: Demo crew
+instrumentPack: default
 scores:
   sample: "Sample score"
   samba-reggae: "Samba Reggae"
@@ -95,6 +103,7 @@ In this case, we would edit the file to be like follows:
 ```yml
 # Batukeitor crew file
 name: Batuqueiros
+instrumentPack: special-instrument-pack
 scores:
   uphill-samba: "Uphill samba"
 ```

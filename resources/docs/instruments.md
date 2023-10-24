@@ -1,17 +1,16 @@
 # Batukeitor docs
 
-## The `instruments pack`
-`Batukeitor` uses a single `instrument pack` (no plans exist to allow switching between packs).
+## Instruments packs
+`Batukeitor` can use a different set of instruments/track for each `crew`.
 
-However, because anyone can want to have his/her own instrument pack in his/her own git repo, instrument packs are modular (they are not included in the main app repo).
-
-The [default instrument pack](https://github.com/clvLabs/batukeitor-instruments) is available on github and included by default in the [batukeitor-demo](https://github.com/clvLabs/batukeitor-demo) repo.
+## The `default instruments pack`
+The [default instrument pack](https://github.com/clvLabs/batukeitor-instruments) is available on github and included as `default` in the [batukeitor-demo](https://github.com/clvLabs/batukeitor-demo) repo.
 
 It comes with 12+1 instruments/tracks (12 configurable + `MT`) (_Metrónomo_ is required), but it's not limited to that (see [expanding the pack](#expanding-the-pack)).
 
 ## Structure of an `instruments pack`
 ```
- instruments/
+ default/
 ├──  instruments.yml
 ├──  img/
 │  ├──  AG.png
@@ -137,3 +136,11 @@ instruments:
 ```
 
 Also, you will have to duplicate `img/CX.png` as `img/CX2.png` (or provide a new icon named `img/CX2.png`).
+
+## Creating new packs
+You can create an entirely different instrument pack for each crew.
+
+* Go to the `data/instruments` folder.
+* Duplicate the `demo` folder with any (valid) name you wish.
+* Edit the contents of the new folder.
+* Use the new folder's name as `instrumentPack` in your [crew pack](crew-packs.md) index file.

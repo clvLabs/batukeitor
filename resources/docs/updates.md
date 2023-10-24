@@ -5,10 +5,11 @@
 ### When installed from a `zip` file
 If you installed your instance of `Batukeitor` using the `zip` file from the [demo/template repo](https://github.com/clvLabs/batukeitor-demo) and you only modified stuff from the `data/crews` folder:
 
-* Make a backup of your `data/crews` folder.
+* Make a backup of your `data/crews` folder and any instrument pack you have created under `data/instruments`.
 * Download the latest `zip`.
 * Delete everything in your published folder and extract the new `zip` in it.
 * Replace the new `data/crews` folder with your backup.
+* Restore your instrument packs under `data/instruments`.
 
 
 ### When installed with `git`
@@ -26,10 +27,10 @@ remote: Counting objects: (n), done.
 
 You can also update your instrument pack the same way:
 ```bash
-~$ cd www/batukeitor/data/instruments
-~/www/batukeitor/data/instruments$ git pull
+~$ cd www/batukeitor/data/instruments/default
+~/www/batukeitor/data/instruments/default$ git pull
 remote: Counting objects: (n), done.
 ...
  (n) files changed, (n) insertions(+), (n) deletions(-)
- ~/www/batukeitor/data/instruments$
+ ~/www/batukeitor/data/instruments/default$
 ```
